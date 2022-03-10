@@ -1,0 +1,16 @@
+.recherche {
+  width: 500px;
+  position: relative;
+  display: flex;
+}
+
+@media screen and (min-width: 480px) {
+  .recherche {
+    width: 500px;
+  }
+}
+@media screen and (min-width: 1500px) {
+  .recherche {
+    width: 1000px;
+  }
+}

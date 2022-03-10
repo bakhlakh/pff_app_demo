@@ -1,0 +1,32 @@
+.container {
+  position: absolute;
+  top: 100px;
+  width: 95%;
+  display: grid;
+  justify-content: center;
+  left: 15%;
+}
+.btnControls {
+  justify-content: center;
+  align-items: center;
+  margin-left: 50px;
+}
+.btnControls * {
+  margin: 4px;
+  height: 40px;
+}
+.POSTFORM {
+  display: block;
+  float: right;
+}
+.elementDetails {
+  width: 75%;
+}
+.FiliereInfos {
+  color: gainsboro;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.FiliereInfos:hover {
+  background-color: #263ab9;
+  color: #fafafa;
+}
