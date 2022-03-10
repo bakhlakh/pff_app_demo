@@ -16,13 +16,16 @@ function GestionFilieres() {
   const [modulesFormVisible, setModulesFormVisible] = useState(false);
   const [currentUpdated, setCurrentUpdated] = useState();
   const [filteredFilieres, setFilteredFilieres] = useState([]);
+
+  const hand = (state) => {
+    setCurrentUpdated(state);
+  };
   //GET FILIERES
   const getFilieres = async () => {
     await api.get("/api/Filieres").then(({ data }) => {
       setFileres(data);
       setFilteredFilieres(data);
     });
-    console.log("currentUpdated", currentUpdated);
   };
   //GET FILIERES RECHERCHE
   const filterFilieres = async (str) => {
@@ -34,7 +37,6 @@ function GestionFilieres() {
             .toLocaleLowerCase()
             .includes(String(str).toLocaleLowerCase())
         ) {
-          console.log("first", String(str));
           obj.push(item);
         }
       });
@@ -112,6 +114,8 @@ function GestionFilieres() {
               cancelOp={() => {
                 setModulesFormVisible(false);
               }}
+              handler={hand}
+              f={filieres}
             />
           ) : (
             <div></div>
