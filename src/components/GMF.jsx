@@ -13,12 +13,18 @@ const msgReducer = (_, action) => {
   }
 };
 
-function GMF({ fieldValues, cancelOp, handleClick }) {
+function GMF({ fieldValues, cancelOp, handleClick, f }) {
   const [modules, setModules] = useState(fieldValues.filiereModules);
   const [msgState, msgDispatch] = useReducer(msgReducer, null);
   const [notInModules, setNotInModules] = useState([]);
   const [newModule, setNewModule] = useState("");
   const [newMassHorraire, setNewMassHorraire] = useState(0);
+  useEffect(() => {
+    const doubleUpdated = f.find((e) => {
+      return e.filiereId === fieldValues.filiereId;
+    });
+    setModules(doubleUpdated.filiereModules);
+  }, [f]);
   const handleAjoutModule = async () => {
     const obj = {
       _ModuleId: newModule,
@@ -30,9 +36,9 @@ function GMF({ fieldValues, cancelOp, handleClick }) {
       .then((e) => {
         displayMsg(e.status);
         handleClick();
+        setModules(handleClick().filiereModules);
       })
       .then(() => {
-        setModules(fieldValues.filiereModules);
         getModulesWC();
       })
       .catch((e) => {
