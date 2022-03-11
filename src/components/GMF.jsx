@@ -19,11 +19,15 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
   const [notInModules, setNotInModules] = useState([]);
   const [newModule, setNewModule] = useState("");
   const [newMassHorraire, setNewMassHorraire] = useState(0);
+  const [updateMassHorraire, setUpdateMassHorraire] = useState(false);
+  const [currentUpdated, setCurrentUpdated] = useState([]);
+  const [newMassHorraireField, setNewMassHorraireField] = useState(0);
   useEffect(() => {
     const doubleUpdated = f.find((e) => {
       return e.filiereId === fieldValues.filiereId;
     });
     setModules(doubleUpdated.filiereModules);
+    getModulesWC();
   }, [f]);
   const handleAjoutModule = async () => {
     const obj = {
@@ -51,6 +55,34 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
     }
     if (status > 299 || status < 200) {
       msgDispatch({ type: "ERR" });
+    }
+  };
+  const putModuleFiliere = () => {
+    if (Number(newMassHorraireField) >= 0) {
+      const obj = {
+        _ModuleId: currentUpdated.moduleId,
+        _FiliereId: fieldValues.filiereId,
+        _MassHorraire: newMassHorraireField,
+      };
+      api
+        .put(
+          "/api/v1/FiliereModules/" +
+            fieldValues.filiereId +
+            "/" +
+            currentUpdated.moduleId,
+          obj
+        )
+        .then((e) => {
+          displayMsg(e.status);
+          handleClick();
+        })
+        .then(() => {
+          setModules(fieldValues.filiereModules);
+          getModulesWC();
+        })
+        .catch((e) => {
+          displayMsg(400);
+        });
     }
   };
   const deleteModuleFiliere = async (item) => {
@@ -124,7 +156,15 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
                         >
                           Delete
                         </button>
-                        <button className="btn btn-warning">MAH</button>
+                        <button
+                          className="btn btn-warning"
+                          onClick={() => {
+                            setCurrentUpdated(item);
+                            setUpdateMassHorraire(true);
+                          }}
+                        >
+                          MAH
+                        </button>
                       </div>
                     </li>
                   );
@@ -132,11 +172,11 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
               </div>
             )}
           </ul>
-          <section className="container-fluid input-group">
+          <section className="d-grid justify-content-center align content center">
             <select
               name="ModulesList"
               id="ModulesList"
-              className="form-select"
+              className="form-select "
               onChange={(e) => {
                 setNewModule(e.target.value);
               }}
@@ -150,23 +190,50 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
                 );
               })}
             </select>
-            <input
-              type="text"
-              className="form-control shadow-none"
-              placeholder="Mass Horraire"
-              onChange={(e) => {
-                setNewMassHorraire(e.target.value);
-              }}
-            />
-            <button
-              className="btn btn-primary"
-              onClick={() => {
-                handleAjoutModule();
-              }}
-            >
-              Ajouter Module
-            </button>
+            <div className="input-group mt-2">
+              <input
+                type="text"
+                className="form-control shadow-none"
+                placeholder="Mass Horraire"
+                onChange={(e) => {
+                  setNewMassHorraire(e.target.value);
+                }}
+              />
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  handleAjoutModule();
+                }}
+              >
+                Ajouter Module
+              </button>
+            </div>
           </section>
+          {updateMassHorraire ? (
+            <section className="input-group mt-4">
+              <input
+                type="number"
+                className="form-control shadow-none"
+                placeholder="Mass Horraire"
+                onChange={(e) => {
+                  !isNaN(e.target.value)
+                    ? setNewMassHorraireField(e.target.value)
+                    : setNewMassHorraireField(0);
+                }}
+                onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
+              />
+              <button
+                className="btn btn-success"
+                onClick={() => {
+                  putModuleFiliere();
+                }}
+              >
+                Save change
+              </button>
+            </section>
+          ) : (
+            <div></div>
+          )}
           <section className="button-group modalBtns mt-3">
             <button
               className="btn btn-secondary"
