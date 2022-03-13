@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { FaPlus } from "react-icons/fa";
 import "./css/GestionFilieres.css";
 import Searchbar from "../components/Searchbar";
 import axios from "axios";
 import FilierePostNewForm from "../components/FilierePostNewForm";
 import FilierePutForm from "../components/FilierePutForm.js";
 import GMF from "../components/GMF";
+import ConfirmDelete from "../components/ConfirmDelete";
+import MessageBox from "../components/MessageBox";
 //AXIOS SETUP
 const api = axios.create({ baseURL: "https://localhost:7161/" });
 ////----------------------------------------------------------------////
@@ -16,16 +19,20 @@ function GestionFilieres() {
   const [modulesFormVisible, setModulesFormVisible] = useState(false);
   const [currentUpdated, setCurrentUpdated] = useState();
   const [filteredFilieres, setFilteredFilieres] = useState([]);
-
+  const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
+  const [messageVisible, setMessageVisible] = useState(false);
+  const [deleteMessage, setDeleteMessage] = useState({
+    type: "OK",
+    Message: "Filiere has been deleted",
+  });
   const hand = (state) => {
     setCurrentUpdated(state);
   };
   //GET FILIERES
   const getFilieres = async () => {
-    await api.get("/api/Filieres").then(({ data }) => {
-      setFileres(data);
-      setFilteredFilieres(data);
-    });
+    const data = await api.get("/api/Filieres");
+    setFileres(data.data);
+    setFilteredFilieres(data.data);
   };
   //GET FILIERES RECHERCHE
   const filterFilieres = async (str) => {
@@ -44,8 +51,23 @@ function GestionFilieres() {
     } else setFilteredFilieres(filieres);
   };
   //DELETE FILIERE CODE
-  const deleteFiliere = (id) => {
-    api.delete("/api/Filieres/" + id).then(() => getFilieres());
+  const deleteFiliere = () => {
+    api
+      .delete("/api/Filieres/" + currentUpdated.filiereId)
+      .then((res) => {
+        if (res.status >= 200 && res.status <= 299) {
+          setDeleteMessage({ type: "OK", message: "Filiere has been deleted" });
+          setMessageVisible(true);
+        }
+      })
+      .then(() => getFilieres())
+      .catch(() => {
+        setDeleteMessage({
+          type: "ERR",
+          message: "Filiere has not been deleted",
+        });
+        setMessageVisible(true);
+      });
   };
   //FIRST TIME LOADING
   useEffect(() => {
@@ -60,9 +82,23 @@ function GestionFilieres() {
 
   return (
     <>
+      {messageVisible ? (
+        <div className="messageContainer m-5">
+          <MessageBox
+            type={deleteMessage.type}
+            message={deleteMessage.message}
+            cancelOp={() => {
+              setMessageVisible(false);
+              console.log("bruh", messageVisible);
+            }}
+          />
+        </div>
+      ) : (
+        <div></div>
+      )}
       <div className="container">
         <div className="searchbr">
-          <div className="input-group mb-3 recherche">
+          <div className="recherche d-flex justify-content-between">
             <Searchbar
               searchItem="Filiere"
               handleChange={(str) => {
@@ -70,14 +106,14 @@ function GestionFilieres() {
               }}
             />
             <button
-              className="btn btn-outline-secondary"
+              className="btn btn-success"
               type="button"
               id="btnAjouter"
               onClick={() => {
                 setNewFormVisible(true);
               }}
             >
-              Ajouter Filiere
+              <FaPlus /> Ajouter Filiere
             </button>
           </div>
         </div>
@@ -149,7 +185,9 @@ function GestionFilieres() {
                 <button
                   className="btn btn-danger "
                   onClick={() => {
-                    deleteFiliere(item.filiereId);
+                    setConfirmDeleteVisible(true);
+                    setCurrentUpdated(item);
+                    //deleteFiliere(item.filiereId);
                   }}
                 >
                   Delete
@@ -167,6 +205,19 @@ function GestionFilieres() {
             </li>
           ))}
         </ul>
+        {confirmDeleteVisible ? (
+          <ConfirmDelete
+            handleDelete={() => {
+              deleteFiliere();
+              setConfirmDeleteVisible(false);
+            }}
+            cancelOp={() => {
+              setConfirmDeleteVisible(false);
+            }}
+          />
+        ) : (
+          <div></div>
+        )}
       </div>
     </>
   );

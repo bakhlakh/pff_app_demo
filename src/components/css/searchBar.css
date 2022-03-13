@@ -1,12 +1,15 @@
 .recherche {
-  width: 500px;
+  width: 400px;
   position: relative;
   display: flex;
+  height: 40px;
 }
-
+.recherche input {
+  max-width: 400px;
+}
 @media screen and (min-width: 480px) {
   .recherche {
-    width: 500px;
+    width: 710px;
   }
 }
 @media screen and (min-width: 1500px) {

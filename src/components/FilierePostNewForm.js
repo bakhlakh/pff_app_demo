@@ -121,7 +121,7 @@ const FilierePostNewForm = ({ handleClick, cancelOp }) => {
                   as="select"
                   name="combodiplomeType"
                   id="diplomeType"
-                  className="form-control"
+                  className="form-control mb-2"
                 >
                   <Field as="option" value="TS" defaultValue="TS">
                     Technicien specialiser

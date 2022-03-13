@@ -1,6 +1,6 @@
 import React from "react";
 
-function MessageBox({ type, message, id }) {
+function MessageBox({ type, message, id, cancelOp }) {
   if (!id) {
     if (type === "OK") id = "OK";
     else id = "ERR";
@@ -10,7 +10,6 @@ function MessageBox({ type, message, id }) {
       <div
         className="alert alert-warning alert-dismissible fade show"
         role="alert"
-        style={{ display: "none" }}
         id={id}
       >
         <strong>Error!</strong> {message}
@@ -19,6 +18,7 @@ function MessageBox({ type, message, id }) {
           className="btn-close"
           data-bs-dismiss="alert"
           aria-label="Close"
+          onClick={cancelOp}
         ></button>
       </div>
     );
@@ -32,9 +32,12 @@ function MessageBox({ type, message, id }) {
           className="btn-close"
           data-bs-dismiss="alert"
           aria-label="Close"
+          onClick={cancelOp}
         ></button>
       </div>
     );
+  } else {
+    return <></>;
   }
 }
 

@@ -28,6 +28,7 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
     });
     setModules(doubleUpdated.filiereModules);
     getModulesWC();
+    //eslint-disable-next-line
   }, [f]);
   const handleAjoutModule = async () => {
     const obj = {
@@ -111,6 +112,7 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
   useEffect(() => {
     setModules(fieldValues.filiereModules);
     getModulesWC();
+    //eslint-disable-next-line
   }, []);
   return (
     <div id="myModal" className="modal">

@@ -125,7 +125,7 @@ function FilierePutForm({ fieldValues, cancelOp, handleClick }) {
                   as="select"
                   name="combodiplomeTypePUT"
                   id="diplomeTypePUT"
-                  className="form-control"
+                  className="form-control mb-2"
                   onChange={(e) => {
                     setCombo(e.target.value);
                   }}
