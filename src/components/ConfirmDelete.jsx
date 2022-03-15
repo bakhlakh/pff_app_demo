@@ -8,6 +8,7 @@ function ConfirmDelete({ handleDelete, cancelOp }) {
           <h5 style={{ color: "white" }}>
             Are you sure you would like to delete this item ?
           </h5>
+          <h6 style={{ color: "red" }}>All related data will be lost</h6>
           <div className="modalBtns">
             <button className="btn btn-secondary" onClick={cancelOp}>
               Cancel

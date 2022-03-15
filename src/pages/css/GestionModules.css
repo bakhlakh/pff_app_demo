@@ -16,3 +16,15 @@
 .react-bootstrap-table-pagination-total {
   color: gainsboro;
 }
+.messageContainer {
+  width: 100%;
+  display: flex; /* Hidden by default */
+  position: absolute; /* Stay in place */
+  top: -30px;
+  z-index: 1; /* Sit on top */
+  overflow: auto; /* Enable scroll if needed */
+  justify-content: center;
+}
+.messageContainer div {
+  width: 400px;
+}

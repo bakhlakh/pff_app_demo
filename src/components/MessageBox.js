@@ -1,6 +1,7 @@
 import React from "react";
 
 function MessageBox({ type, message, id, cancelOp }) {
+  setTimeout(cancelOp, 1200);
   if (!id) {
     if (type === "OK") id = "OK";
     else id = "ERR";

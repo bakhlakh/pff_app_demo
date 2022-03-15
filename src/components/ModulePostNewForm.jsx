@@ -4,7 +4,6 @@ import { FieldComp } from "./FieldComp";
 import { useState } from "react";
 import * as Yup from "yup";
 import MessageBox from "./MessageBox";
-import axios from "axios";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import "./css/moduleForm.css";
 const msgReducer = (_, action) => {
@@ -20,9 +19,7 @@ const msgReducer = (_, action) => {
 function ModulePostNewForm({ handleClick, cancelOp }) {
   const [nbchars, setnbchars] = useState(300);
   const [msgState, msgDispatch] = useReducer(msgReducer, null);
-  const postModule = useStoreActions((actions) => actions.postModule);
-  const postStatusResult = useStoreState((state) => state.postStatusResult);
-
+  const api = useStoreState((store) => store.api);
   const displayMsg = (status) => {
     if (status <= 299 && status >= 200) {
       msgDispatch({ type: "OK" });
@@ -50,16 +47,24 @@ function ModulePostNewForm({ handleClick, cancelOp }) {
       .min(10, "La description doit avoir au moins 10 characters")
       .required(),
   });
-  const handleSubmit = (values) => {
-    postModule({
+  const handleSubmit = async (values) => {
+    const moduleObj = {
       moduleId: values.txt_idModule,
       intitule: values.txt_Intitule,
       description: values.txt_descriptionModule,
       filiereModules: [],
       Seance: [],
-    });
-
-    displayMsg(postStatusResult);
+    };
+    await api
+      .post("/api/Modules", moduleObj)
+      .then((e) => {
+        displayMsg(e.status);
+      })
+      .catch((e) => {
+        console.log("catch.status", e);
+        displayMsg(e.status);
+      });
+    handleClick();
   };
   return (
     <>
