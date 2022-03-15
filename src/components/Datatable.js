@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import "./css/datatable.css";
 const api = axios.create({ baseURL: "https://localhost:7161/" });
 
 function Datatable({ data }) {
@@ -10,7 +11,7 @@ function Datatable({ data }) {
   };
   return (
     <>
-      <div className="container table-responsive-sm">
+      <div className="table tbl">
         <table
           className={data[0] && columns[0] + " table"}
           cellSpacing={0}

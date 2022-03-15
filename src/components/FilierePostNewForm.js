@@ -104,7 +104,7 @@ const FilierePostNewForm = ({ handleClick, cancelOp }) => {
                   />
                 ) : (
                   ""
-                )}{" "}
+                )}
                 <FieldComp
                   type="text"
                   name="txt_idFiliere"
