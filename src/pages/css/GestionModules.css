@@ -28,3 +28,19 @@
 .messageContainer div {
   width: 400px;
 }
+.page-link {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  color: red;
+}
+.disabled a {
+  color: rgb(107, 10, 10) !important;
+}
+li.active a {
+  color: rgb(186, 136, 233) !important;
+  border-color: white !important;
+}
+@media only screen and (min-width: 900px) {
+  .react-bootstrap-table {
+    min-width: 1500px;
+  }
+}

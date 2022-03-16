@@ -68,6 +68,7 @@ const FilierePostNewForm = ({ handleClick, cancelOp }) => {
       typeDiplome: document.getElementById("diplomeType").value,
       filiereModules: [],
       groupes: [],
+      stagiaires: [],
     };
     api
       .post("/api/Filieres/", obj)

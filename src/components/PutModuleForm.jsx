@@ -6,19 +6,20 @@ import * as Yup from "yup";
 import MessageBox from "./MessageBox";
 import { useStoreState } from "easy-peasy";
 import "./css/moduleForm.css";
-const msgReducer = (_, action) => {
-  switch (action.type) {
-    case "OK":
-      return "OK";
-    case "ERR":
-      return "ERR";
-    default:
-  }
-};
-function ModulePostNewForm({ handleClick, cancelOp }) {
+function PutModuleForm({ fieldValues, cancelOp, handleClick }) {
+  const msgReducer = (msgState, action) => {
+    console.log("second");
+    switch (action.type) {
+      case "OK":
+        return "OK";
+      case "ERR":
+        return "ERR";
+      default:
+    }
+  };
   const [nbchars, setnbchars] = useState(300);
   const [msgState, msgDispatch] = useReducer(msgReducer, null);
-  const api = useStoreState((store) => store.api);
+  const api = useStoreState((state) => state.api);
   const displayMsg = (status) => {
     if (status <= 299 && status >= 200) {
       msgDispatch({ type: "OK" });
@@ -56,7 +57,7 @@ function ModulePostNewForm({ handleClick, cancelOp }) {
       teachings: [],
     };
     await api
-      .post("/api/Modules", moduleObj)
+      .put("/api/Modules/" + moduleObj.moduleId, moduleObj)
       .then((e) => {
         displayMsg(e.status);
       })
@@ -70,9 +71,9 @@ function ModulePostNewForm({ handleClick, cancelOp }) {
     <>
       <Formik
         initialValues={{
-          txt_idModule: "",
-          txt_Intitule: "",
-          txt_descriptionModule: "",
+          txt_idModule: fieldValues.moduleId,
+          txt_Intitule: fieldValues.intitule,
+          txt_descriptionModule: fieldValues.description,
         }}
         validationSchema={validate}
         onSubmit={async (values) => {
@@ -84,7 +85,10 @@ function ModulePostNewForm({ handleClick, cancelOp }) {
             <div className="modal-content">
               <div id="modalContainer">
                 {msgState !== null ? (
-                  <MessageBox type={msgState} message="Module has been added" />
+                  <MessageBox
+                    type={msgState}
+                    message="Module has been modified"
+                  />
                 ) : (
                   ""
                 )}
@@ -93,6 +97,7 @@ function ModulePostNewForm({ handleClick, cancelOp }) {
                   name="txt_idModule"
                   id="idModule"
                   placeholder="ID Module"
+                  disabled
                 ></FieldComp>
                 <FieldComp
                   type="text"
@@ -126,7 +131,7 @@ function ModulePostNewForm({ handleClick, cancelOp }) {
                     Cancel
                   </button>
                   <button id="modalAjouterBtn" className="btn" type="submit">
-                    Ajouter
+                    Update
                   </button>
                 </div>
               </div>
@@ -138,4 +143,4 @@ function ModulePostNewForm({ handleClick, cancelOp }) {
   );
 }
 
-export default ModulePostNewForm;
+export default PutModuleForm;

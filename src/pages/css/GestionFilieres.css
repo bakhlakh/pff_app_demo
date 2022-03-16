@@ -41,3 +41,8 @@
 .messageContainer div {
   width: 400px;
 }
+.modulesContainer {
+  max-height: 400px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}

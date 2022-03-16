@@ -1,27 +1,22 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect } from "react";
 import "./css/POSTForm.css";
 import axios from "axios";
 import MessageBox from "./MessageBox";
 const api = axios.create({ baseURL: "https://localhost:7161/" });
-const msgReducer = (_, action) => {
-  switch (action.type) {
-    case "OK":
-      return "OK";
-    case "ERR":
-      return "ERR";
-    default:
-  }
-};
 
 function GMF({ fieldValues, cancelOp, handleClick, f }) {
   const [modules, setModules] = useState(fieldValues.filiereModules);
-  const [msgState, msgDispatch] = useReducer(msgReducer, null);
   const [notInModules, setNotInModules] = useState([]);
   const [newModule, setNewModule] = useState("");
   const [newMassHorraire, setNewMassHorraire] = useState(0);
   const [updateMassHorraire, setUpdateMassHorraire] = useState(false);
   const [currentUpdated, setCurrentUpdated] = useState([]);
   const [newMassHorraireField, setNewMassHorraireField] = useState(0);
+  const [messageVisible, setMessageVisible] = useState(false);
+  const [messageInfo, setMessageInfo] = useState({
+    type: "OK",
+    Message: "Filiere has been updated",
+  });
   useEffect(() => {
     const doubleUpdated = f.find((e) => {
       return e.filiereId === fieldValues.filiereId;
@@ -30,7 +25,9 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
     getModulesWC();
     //eslint-disable-next-line
   }, [f]);
+
   const handleAjoutModule = async () => {
+    console.log("first");
     const obj = {
       _ModuleId: newModule,
       _FiliereId: fieldValues.filiereId,
@@ -41,22 +38,27 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
       .then((e) => {
         displayMsg(e.status);
         handleClick();
-        setModules(handleClick().filiereModules);
       })
       .then(() => {
         getModulesWC();
       })
       .catch((e) => {
+        console.log("e", e);
         displayMsg(400);
       });
   };
   const displayMsg = (status) => {
-    if (status <= 299 && status >= 200) {
-      msgDispatch({ type: "OK" });
-    }
-    if (status > 299 || status < 200) {
-      msgDispatch({ type: "ERR" });
-    }
+    if (status <= 299 && status >= 200)
+      setMessageInfo({
+        type: "OK",
+        Message: "Filiere has been updated",
+      });
+    else
+      setMessageInfo({
+        type: "ERR",
+        Message: "Filiere has not been updated",
+      });
+    setMessageVisible(true);
   };
   const putModuleFiliere = () => {
     if (Number(newMassHorraireField) >= 0) {
@@ -109,71 +111,70 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
       });
   };
 
-  useEffect(() => {
-    setModules(fieldValues.filiereModules);
-    getModulesWC();
-    //eslint-disable-next-line
-  }, []);
   return (
     <div id="myModal" className="modal">
       <div className="modal-content">
-        <div className="modulesContainer">
-          {msgState !== null ? (
-            <MessageBox type={msgState} message="Filiere has been updated" />
-          ) : (
-            ""
-          )}{" "}
-          <div className="FiliereInfos"></div>
-          <ul className="list-group">
-            {modules.length === 0 ? (
-              <h2 style={{ color: "white" }}>
-                There is no modules in this filiere
-              </h2>
-            ) : (
-              <div>
-                {" "}
-                {modules.map((item) => {
-                  return (
-                    <li
-                      key={item.moduleId}
-                      className="list-group-item list-group-item-action d-flex FiliereInfos"
-                    >
-                      <div className="elementDetails">
-                        <div className="d-flex w-100 ">
-                          <h5 className="mb-1">
-                            {item.moduleId + "  -  " + item.module.intitule}
-                          </h5>
+        <div className="ModulesFormContainer">
+          {messageVisible && (
+            <MessageBox
+              type={messageInfo.type}
+              message={messageInfo.Message}
+              cancelOp={() => {
+                setMessageVisible(false);
+              }}
+            />
+          )}
+          <div className="modulesContainer">
+            <ul className="list-group">
+              {modules.length === 0 ? (
+                <h2 style={{ color: "white" }}>
+                  There is no modules in this filiere
+                </h2>
+              ) : (
+                <div>
+                  {modules.map((item) => {
+                    return (
+                      <li
+                        key={item.moduleId}
+                        className="list-group-item list-group-item-action d-flex FiliereInfos"
+                      >
+                        <div className="elementDetails">
+                          <div className="d-flex w-100 ">
+                            <h5 className="mb-1">
+                              {item.moduleId + "  -  " + item.module.intitule}
+                            </h5>
+                          </div>
+                          <p className="m-2">{item.module.description}</p>
+                          <small>
+                            Mass Horraire : {item.massHorraire} Heures
+                          </small>
                         </div>
-                        <p className="m-2">{item.module.description}</p>
-                        <small>
-                          Mass Horraire : {item.massHorraire} Heures
-                        </small>
-                      </div>
-                      <div className=" d-flex btnControls">
-                        <button
-                          className="btn btn-danger"
-                          onClick={() => {
-                            deleteModuleFiliere(item);
-                          }}
-                        >
-                          Delete
-                        </button>
-                        <button
-                          className="btn btn-warning"
-                          onClick={() => {
-                            setCurrentUpdated(item);
-                            setUpdateMassHorraire(true);
-                          }}
-                        >
-                          MAH
-                        </button>
-                      </div>
-                    </li>
-                  );
-                })}
-              </div>
-            )}
-          </ul>
+                        <div className=" d-flex btnControls">
+                          <button
+                            className="btn btn-danger"
+                            onClick={() => {
+                              deleteModuleFiliere(item);
+                            }}
+                          >
+                            Delete
+                          </button>
+                          <button
+                            className="btn btn-warning"
+                            onClick={() => {
+                              setCurrentUpdated(item);
+                              setUpdateMassHorraire(true);
+                            }}
+                          >
+                            MAH
+                          </button>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </div>
+              )}
+            </ul>
+          </div>
           <section className="d-grid justify-content-center align content center">
             <select
               name="ModulesList"
@@ -230,7 +231,7 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
                   putModuleFiliere();
                 }}
               >
-                Save change
+                Save changes
               </button>
             </section>
           ) : (

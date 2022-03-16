@@ -67,6 +67,7 @@ function FilierePutForm({ fieldValues, cancelOp, handleClick }) {
       typeDiplome: combo,
       filiereModules: [],
       groupes: [],
+      stagiaires: [],
     };
     api
       .put(`/api/Filieres/${values.txt_idFilierePUT}`, obj)

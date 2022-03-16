@@ -19,7 +19,9 @@ function MessageBox({ type, message, id, cancelOp }) {
           className="btn-close"
           data-bs-dismiss="alert"
           aria-label="Close"
-          onClick={cancelOp}
+          onClick={() => {
+            cancelOp();
+          }}
         ></button>
       </div>
     );
@@ -33,7 +35,9 @@ function MessageBox({ type, message, id, cancelOp }) {
           className="btn-close"
           data-bs-dismiss="alert"
           aria-label="Close"
-          onClick={cancelOp}
+          onClick={() => {
+            cancelOp();
+          }}
         ></button>
       </div>
     );

@@ -89,7 +89,6 @@ function GestionFilieres() {
             message={deleteMessage.message}
             cancelOp={() => {
               setMessageVisible(false);
-              console.log("bruh", messageVisible);
             }}
           />
         </div>
