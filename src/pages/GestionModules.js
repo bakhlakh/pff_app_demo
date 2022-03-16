@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import MessageBox from "../components/MessageBox";
-import Searchbar from "../components/Searchbar";
 import "./css/GestionModules.css";
 import { useStoreState, useStoreActions } from "easy-peasy";
 import BootstrapTable from "react-bootstrap-table-next";
@@ -9,6 +7,7 @@ import paginationFactory from "react-bootstrap-table2-paginator";
 import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
 import ModulePostNewForm from "../components/ModulePostNewForm";
 import ConfirmDelete from "../components/ConfirmDelete";
+import PutModuleForm from "../components/PutModuleForm";
 function GestionModules() {
   const modules = useStoreState((state) => state.modules);
   const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
@@ -19,20 +18,22 @@ function GestionModules() {
   });
   const [currentUpdated, setCurrentUpdated] = useState({});
   const [ajouteModuleFormVisible, setAjouteModuleFormVisible] = useState(false);
+  const [updateFormVisible, setUpdateFormVisible] = useState(false);
   const api = useStoreState((store) => store.api);
   const handleDelete = (row) => {
     setConfirmDeleteVisible(true);
     setCurrentUpdated(row);
   };
   const handleUpdate = (row) => {
-    console.log("row", row);
+    setCurrentUpdated(row);
+    setUpdateFormVisible(true);
   };
   const deleteModule = () => {
     api
       .delete("api/Modules/FD/" + currentUpdated.moduleId)
       .then((res) => {
         if (res.status >= 200 && res.status <= 299) {
-          setDeleteMessage({ type: "OK", message: "Filiere has been deleted" });
+          setDeleteMessage({ type: "OK", message: "Module has been deleted" });
           setMessageVisible(true);
         }
       })
@@ -40,7 +41,7 @@ function GestionModules() {
       .catch(() => {
         setDeleteMessage({
           type: "ERR",
-          message: "Filiere has not been deleted",
+          message: "Module has not been deleted",
         });
         setMessageVisible(true);
       });
@@ -58,7 +59,12 @@ function GestionModules() {
       sort: true,
       filter: textFilter(),
     },
-    { dataField: "description", text: "Description", filter: textFilter() },
+    {
+      dataField: "description",
+      text: "Description",
+      filter: textFilter(),
+      style: { maxWidth: "400px", overflow: "auto" },
+    },
     // columns follow dataField and text structure
     {
       dataField: "update",
@@ -110,6 +116,17 @@ function GestionModules() {
       <div className="GestionModules d-grid">
         <div className="gestionModulesContent">
           <div className="content">
+            {updateFormVisible && (
+              <PutModuleForm
+                cancelOp={() => {
+                  setUpdateFormVisible(false);
+                }}
+                handleClick={() => {
+                  getModules();
+                }}
+                fieldValues={currentUpdated}
+              />
+            )}
             {ajouteModuleFormVisible && (
               <ModulePostNewForm
                 cancelOp={() => {
@@ -120,18 +137,16 @@ function GestionModules() {
                 }}
               />
             )}
-            <div className="recherche d-flex justify-content-between">
-              <button
-                className="btn btn-success"
-                type="button"
-                id="btnAjouter"
-                onClick={() => {
-                  setAjouteModuleFormVisible(true);
-                }}
-              >
-                Ajouter Module
-              </button>
-            </div>
+            <button
+              className="btn btn-success m-4"
+              type="button"
+              id="btnAjouter"
+              onClick={() => {
+                setAjouteModuleFormVisible(true);
+              }}
+            >
+              Ajouter Module
+            </button>
             <BootstrapTable
               columns={columns}
               keyField="moduleId"
@@ -142,10 +157,12 @@ function GestionModules() {
               pagination={pagination}
               filter={filterFactory()}
               filterPosition="bottom"
+              classes="BTtable m-2"
+              wrapperClasses="BTwrapper"
             />
           </div>
         </div>
-        {confirmDeleteVisible ? (
+        {confirmDeleteVisible && (
           <ConfirmDelete
             handleDelete={() => {
               deleteModule();
@@ -155,8 +172,6 @@ function GestionModules() {
               setConfirmDeleteVisible(false);
             }}
           />
-        ) : (
-          <div></div>
         )}
       </div>
     </>
