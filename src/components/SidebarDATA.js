@@ -23,7 +23,7 @@ export const SidebarDATA = [
   },
   {
     title: "Gestion des Groupes",
-    path: "/GestionGroupes",
+    path: "/Groupes",
     icon: <FaIcons.FaObjectGroup />,
     cName: "nav-text",
   },
