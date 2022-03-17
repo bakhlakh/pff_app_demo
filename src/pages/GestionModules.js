@@ -20,6 +20,7 @@ function GestionModules() {
   const [ajouteModuleFormVisible, setAjouteModuleFormVisible] = useState(false);
   const [updateFormVisible, setUpdateFormVisible] = useState(false);
   const api = useStoreState((store) => store.api);
+  const getModules = useStoreActions((actions) => actions.getModules);
   const handleDelete = (row) => {
     setConfirmDeleteVisible(true);
     setCurrentUpdated(row);
@@ -47,7 +48,6 @@ function GestionModules() {
       });
     setConfirmDeleteVisible(false);
   };
-  const getModules = useStoreActions((actions) => actions.getModules);
   useEffect(() => {
     getModules();
   }, [getModules]);
