@@ -13,8 +13,8 @@ function PostGroupForm({ handleClick, cancelOp }) {
   var newId;
   const anneScolaire =
     new Date().getMonth() < 8
-      ? `${new Date().getFullYear() - 1}/${new Date().getFullYear()}`
-      : `${new Date().getFullYear()}/${new Date().getFullYear() + 1}`;
+      ? `${new Date().getFullYear() - 1}-${new Date().getFullYear()}`
+      : `${new Date().getFullYear()}-${new Date().getFullYear() + 1}`;
   function idExists(id) {
     let exists = false;
     groupes.forEach((element) => {
@@ -57,61 +57,59 @@ function PostGroupForm({ handleClick, cancelOp }) {
       <div id="myModal" className="modal" style={{ display: "block" }}>
         <div className="modal-content">
           <div id="modalContainer">
-            <form>
-              <select
-                className="form-select mb-2"
-                style={{ width: "500px" }}
-                onChange={(e) => {
-                  setFiliereId(e.target.value);
+            <select
+              className="form-select mb-2"
+              style={{ width: "500px" }}
+              onChange={(e) => {
+                setFiliereId(e.target.value);
+              }}
+            >
+              {filieres.map((item) => (
+                <option key={item.filiereId} value={item.filiereId}>
+                  {item.nomFiliere}
+                </option>
+              ))}
+            </select>
+            <input
+              type="text"
+              className="form-control"
+              disabled
+              value={groupId}
+            />
+            <input
+              type="text"
+              className="form-control mt-2"
+              disabled
+              value={anneScolaire}
+            />
+            <input
+              type="number"
+              className="form-control mt-2"
+              min={1}
+              max={3}
+              defaultValue={1}
+              onChange={(e) => {
+                setNiveau(e.target.value);
+              }}
+            />
+            <div className="modalBtns mt-2">
+              <button
+                id="modalCancelBtn"
+                className="btn btn-secondary"
+                onClick={cancelOp}
+              >
+                Cancel
+              </button>
+              <button
+                id="modalAjouterBtn"
+                className="btn"
+                onClick={() => {
+                  handleSubmit();
                 }}
               >
-                {filieres.map((item) => (
-                  <option key={item.filiereId} value={item.filiereId}>
-                    {item.nomFiliere}
-                  </option>
-                ))}
-              </select>
-              <input
-                type="text"
-                className="form-control"
-                disabled
-                value={groupId}
-              />
-              <input
-                type="text"
-                className="form-control mt-2"
-                disabled
-                value={anneScolaire}
-              />
-              <input
-                type="number"
-                className="form-control mt-2"
-                min={1}
-                max={3}
-                defaultValue={1}
-                onChange={(e) => {
-                  setNiveau(e.target.value);
-                }}
-              />
-              <div className="modalBtns mt-2">
-                <button
-                  id="modalCancelBtn"
-                  className="btn btn-secondary"
-                  onClick={cancelOp}
-                >
-                  Cancel
-                </button>
-                <button
-                  id="modalAjouterBtn"
-                  className="btn"
-                  onClick={() => {
-                    handleSubmit();
-                  }}
-                >
-                  Ajouter
-                </button>
-              </div>
-            </form>
+                Ajouter
+              </button>
+            </div>
           </div>
         </div>
       </div>

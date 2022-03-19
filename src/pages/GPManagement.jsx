@@ -5,14 +5,48 @@ import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
 import PostGroupForm from "../components/PostGroupForm";
+import ConfirmDelete from "../components/ConfirmDelete";
+import MessageBox from "../components/MessageBox";
 function GPManagement() {
   const groupes = useStoreState((state) => state.groupes);
+  const api = useStoreState((state) => state.api);
   const getGroupes = useStoreActions((actions) => actions.getGroupes);
   const [postNewFormVisible, setPostNewFormVisible] = useState(false);
+  const [currentUpdated, setCurrentUpdated] = useState();
+  const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
+  const [messageVisible, setMessageVisible] = useState(false);
+  const [deleteMessage, setDeleteMessage] = useState({
+    type: "OK",
+    Message: "Filiere has been deleted",
+  });
   useEffect(() => {
     getGroupes();
-  }, []);
-  const handleDelete = (row) => {};
+    console.log("first");
+  }, [getGroupes]);
+  const handleDelete = (row) => {
+    setConfirmDeleteVisible(true);
+    setCurrentUpdated(row);
+  };
+  const deleteGroupe = () => {
+    api
+      .delete(
+        `/api/Groupes/${currentUpdated.anneScolaire}/${currentUpdated.groupId}`
+      )
+      .then((res) => {
+        if (res.status >= 200 && res.status <= 299) {
+          setDeleteMessage({ type: "OK", message: "Groupe has been deleted" });
+          setMessageVisible(true);
+        }
+      })
+      .then(() => getGroupes())
+      .catch(() => {
+        setDeleteMessage({
+          type: "ERR",
+          message: "Groupe has not been deleted",
+        });
+        setMessageVisible(true);
+      });
+  };
   groupes.forEach((element) => {
     element.groupKey = element.groupId + element.anneScolaire + element.niveau;
   });
@@ -67,6 +101,18 @@ function GPManagement() {
   });
   return (
     <>
+      {messageVisible && (
+        <div className="messageContainer m-5">
+          <MessageBox
+            type={deleteMessage.type}
+            message={deleteMessage.message}
+            cancelOp={() => {
+              setMessageVisible(false);
+              console.log("bruh", messageVisible);
+            }}
+          />
+        </div>
+      )}
       <div className="GestionModules d-grid">
         <div className="gestionModulesContent">
           <div className="content">
@@ -75,8 +121,12 @@ function GPManagement() {
                 cancelOp={() => {
                   setPostNewFormVisible(false);
                 }}
-                handleClick={(status) => {
-                  console.log("e", status);
+                handleClick={() => {
+                  setDeleteMessage({
+                    type: "OK",
+                    message: "Groupe has been deleted",
+                  });
+                  setMessageVisible(true);
                   getGroupes();
                 }}
               />
@@ -106,6 +156,18 @@ function GPManagement() {
             />
           </div>
         </div>
+        {confirmDeleteVisible && (
+          <ConfirmDelete
+            handleDelete={() => {
+              deleteGroupe();
+              setConfirmDeleteVisible(false);
+              getGroupes();
+            }}
+            cancelOp={() => {
+              setConfirmDeleteVisible(false);
+            }}
+          />
+        )}
       </div>
     </>
   );
