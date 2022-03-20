@@ -4,7 +4,7 @@ import "./css/GPManagement.css";
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
-import PostGroupForm from "../components/PostGroupForm";
+import PostGroupForm from "../forms/PostGroupForm";
 import ConfirmDelete from "../components/ConfirmDelete";
 import MessageBox from "../components/MessageBox";
 function GPManagement() {
@@ -17,11 +17,10 @@ function GPManagement() {
   const [messageVisible, setMessageVisible] = useState(false);
   const [deleteMessage, setDeleteMessage] = useState({
     type: "OK",
-    Message: "Filiere has been deleted",
+    Message: "Groupe has been deleted",
   });
   useEffect(() => {
     getGroupes();
-    console.log("first");
   }, [getGroupes]);
   const handleDelete = (row) => {
     setConfirmDeleteVisible(true);
@@ -124,7 +123,7 @@ function GPManagement() {
                 handleClick={() => {
                   setDeleteMessage({
                     type: "OK",
-                    message: "Groupe has been deleted",
+                    message: "Groupe has been Added",
                   });
                   setMessageVisible(true);
                   getGroupes();

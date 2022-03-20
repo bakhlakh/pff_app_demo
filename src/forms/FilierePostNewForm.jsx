@@ -1,12 +1,18 @@
 import React, { useReducer } from "react";
 import { Formik, Form, Field } from "formik";
-import { FieldComp } from "./FieldComp";
+import { FieldComp } from "../components/FieldComp";
 import { useState } from "react";
 import * as Yup from "yup";
-import TextareaFormik from "./TextareaFormik";
+import TextareaFormik from "../components/TextareaFormik";
 import "./css/POSTForm.css";
-import MessageBox from "./MessageBox";
+import MessageBox from "../components/MessageBox";
 import axios from "axios";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import TextField from "@mui/material/TextField";
+
 const FilierePostNewForm = ({ handleClick, cancelOp }) => {
   const msgReducer = (_, action) => {
     console.log("action.type", action.type);
@@ -23,6 +29,7 @@ const FilierePostNewForm = ({ handleClick, cancelOp }) => {
   const [nbchars, setnbchars] = useState(300);
   const [desc, setDesc] = useState("");
   const [msgState, msgDispatch] = useReducer(msgReducer, null);
+  const [comboNiveauValue, setComboNiveauValue] = useState("TS");
   if (msgState === "OK") {
     handleClick();
   }
@@ -42,6 +49,10 @@ const FilierePostNewForm = ({ handleClick, cancelOp }) => {
   //Validator
   const validate = Yup.object({
     txt_idFiliere: Yup.string()
+      .min(
+        3,
+        "Identifiant du filiere doit etre compromis entre 3 et 6 characters"
+      )
       .max(
         6,
         "Identifiant du filiere doit etre compromis entre 3 et 6 characters"
@@ -65,7 +76,7 @@ const FilierePostNewForm = ({ handleClick, cancelOp }) => {
       filiereId: values.txt_idFiliere,
       nomFiliere: values.txt_nomFiliere,
       description: desc,
-      typeDiplome: document.getElementById("diplomeType").value,
+      typeDiplome: comboNiveauValue,
       filiereModules: [],
       groupes: [],
       stagiaires: [],
@@ -91,6 +102,7 @@ const FilierePostNewForm = ({ handleClick, cancelOp }) => {
         defaultValue={{ DescriptionFiliere: desc }}
         validationSchema={validate}
         onSubmit={(values) => {
+          console.log("values", values);
           PostFiliere(values);
         }}
       >
@@ -110,38 +122,41 @@ const FilierePostNewForm = ({ handleClick, cancelOp }) => {
                   type="text"
                   name="txt_idFiliere"
                   id="filiereId"
-                  placeholder="ID filiere"
+                  label="ID filiere"
                 ></FieldComp>
                 <FieldComp
                   type="text"
                   name="txt_nomFiliere"
                   id="nomFiliere"
-                  placeholder="Nom filiere"
+                  label="Nom filiere"
                 ></FieldComp>
-                <Field
-                  as="select"
-                  name="combodiplomeType"
-                  id="diplomeType"
-                  className="form-control mb-2"
-                >
-                  <Field as="option" value="TS" defaultValue="TS">
-                    Technicien specialiser
-                  </Field>
-                  <Field as="option" value="T" defaultValue="T">
-                    Technicien
-                  </Field>
-                  <Field as="option" value="FQ" defaultValue="FQ">
-                    Diplome Qualifiant
-                  </Field>
-                </Field>
-                <TextareaFormik
+                <FormControl fullWidth sx={{ mb: 1 }}>
+                  <InputLabel id="combodiplomeTypelabel">
+                    Niveau Diplome
+                  </InputLabel>
+                  <Select
+                    labelId="combodiplomeTypelabel"
+                    id="combodiplomeType"
+                    name="combodiplomeType"
+                    value={comboNiveauValue}
+                    label=" Niveau Diplome"
+                    onChange={(e) => {
+                      setComboNiveauValue(e.target.value);
+                    }}
+                  >
+                    <MenuItem value="TS">Technicien specialiser</MenuItem>
+                    <MenuItem value="T">Technicien</MenuItem>
+                    <MenuItem value="FQ">Diplome Qualifiante</MenuItem>
+                  </Select>
+                </FormControl>
+                <TextField
                   name="DescriptionFiliere"
                   id="DescriptionFiliere"
-                  cols="30"
-                  rows="4"
-                  placeholder="Filiere Description"
+                  label="Description"
+                  multiline
+                  maxRows={4}
                   className="form-control"
-                  maxLength={300}
+                  inputProps={{ maxLength: 300 }}
                   onChange={(e) => {
                     descHandler(e);
                     setnbchars(300 - e.target.value.length);

@@ -1,8 +1,13 @@
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
-import MessageBox from "./MessageBox";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import "./css/moduleForm.css";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import { TextField } from "@mui/material";
 function PostGroupForm({ handleClick, cancelOp }) {
   const api = useStoreState((store) => store.api);
   const getFilieres = useStoreActions((actions) => actions.getFilieres);
@@ -18,7 +23,7 @@ function PostGroupForm({ handleClick, cancelOp }) {
   function idExists(id) {
     let exists = false;
     groupes.forEach((element) => {
-      if (element.groupId == id) {
+      if (element.groupId === id) {
         exists = true;
       }
     });
@@ -50,6 +55,7 @@ function PostGroupForm({ handleClick, cancelOp }) {
   });
   useEffect(() => {
     getFilieres();
+    //eslint-disable-next-line
   }, []);
   const filieres = useStoreState((store) => store.filieres);
   return (
@@ -57,31 +63,42 @@ function PostGroupForm({ handleClick, cancelOp }) {
       <div id="myModal" className="modal" style={{ display: "block" }}>
         <div className="modal-content">
           <div id="modalContainer">
-            <select
-              className="form-select mb-2"
-              style={{ width: "500px" }}
-              onChange={(e) => {
-                setFiliereId(e.target.value);
-              }}
-            >
-              {filieres.map((item) => (
-                <option key={item.filiereId} value={item.filiereId}>
-                  {item.nomFiliere}
-                </option>
-              ))}
-            </select>
-            <input
-              type="text"
-              className="form-control"
-              disabled
-              value={groupId}
-            />
-            <input
-              type="text"
-              className="form-control mt-2"
-              disabled
-              value={anneScolaire}
-            />
+            <FormControl fullWidth sx={{ mb: 2 }}>
+              <InputLabel id="Filiere">Filiere</InputLabel>
+              <Select
+                labelId="Filiere"
+                value={filiereId}
+                label=" Niveau Diplome"
+                onChange={(e) => {
+                  setFiliereId(e.target.value);
+                }}
+              >
+                {filieres.map((item) => (
+                  <MenuItem key={item.filiereId} value={item.filiereId}>
+                    {item.nomFiliere}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl sx={{ mb: 2, width: "100%" }} variant="outlined">
+              <InputLabel htmlFor="GroupId">Group ID</InputLabel>
+              <OutlinedInput
+                type="text"
+                name="GroupId"
+                disabled
+                value={groupId}
+              />
+            </FormControl>
+            <FormControl sx={{ mb: 1, width: "100%" }} variant="outlined">
+              <InputLabel htmlFor="AnneScolaire">Anne Scolaire</InputLabel>
+              <OutlinedInput
+                type="text"
+                name="AnneScolaire"
+                disabled
+                value={anneScolaire}
+              />
+            </FormControl>
+            <InputLabel>Niveau</InputLabel>
             <input
               type="number"
               className="form-control mt-2"

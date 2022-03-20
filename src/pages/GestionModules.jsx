@@ -5,9 +5,9 @@ import { useStoreState, useStoreActions } from "easy-peasy";
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
-import ModulePostNewForm from "../components/ModulePostNewForm";
+import ModulePostNewForm from "../forms/ModulePostNewForm";
 import ConfirmDelete from "../components/ConfirmDelete";
-import PutModuleForm from "../components/PutModuleForm";
+import PutModuleForm from "../forms/PutModuleForm";
 function GestionModules() {
   const modules = useStoreState((state) => state.modules);
   const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);

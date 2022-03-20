@@ -1,11 +1,12 @@
 import React, { useReducer } from "react";
 import { Formik, Form, Field } from "formik";
-import { FieldComp } from "./FieldComp";
+import { FieldComp } from "../components/FieldComp";
 import { useState } from "react";
 import * as Yup from "yup";
-import MessageBox from "./MessageBox";
+import "./css/POSTForm.css";
+import MessageBox from "../components/MessageBox";
 import { useStoreState } from "easy-peasy";
-import "./css/moduleForm.css";
+
 function PutModuleForm({ fieldValues, cancelOp, handleClick }) {
   const msgReducer = (msgState, action) => {
     console.log("second");
@@ -96,15 +97,15 @@ function PutModuleForm({ fieldValues, cancelOp, handleClick }) {
                   type="text"
                   name="txt_idModule"
                   id="idModule"
-                  placeholder="ID Module"
+                  label="ID Module"
                   disabled
-                ></FieldComp>
+                />
                 <FieldComp
                   type="text"
                   name="txt_Intitule"
                   id="intitule"
-                  placeholder="Intitule Module"
-                ></FieldComp>
+                  label="Intitule Module"
+                />
                 <Field
                   name="txt_descriptionModule"
                   id="txt_descriptionModule"

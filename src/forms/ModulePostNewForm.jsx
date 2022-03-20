@@ -1,11 +1,14 @@
 import React, { useReducer } from "react";
 import { Formik, Form, Field } from "formik";
-import { FieldComp } from "./FieldComp";
+import { FieldComp } from "../components/FieldComp";
 import { useState } from "react";
 import * as Yup from "yup";
-import MessageBox from "./MessageBox";
+import "./css/POSTForm.css";
+import MessageBox from "../components/MessageBox";
+import TextField from "@mui/material/TextField";
 import { useStoreState } from "easy-peasy";
 import "./css/moduleForm.css";
+
 const msgReducer = (_, action) => {
   switch (action.type) {
     case "OK":
@@ -18,7 +21,11 @@ const msgReducer = (_, action) => {
 function ModulePostNewForm({ handleClick, cancelOp }) {
   const [nbchars, setnbchars] = useState(300);
   const [msgState, msgDispatch] = useReducer(msgReducer, null);
+  const [desc, setDesc] = useState("");
   const api = useStoreState((store) => store.api);
+  const descHandler = (e) => {
+    setDesc(e.target.value);
+  };
   const displayMsg = (status) => {
     if (status <= 299 && status >= 200) {
       msgDispatch({ type: "OK" });
@@ -42,15 +49,13 @@ function ModulePostNewForm({ handleClick, cancelOp }) {
       .max(50, "L'intitule doit etre compromis entre 10 et 50 characters")
       .min(10, "L'intitule doit etre compromis entre 10 et 50 characters")
       .required("Obligatoire"),
-    txt_descriptionModule: Yup.string()
-      .min(10, "La description doit avoir au moins 10 characters")
-      .required(),
+    txt_descriptionModule: Yup.string(),
   });
   const handleSubmit = async (values) => {
     const moduleObj = {
       moduleId: values.txt_idModule,
       intitule: values.txt_Intitule,
-      description: values.txt_descriptionModule,
+      description: desc,
       filiereModules: [],
       Seance: [],
       teachings: [],
@@ -92,24 +97,24 @@ function ModulePostNewForm({ handleClick, cancelOp }) {
                   type="text"
                   name="txt_idModule"
                   id="idModule"
-                  placeholder="ID Module"
-                ></FieldComp>
+                  label="ID Module"
+                />
                 <FieldComp
                   type="text"
                   name="txt_Intitule"
                   id="intitule"
-                  placeholder="Intitule Module"
-                ></FieldComp>
-                <Field
+                  label="Intitule Module"
+                />
+                <TextField
                   name="txt_descriptionModule"
                   id="txt_descriptionModule"
-                  component="textarea"
-                  cols="30"
-                  rows="4"
-                  placeholder="Description module"
+                  label="Description"
+                  multiline
+                  maxRows={4}
                   className="form-control"
-                  maxLength={300}
-                  onInput={(e) => {
+                  inputProps={{ maxLength: 300 }}
+                  onChange={(e) => {
+                    descHandler(e);
                     setnbchars(300 - e.target.value.length);
                   }}
                 />

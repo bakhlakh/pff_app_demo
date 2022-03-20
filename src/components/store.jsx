@@ -10,7 +10,6 @@ const store = createStore({
   groupes: [],
   //Thunks
   getModules: thunk(async (actions) => {
-    console.log("first");
     const res = await api.get("/api/Modules").then(({ data }) => data);
     actions.setModules(res);
   }),
@@ -22,6 +21,10 @@ const store = createStore({
     const res = await api.get("/api/Groupes").then(({ data }) => data);
     actions.setGroupes(res);
   }),
+  getStagiaires: thunk(async (actions) => {
+    const res = await api.get("/api/Stagiaires").then(({ data }) => data);
+    actions.setStagiaires(res);
+  }),
   //actions
   setModules: action((state, res) => {
     state.modules = res;
@@ -31,6 +34,9 @@ const store = createStore({
   }),
   setGroupes: action((state, res) => {
     state.groupes = res;
+  }),
+  setStagiaires: action((state, res) => {
+    state.stagiaires = res;
   }),
 });
 export default store;
