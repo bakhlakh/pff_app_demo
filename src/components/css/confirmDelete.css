@@ -1,0 +1,10 @@
+.deleteBoxContent {
+  max-width: 600px;
+  min-width: 600px;
+  background-color: #0e1646;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  border-radius: 10px;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
