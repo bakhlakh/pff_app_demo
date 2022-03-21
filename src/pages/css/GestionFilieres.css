@@ -30,6 +30,9 @@
   background-color: #263ab9;
   color: #fafafa;
 }
+.FiliereInfos p {
+  color: gainsboro;
+}
 .ModuleInfos {
   background-color: bisque;
 }

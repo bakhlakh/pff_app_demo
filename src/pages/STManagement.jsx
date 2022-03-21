@@ -21,7 +21,6 @@ function STManagement() {
   });
   useEffect(() => {
     getStagiaires();
-    console.log("stagiaires", stagiaires);
   }, [getStagiaires]);
   const handleDelete = (row) => {
     setConfirmDeleteVisible(true);
@@ -65,13 +64,13 @@ function STManagement() {
       formatter: (cellContent, row) => {
         return (
           <div className="d-flex">
+            <button className="btn btn-warning m-1">Update</button>
             <button
               className="btn btn-danger m-1"
               onClick={() => handleDelete(row)}
             >
               Delete
             </button>
-            <button className="btn btn-primary m-1">stagiaires</button>
           </div>
         );
       },
@@ -128,7 +127,7 @@ function STManagement() {
             <BootstrapTable
               columns={columns}
               data={stagiaires}
-              keyField="groupKey"
+              keyField="stagiaireId"
               bordered={false}
               rowStyle={{ color: "gainsboro" }}
               headerClasses="text-white bg-dark"
