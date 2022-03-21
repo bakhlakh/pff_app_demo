@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from "react";
 import "./css/POSTForm.css";
 import axios from "axios";
-import MessageBox from "./MessageBox";
+import MessageBox from "../components/MessageBox";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import TextField from "@mui/material/TextField";
 const api = axios.create({ baseURL: "https://localhost:7161/" });
 
 function GMF({ fieldValues, cancelOp, handleClick, f }) {
   const [modules, setModules] = useState(fieldValues.filiereModules);
-  const [notInModules, setNotInModules] = useState([]);
-  const [newModule, setNewModule] = useState("");
+  const [notInModules, setNotInModules] = useState([{ moduleId: "M202" }]);
+  const [newModule, setNewModule] = useState(
+    notInModules[0].moduleId || "M202"
+  );
   const [newMassHorraire, setNewMassHorraire] = useState(0);
   const [updateMassHorraire, setUpdateMassHorraire] = useState(false);
   const [currentUpdated, setCurrentUpdated] = useState([]);
@@ -17,6 +24,7 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
     type: "OK",
     Message: "Filiere has been updated",
   });
+  console.log("notInModules", notInModules);
   useEffect(() => {
     const doubleUpdated = f.find((e) => {
       return e.filiereId === fieldValues.filiereId;
@@ -25,7 +33,6 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
     getModulesWC();
     //eslint-disable-next-line
   }, [f]);
-
   const handleAjoutModule = async () => {
     console.log("first");
     const obj = {
@@ -136,7 +143,7 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
                     return (
                       <li
                         key={item.moduleId}
-                        className="list-group-item list-group-item-action d-flex FiliereInfos"
+                        className="list-group-item list-group-item-action d-flex ModuleInfos"
                       >
                         <div className="elementDetails">
                           <div className="d-flex w-100 ">
@@ -176,36 +183,54 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
             </ul>
           </div>
           <section className="d-grid justify-content-center align content center">
-            <select
-              name="ModulesList"
-              id="ModulesList"
-              className="form-select "
-              onChange={(e) => {
-                setNewModule(e.target.value);
-              }}
-            >
-              <option value="none">-- PLEASE SELECT AN OPTION --</option>
-              {notInModules.map((item, index) => {
-                return (
-                  <option key={index} value={item.moduleId}>
-                    {item.moduleId} - {item.intitule}
-                  </option>
-                );
-              })}
-            </select>
-            <div className="input-group mt-2">
-              <input
-                type="text"
-                className="form-control shadow-none"
-                placeholder="Mass Horraire"
+            <FormControl fullWidth sx={{ mb: 1, mt: 2 }}>
+              <InputLabel id="ModulesListlabel">liste des modules</InputLabel>
+              <Select
+                labelId="ModulesListlabel"
+                id="ModulesList"
+                name="ModulesList"
+                value={newModule}
+                label=" Niveau Diplome"
                 onChange={(e) => {
-                  setNewMassHorraire(e.target.value);
+                  setNewModule(e.target.value);
+                }}
+              >
+                {notInModules.map((item, index) => {
+                  return (
+                    <MenuItem key={index} value={item.moduleId}>
+                      {item.moduleId} - {item.intitule}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+            <div className="input-group mt-2">
+              <TextField
+                label="Mass Horraire"
+                className="form-control"
+                inputProps={{ maxLength: 300 }}
+                value={newMassHorraire}
+                onChange={(e) => {
+                  const re = /^[0-9\b]+$/;
+
+                  // if value is not blank, then test the regex
+
+                  if (
+                    e.target.value === "" ||
+                    (re.test(e.target.value) && e.target.value < 1000)
+                  ) {
+                    setNewMassHorraire(e.target.value);
+                  }
                 }}
               />
               <button
                 className="btn btn-primary"
                 onClick={() => {
-                  handleAjoutModule();
+                  if (newMassHorraire > 0) {
+                    handleAjoutModule();
+                  } else {
+                    displayMsg(500);
+                  }
                 }}
               >
                 Ajouter Module
@@ -214,16 +239,23 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
           </section>
           {updateMassHorraire ? (
             <section className="input-group mt-4">
-              <input
-                type="number"
-                className="form-control shadow-none"
-                placeholder="Mass Horraire"
+              <TextField
+                label=" New Mass Horraire"
+                className="form-control"
+                inputProps={{ maxLength: 300 }}
+                value={newMassHorraireField}
                 onChange={(e) => {
-                  !isNaN(e.target.value)
-                    ? setNewMassHorraireField(e.target.value)
-                    : setNewMassHorraireField(0);
+                  const re = /^[0-9\b]+$/;
+
+                  // if value is not blank, then test the regex
+
+                  if (
+                    e.target.value === "" ||
+                    (re.test(e.target.value) && e.target.value < 1000)
+                  ) {
+                    setNewMassHorraireField(e.target.value);
+                  }
                 }}
-                onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
               />
               <button
                 className="btn btn-success"

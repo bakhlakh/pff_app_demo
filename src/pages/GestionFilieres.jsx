@@ -5,7 +5,7 @@ import Searchbar from "../components/Searchbar";
 import axios from "axios";
 import FilierePostNewForm from "../forms/FilierePostNewForm";
 import FilierePutForm from "../forms/FilierePutForm";
-import GMF from "../components/GMF";
+import GMF from "../forms/GMF";
 import ConfirmDelete from "../components/ConfirmDelete";
 import MessageBox from "../components/MessageBox";
 //AXIOS SETUP

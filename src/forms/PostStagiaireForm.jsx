@@ -5,7 +5,7 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import "./css/moduleForm.css";
 import "./css/PostStagiaireForm.css";
-import { FieldComp } from "./FieldComp";
+import { FieldComp } from "../components/FieldComp";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";

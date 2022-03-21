@@ -30,6 +30,13 @@
   background-color: #263ab9;
   color: #fafafa;
 }
+.ModuleInfos {
+  background-color: bisque;
+}
+.ModuleInfos:hover {
+  background-color: rgb(163, 147, 128);
+  color: #fafafa;
+}
 .messageContainer {
   width: 100%;
   display: flex; /* Hidden by default */

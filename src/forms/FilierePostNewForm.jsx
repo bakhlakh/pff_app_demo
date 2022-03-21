@@ -1,9 +1,8 @@
 import React, { useReducer } from "react";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form } from "formik";
 import { FieldComp } from "../components/FieldComp";
 import { useState } from "react";
 import * as Yup from "yup";
-import TextareaFormik from "../components/TextareaFormik";
 import "./css/POSTForm.css";
 import MessageBox from "../components/MessageBox";
 import axios from "axios";
