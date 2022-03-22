@@ -7,6 +7,7 @@ import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
 import PostStagiaireForm from "../forms/PostStagiaireForm";
 import ConfirmDelete from "../components/ConfirmDelete";
 import MessageBox from "../components/MessageBox";
+import PutStagiereForm from "../forms/PutStagiereForm";
 function STManagement() {
   const getStagiaires = useStoreActions((actions) => actions.getStagiaires);
   const stagiaires = useStoreState((state) => state.stagiaires);
@@ -19,6 +20,8 @@ function STManagement() {
     type: "OK",
     Message: "Stagiaire has been deleted",
   });
+  const [updateStagiaireFormVisible, setUpdateStagiaireFormVisible] =
+    useState(false);
   useEffect(() => {
     getStagiaires();
   }, [getStagiaires]);
@@ -26,10 +29,19 @@ function STManagement() {
     setConfirmDeleteVisible(true);
     setCurrentUpdated(row);
   };
+  const setCurrentUpdatedToObject = (row) => {
+    let stgObj = stagiaires.find((x) => x.stagiaireId === row.stagiaireId);
+    setCurrentUpdated(stgObj);
+  };
   const columns = [
     {
       dataField: "stagiaireId",
       text: "ID Stagiaire",
+      hidden: true,
+    },
+    {
+      dataField: "cin",
+      text: "CIN",
       sort: true,
       filter: textFilter(),
     },
@@ -41,14 +53,8 @@ function STManagement() {
     },
     { dataField: "lastName", text: "Nom", sort: true, filter: textFilter() },
     {
-      dataField: "email",
-      text: "Email",
-      sort: true,
-      filter: textFilter(),
-    },
-    {
-      dataField: "cin",
-      text: "CIN",
+      dataField: "groupId",
+      text: "Groupe",
       sort: true,
       filter: textFilter(),
     },
@@ -59,12 +65,26 @@ function STManagement() {
       filter: textFilter(),
     },
     {
+      dataField: "statue",
+      text: "Statue",
+      sort: true,
+      filter: textFilter(),
+    },
+    {
       dataField: "Operations",
       text: "Operations",
       formatter: (cellContent, row) => {
         return (
           <div className="d-flex">
-            <button className="btn btn-warning m-1">Update</button>
+            <button
+              className="btn btn-warning m-1"
+              onClick={() => {
+                setCurrentUpdatedToObject(row);
+                setUpdateStagiaireFormVisible(true);
+              }}
+            >
+              Update
+            </button>
             <button
               className="btn btn-danger m-1"
               onClick={() => handleDelete(row)}
@@ -86,6 +106,7 @@ function STManagement() {
     showTotal: true,
     alwaysShowAllBtns: true,
   });
+
   return (
     <>
       {messageVisible && (
@@ -103,6 +124,18 @@ function STManagement() {
       <div className="GestionModules d-grid">
         <div className="gestionModulesContent">
           <div className="content">
+            {updateStagiaireFormVisible && (
+              <PutStagiereForm
+                cancelOp={() => {
+                  setUpdateStagiaireFormVisible(false);
+                }}
+                handleClick={() => {
+                  setMessageVisible(true);
+                  getStagiaires();
+                }}
+                fieldValues={currentUpdated}
+              />
+            )}
             {postNewFormVisible && (
               <PostStagiaireForm
                 cancelOp={() => {

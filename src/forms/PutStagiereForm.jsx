@@ -14,7 +14,8 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import MessageBox from "../components/MessageBox";
-function PostStagiaireForm({ handleClick, cancelOp }) {
+import { color, flexbox, height } from "@mui/system";
+function PutStagiereForm({ fieldValues, cancelOp, handleClick }) {
   const api = useStoreState((store) => store.api);
   const getFilieres = useStoreActions((actions) => actions.getFilieres);
   const getGroupes = useStoreActions((actions) => actions.getGroupes);
@@ -22,6 +23,8 @@ function PostStagiaireForm({ handleClick, cancelOp }) {
   const groupes = useStoreState((state) => state.groupes);
   const [filteredGroups, setFilteredGroups] = useState([]);
   const [messageVisible, setMessageVisible] = useState(false);
+  const [changeStatue, setChangeStatue] = useState(false);
+  const [statusColor, setStatusColor] = useState("green");
   const minDate = new Date();
   const maxDate = new Date();
   minDate.setFullYear(minDate.getFullYear() - 30);
@@ -32,14 +35,18 @@ function PostStagiaireForm({ handleClick, cancelOp }) {
     firstName: "",
     lastName: "",
     phone: "",
-    filiereId: "",
-    anneScolaire: "",
-    groupId: "",
+    filiereId:
+      groupes.length > 0
+        ? groupes.find((x) => x.groupId === fieldValues.groupId).filiereId
+        : "",
+    anneScolaire: fieldValues.anneScolaire,
+    groupId: fieldValues.groupId,
     email: "",
     cin: "",
-    birthDate: minDate,
-    address: "",
-    nationalite: "Maroccain",
+    birthDate: fieldValues.birthDate,
+    address: fieldValues.address,
+    nationalite: fieldValues.nationalite,
+    statue: fieldValues.statue,
   });
   const filterGroupes = () => {
     let obj = [];
@@ -63,6 +70,9 @@ function PostStagiaireForm({ handleClick, cancelOp }) {
   }, []);
   useEffect(() => {
     filterGroupes();
+    if (newStagiaire.statue === "Suspended") setStatusColor("orange");
+    if (newStagiaire.statue === "Banned") setStatusColor("red");
+    if (newStagiaire.statue === "Active") setStatusColor("green");
   }, [newStagiaire]);
 
   const validate = Yup.object({
@@ -109,6 +119,7 @@ function PostStagiaireForm({ handleClick, cancelOp }) {
   });
   const handleSubmit = (values) => {
     let stgObj = {
+      stagiaireId: fieldValues.stagiaireId,
       firstName: values.txt_Prenom,
       lastName: values.txt_Nom,
       phone: values.txt_Phone,
@@ -119,11 +130,11 @@ function PostStagiaireForm({ handleClick, cancelOp }) {
       birthDate: newStagiaire.birthDate,
       address: newStagiaire.address,
       nationalite: "Maroccain",
-      statue: "Active",
+      statue: newStagiaire.statue,
     };
     console.log("stgObj", stgObj);
     api
-      .post("/api/Stagiaires", stgObj)
+      .put(`/api/Stagiaires/${fieldValues.stagiaireId}`, stgObj)
       .then((res) => {
         console.log("res", res);
         handleClick();
@@ -137,14 +148,14 @@ function PostStagiaireForm({ handleClick, cancelOp }) {
     <>
       <Formik
         initialValues={{
-          txt_CIN: "",
-          txt_Nom: "",
-          txt_Prenom: "",
-          txt_Email: "",
-          txt_Phone: "",
-          dateNaissance: null,
-          txt_Address: "",
-          nationalite: "Maroccain",
+          txt_CIN: fieldValues.cin,
+          txt_Nom: fieldValues.lastName,
+          txt_Prenom: fieldValues.firstName,
+          txt_Email: fieldValues.email,
+          txt_Phone: fieldValues.phone,
+          dateNaissance: fieldValues.birthDate,
+          txt_Address: fieldValues.address,
+          txt_Nationalite: fieldValues.nationalite,
         }}
         validationSchema={validate}
         onSubmit={async (values) => {
@@ -157,6 +168,56 @@ function PostStagiaireForm({ handleClick, cancelOp }) {
           <div id="myModal" className="modal" style={{ display: "block" }}>
             <div className="stagiairePost-Modal-content">
               <div id="modalContainer">
+                {changeStatue ? (
+                  <div className="d-flex justify-content-between">
+                    <FormControl sx={{ mb: 1, width: "200px" }}>
+                      <InputLabel id="statueLabel">Filiere</InputLabel>
+                      <Select
+                        labelId="statueLabel"
+                        id="statuePicker"
+                        name="statuePicker"
+                        value={newStagiaire.statue}
+                        label="Statue"
+                        onChange={(e) => {
+                          setNewStagiaire({
+                            ...newStagiaire,
+                            statue: e.target.value,
+                          });
+                        }}
+                      >
+                        <MenuItem value="Active">Active</MenuItem>
+                        <MenuItem value="Suspended">Suspendu</MenuItem>
+                        <MenuItem value="Banned">exclue</MenuItem>
+                      </Select>
+                    </FormControl>
+                    <button
+                      className="btn btn-success"
+                      type="button"
+                      style={{ height: "50px", borderRadius: "0px" }}
+                      onClick={() => {
+                        setChangeStatue(false);
+                      }}
+                    >
+                      Save statue
+                    </button>
+                  </div>
+                ) : (
+                  <div className="d-flex justify-content-between mb-3">
+                    <div className="d-flex m-3 mt-0 mb-0">
+                      <h5 className="m-4 mt-0 mb-0">Statue : </h5>
+                      <h5 className={statusColor}>{newStagiaire.statue}</h5>
+                    </div>
+                    <button
+                      className="btn btn-warning mb-2"
+                      type="button"
+                      onClick={() => {
+                        setChangeStatue(true);
+                      }}
+                    >
+                      Change status
+                    </button>
+                  </div>
+                )}
                 {messageVisible && (
                   <MessageBox
                     type="ERR"
@@ -242,8 +303,8 @@ function PostStagiaireForm({ handleClick, cancelOp }) {
                 <TextField
                   type="text"
                   name="txt_Nationalite"
-                  value={newStagiaire.nationalite}
                   id="txt_Nationalite"
+                  value={newStagiaire.nationalite}
                   label="Nationalite"
                   disabled
                   className="mb-2"
@@ -312,13 +373,8 @@ function PostStagiaireForm({ handleClick, cancelOp }) {
                   >
                     Cancel
                   </button>
-                  <button
-                    id="modalAjouterBtn"
-                    className="btn"
-                    type="submit"
-                    onClick={() => {}}
-                  >
-                    Ajouter
+                  <button id="modalAjouterBtn" className="btn" type="submit">
+                    Update
                   </button>
                 </div>
               </div>
@@ -330,4 +386,4 @@ function PostStagiaireForm({ handleClick, cancelOp }) {
   );
 }
 
-export default PostStagiaireForm;
+export default PutStagiereForm;

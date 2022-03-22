@@ -7,3 +7,12 @@
   border: 1px solid #888;
   width: 80%;
 }
+.green {
+  color: rgb(19, 173, 19);
+}
+.orange {
+  color: rgb(238, 170, 23);
+}
+.red {
+  color: red;
+}
