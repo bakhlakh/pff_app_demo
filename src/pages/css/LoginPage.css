@@ -1,0 +1,80 @@
+body {
+  background: #f0efef;
+  height: 100vh;
+  background: linear-gradient(white, rgb(182, 234, 250));
+}
+#container {
+  width: 100%;
+}
+#iconDiv {
+  margin: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#iconDiv > img {
+  width: 250px;
+}
+#loginForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 350px;
+  max-width: 450px;
+  margin: auto;
+  width: 50%;
+  height: 550px;
+  border-radius: 15px;
+  background: rgb(255, 255, 255);
+  box-shadow: 5px 5px 15px rgba(73, 73, 73, 0.2);
+}
+#userIcon {
+  margin: 20px;
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 100%;
+  background: #6fd0d3;
+}
+#userIcon > i {
+  font-size: 3em;
+  color: white;
+}
+.inputDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  width: 75%;
+  padding: 5px;
+}
+.inputDiv > input {
+}
+.inputDiv > input:hover {
+}
+.inputDiv > i {
+  font-size: 1.2em;
+  color: #2ab3c5;
+  margin: 8px;
+}
+#loginBtn {
+  width: 80%;
+  background-color: #6fd0d3;
+  border: none;
+  font-size: 1.1em;
+  margin: 10px;
+}
+#loginBtn:hover {
+  background: #2ab3c5;
+}
+#forgotPassword {
+  color: grey;
+  text-align: right;
+  margin: auto auto 30px auto;
+}
+.error {
+  border-bottom: 2px solid rgba(250, 0, 0, 0.4);
+}

@@ -7,6 +7,7 @@ import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
 import PostGroupForm from "../forms/PostGroupForm";
 import ConfirmDelete from "../components/ConfirmDelete";
 import MessageBox from "../components/MessageBox";
+import Side from "../components/Side";
 function GPManagement() {
   const groupes = useStoreState((state) => state.groupes);
   const api = useStoreState((state) => state.api);
@@ -100,6 +101,7 @@ function GPManagement() {
   });
   return (
     <>
+      <Side />
       {messageVisible && (
         <div className="messageContainer m-5">
           <MessageBox

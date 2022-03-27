@@ -8,6 +8,10 @@ const store = createStore({
   filieres: [],
   stagiaires: [],
   groupes: [],
+  currentUpdatedGroupId: "",
+  userAuthentificated: false,
+  jwtToken: "",
+  isPost: false,
   //Thunks
   getModules: thunk(async (actions) => {
     const res = await api.get("/api/Modules").then(({ data }) => data);

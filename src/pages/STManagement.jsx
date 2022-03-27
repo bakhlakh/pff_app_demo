@@ -8,6 +8,7 @@ import PostStagiaireForm from "../forms/PostStagiaireForm";
 import ConfirmDelete from "../components/ConfirmDelete";
 import MessageBox from "../components/MessageBox";
 import PutStagiereForm from "../forms/PutStagiereForm";
+import Side from "../components/Side";
 function STManagement() {
   const getStagiaires = useStoreActions((actions) => actions.getStagiaires);
   const stagiaires = useStoreState((state) => state.stagiaires);
@@ -25,9 +26,30 @@ function STManagement() {
   useEffect(() => {
     getStagiaires();
   }, [getStagiaires]);
-  const handleDelete = (row) => {
+  const handleDeleteClick = (row) => {
     setConfirmDeleteVisible(true);
     setCurrentUpdated(row);
+  };
+  const handleDelete = () => {
+    api
+      .delete(`/api/Stagiaires/${currentUpdated.stagiaireId}`)
+      .then((res) => {
+        if (res.status >= 200 && res.status <= 299) {
+          setDeleteMessage({
+            type: "OK",
+            message: "Stagiaire has been deleted",
+          });
+          setMessageVisible(true);
+        }
+      })
+      .then(() => getStagiaires())
+      .catch(() => {
+        setDeleteMessage({
+          type: "ERR",
+          message: "Stagiaire has not been deleted",
+        });
+        setMessageVisible(true);
+      });
   };
   const setCurrentUpdatedToObject = (row) => {
     let stgObj = stagiaires.find((x) => x.stagiaireId === row.stagiaireId);
@@ -87,7 +109,7 @@ function STManagement() {
             </button>
             <button
               className="btn btn-danger m-1"
-              onClick={() => handleDelete(row)}
+              onClick={() => handleDeleteClick(row)}
             >
               Delete
             </button>
@@ -109,6 +131,7 @@ function STManagement() {
 
   return (
     <>
+      <Side />
       {messageVisible && (
         <div className="messageContainer m-5">
           <MessageBox
@@ -176,8 +199,10 @@ function STManagement() {
           <ConfirmDelete
             handleDelete={() => {
               setConfirmDeleteVisible(false);
+              handleDelete();
             }}
             cancelOp={() => {
+              handleDelete();
               setConfirmDeleteVisible(false);
             }}
           />

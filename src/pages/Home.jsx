@@ -1,10 +1,12 @@
 import React from "react";
+import Side from "../components/Side";
 
 function Home() {
   return (
-    <div>
-      <h1 className="home">Home</h1>
-    </div>
+    <>
+      <Side></Side>
+      BRUH
+    </>
   );
 }
 

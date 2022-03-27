@@ -3,8 +3,8 @@
   --hover-color: #263ab9;
 }
 body {
-  height: 120vh;
-  background: #060b26;
+  height: 100%;
+  background: var(--main-color) !important;
 }
 
 #crudHead {
