@@ -8,6 +8,20 @@ import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
 import ModulePostNewForm from "../forms/ModulePostNewForm";
 import ConfirmDelete from "../components/ConfirmDelete";
 import PutModuleForm from "../forms/PutModuleForm";
+import Side from "../components/Side";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+  Paper,
+  IconButton,
+  Collapse,
+  Box,
+} from "@mui/material";
 function GestionModules() {
   const modules = useStoreState((state) => state.modules);
   const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
@@ -101,6 +115,7 @@ function GestionModules() {
   });
   return (
     <>
+      <Side />
       {messageVisible && (
         <div className="messageContainer m-5">
           <MessageBox
@@ -153,7 +168,7 @@ function GestionModules() {
               data={modules || []}
               bordered={false}
               rowStyle={{ color: "gainsboro" }}
-              headerClasses="text-secondary"
+              headerClasses="text-dark"
               pagination={pagination}
               filter={filterFactory()}
               filterPosition="bottom"
