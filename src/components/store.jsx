@@ -10,7 +10,7 @@ const store = createStore({
   groupes: [],
   currentUpdatedGroupId: "",
   userAuthentificated: false,
-  jwtToken: "",
+  currentUser: {},
   isPost: false,
   //Thunks
   getModules: thunk(async (actions) => {
@@ -41,6 +41,15 @@ const store = createStore({
   }),
   setStagiaires: action((state, res) => {
     state.stagiaires = res;
+  }),
+  setUser: action((state, user) => {
+    state.currentUser = user;
+  }),
+  setUserAuthentificated: action((state, userAuthentificated) => {
+    state.userAuthentificated = userAuthentificated;
+  }),
+  setJwtToken: action((state, jwtToken) => {
+    state.jwtToken = jwtToken;
   }),
 });
 export default store;

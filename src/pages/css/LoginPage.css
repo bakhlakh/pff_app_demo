@@ -15,7 +15,7 @@ body {
 #iconDiv > img {
   width: 250px;
 }
-#loginForm {
+.loginForm {
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -7,9 +7,14 @@ import STManagement from "./pages/STManagement";
 import GPManagement from "./pages/GPManagement";
 import Home from "./pages/Home";
 import LoginPage from "./pages/LoginPage";
-import { useStoreState } from "easy-peasy";
+import { useStoreState, useStoreActions } from "easy-peasy";
 function Main() {
   const userAuth = useStoreState((state) => state.userAuthentificated);
+  const setJwtToken = useStoreActions((actions) => actions.setJwtToken);
+  if (localStorage.getItem("jwtToken")) {
+    setJwtToken(localStorage.getItem("jwtToken"));
+    console.log("localStorage.get", localStorage.getItem("userName"));
+  }
   return (
     <>
       <Router>

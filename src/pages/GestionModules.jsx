@@ -9,19 +9,6 @@ import ModulePostNewForm from "../forms/ModulePostNewForm";
 import ConfirmDelete from "../components/ConfirmDelete";
 import PutModuleForm from "../forms/PutModuleForm";
 import Side from "../components/Side";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-  Paper,
-  IconButton,
-  Collapse,
-  Box,
-} from "@mui/material";
 function GestionModules() {
   const modules = useStoreState((state) => state.modules);
   const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
@@ -167,13 +154,13 @@ function GestionModules() {
               keyField="moduleId"
               data={modules || []}
               bordered={false}
-              rowStyle={{ color: "gainsboro" }}
               headerClasses="text-dark"
               pagination={pagination}
               filter={filterFactory()}
               filterPosition="bottom"
               classes="BTtable m-2"
               wrapperClasses="BTwrapper"
+              bodyClasses="BTbody"
             />
           </div>
         </div>

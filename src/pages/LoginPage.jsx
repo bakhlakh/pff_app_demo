@@ -4,22 +4,28 @@ import logo from "../Resources/ofppt_logo.png";
 import { FaUser, FaLock } from "react-icons/fa";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
-import { useStoreState } from "easy-peasy";
+import { useStoreState, useStoreActions } from "easy-peasy";
 function LoginPage() {
-  const [userEmail, setUserEmail] = useState("");
+  const [userName, setUserName] = useState("");
   const [userPassword, setUserPassword] = useState("");
-  const jwtToken = useStoreState((state) => state.jwtToken);
   const api = useStoreState((state) => state.api);
+  const currentUser = useStoreState((state) => state.currentUser);
+  const setUserAuthentificated = useStoreActions(
+    (actions) => actions.setUserAuthentificated
+  );
+  const setUser = useStoreActions((actions) => actions.setUser);
   function loginHandler() {
     api
-      .post("/api/login", {
-        email: userEmail,
-        password: userPassword,
+      .post("/api/Login", {
+        UserName: userName,
+        UserPassword: userPassword,
       })
       .then((res) => {
         if (res.status >= 200 && res.status <= 299) {
           localStorage.setItem("jwtToken", res.data.token);
-          window.location.href = "/";
+          localStorage.setItem("userName", res.data.user.UserName);
+          setUser(res.data.user);
+          setUserAuthentificated(true);
         }
       });
   }
@@ -29,19 +35,19 @@ function LoginPage() {
         <div id="iconDiv">
           <img src={logo} alt="Logo Ofppt" />
         </div>
-        <form action="" id="loginForm">
+        <div className="loginForm">
           <div id="userIcon">
             <FaUser color="white" size={40}></FaUser>
           </div>
           <div className="inputDiv">
             <TextField
-              id="Email"
-              label="Email"
-              name="Email"
+              id="Name"
+              label="Name"
+              name="Name"
               className="form-control mb-2"
-              value={userEmail}
+              value={userName}
               onChange={(e) => {
-                setUserEmail(e.target.value);
+                setUserName(e.target.value);
               }}
               InputProps={{
                 startAdornment: (
@@ -87,7 +93,7 @@ function LoginPage() {
           <a id="forgotPassword" href="/">
             forgot password?
           </a>
-        </form>
+        </div>
       </div>
     </>
   );

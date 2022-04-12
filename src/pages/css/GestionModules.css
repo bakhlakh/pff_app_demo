@@ -6,7 +6,7 @@
   display: flex;
   width: auto;
   align-items: center;
-  justify-content: center;
+  justify-content: end;
   margin-top: 100px;
 }
 
@@ -43,4 +43,15 @@ li.active a {
   .react-bootstrap-table {
     min-width: 1500px;
   }
+}
+.gestionModulesContent {
+  min-width: 800px;
+  margin-right: 20px;
+}
+.BTbody {
+  overflow-x: auto;
+  color: black;
+}
+.BTwrapper {
+  width: auto;
 }
