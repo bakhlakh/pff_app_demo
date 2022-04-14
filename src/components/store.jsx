@@ -1,5 +1,6 @@
 import { createStore, action, thunk } from "easy-peasy";
 import axios from "axios";
+import authHeader from "../services/auth-header";
 const api = axios.create({ baseURL: "https://localhost:7161/" });
 const store = createStore({
   //states
@@ -10,7 +11,7 @@ const store = createStore({
   groupes: [],
   currentUpdatedGroupId: "",
   userAuthentificated: false,
-  currentUser: {},
+  user: null,
   isPost: false,
   //Thunks
   getModules: thunk(async (actions) => {
@@ -26,7 +27,9 @@ const store = createStore({
     actions.setGroupes(res);
   }),
   getStagiaires: thunk(async (actions) => {
-    const res = await api.get("/api/Stagiaires").then(({ data }) => data);
+    const res = await api
+      .get("/api/Stagiaires", { headers: authHeader() })
+      .then(({ data }) => data);
     actions.setStagiaires(res);
   }),
   //actions
@@ -43,13 +46,7 @@ const store = createStore({
     state.stagiaires = res;
   }),
   setUser: action((state, user) => {
-    state.currentUser = user;
-  }),
-  setUserAuthentificated: action((state, userAuthentificated) => {
-    state.userAuthentificated = userAuthentificated;
-  }),
-  setJwtToken: action((state, jwtToken) => {
-    state.jwtToken = jwtToken;
+    state.user = user;
   }),
 });
 export default store;

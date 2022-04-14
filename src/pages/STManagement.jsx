@@ -9,6 +9,8 @@ import ConfirmDelete from "../components/ConfirmDelete";
 import MessageBox from "../components/MessageBox";
 import PutStagiereForm from "../forms/PutStagiereForm";
 import Side from "../components/Side";
+import authHeader from "../services/auth-header";
+
 function STManagement() {
   const getStagiaires = useStoreActions((actions) => actions.getStagiaires);
   const stagiaires = useStoreState((state) => state.stagiaires);
@@ -32,7 +34,9 @@ function STManagement() {
   };
   const handleDelete = () => {
     api
-      .delete(`/api/Stagiaires/${currentUpdated.stagiaireId}`)
+      .delete(`/api/Stagiaires/${currentUpdated.stagiaireId}`, {
+        headers: authHeader(),
+      })
       .then((res) => {
         if (res.status >= 200 && res.status <= 299) {
           setDeleteMessage({

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./main.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import GestionFilieres from "./pages/GestionFilieres";
@@ -7,23 +7,28 @@ import STManagement from "./pages/STManagement";
 import GPManagement from "./pages/GPManagement";
 import Home from "./pages/Home";
 import LoginPage from "./pages/LoginPage";
-import { useStoreState, useStoreActions } from "easy-peasy";
+import { useStoreActions } from "easy-peasy";
+import ProtectedRoute from "./components/ProtectedRoute";
 function Main() {
-  const userAuth = useStoreState((state) => state.userAuthentificated);
-  const setJwtToken = useStoreActions((actions) => actions.setJwtToken);
-  if (localStorage.getItem("jwtToken")) {
-    setJwtToken(localStorage.getItem("jwtToken"));
-    console.log("localStorage.get", localStorage.getItem("userName"));
-  }
+  const user = JSON.parse(localStorage.getItem("user"));
+  const setUser = useStoreActions((actions) => actions.setUser);
+  const [Auth, setAuth] = useState(false);
+  useEffect(() => {
+    setUser(user);
+    if (user !== null) setAuth(true);
+    else setAuth(false);
+  }, []);
   return (
     <>
       <Router>
         <Routes>
-          <Route exact path="/" element={userAuth ? <Home /> : <LoginPage />} />
-          <Route path="/GestionFilieres" element={<GestionFilieres />} />
-          <Route path="/GestionModules" element={<GestionModules />} />
-          <Route path="/GestionStagiaires" element={<STManagement />} />
-          <Route path="/Groupes" element={<GPManagement />} />
+          <Route element={<ProtectedRoute isAuth={Auth} />}>
+            <Route exact path="/" element={<Home />} />
+            <Route path="/GestionFilieres" element={<GestionFilieres />} />
+            <Route path="/GestionModules" element={<GestionModules />} />
+            <Route path="/GestionStagiaires" element={<STManagement />} />
+            <Route path="/Groupes" element={<GPManagement />} />
+          </Route>
           <Route path="/Login" element={<LoginPage />} />
         </Routes>
       </Router>
