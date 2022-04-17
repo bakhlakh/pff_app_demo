@@ -9,6 +9,8 @@ import Home from "./pages/Home";
 import LoginPage from "./pages/LoginPage";
 import { useStoreActions } from "easy-peasy";
 import ProtectedRoute from "./components/ProtectedRoute";
+import GestionSeances from "./pages/GestionSeances";
+import GestionSalles from "./pages/GestionSalles";
 function Main() {
   const user = JSON.parse(localStorage.getItem("user"));
   const setUser = useStoreActions((actions) => actions.setUser);
@@ -28,6 +30,8 @@ function Main() {
             <Route path="/GestionModules" element={<GestionModules />} />
             <Route path="/GestionStagiaires" element={<STManagement />} />
             <Route path="/Groupes" element={<GPManagement />} />
+            <Route path="/GestionSeances" element={<GestionSeances />} />
+            <Route path="/GestionSalles" element={<GestionSalles />} />
           </Route>
           <Route path="/Login" element={<LoginPage />} />
         </Routes>

@@ -17,8 +17,8 @@ import MessageBox from "../components/MessageBox";
 function PostStagiaireForm({ handleClick, cancelOp }) {
   const api = useStoreState((store) => store.api);
   const getFilieres = useStoreActions((actions) => actions.getFilieres);
-  const getGroupes = useStoreActions((actions) => actions.getGroupes);
   const filieres = useStoreState((state) => state.filieres);
+  const getGroupes = useStoreActions((actions) => actions.getGroupes);
   const groupes = useStoreState((state) => state.groupes);
   const [filteredGroups, setFilteredGroups] = useState([]);
   const [messageVisible, setMessageVisible] = useState(false);

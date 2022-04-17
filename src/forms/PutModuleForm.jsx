@@ -6,6 +6,7 @@ import * as Yup from "yup";
 import "./css/POSTForm.css";
 import MessageBox from "../components/MessageBox";
 import { useStoreState } from "easy-peasy";
+import authHeader from "../services/auth-header";
 
 function PutModuleForm({ fieldValues, cancelOp, handleClick }) {
   const msgReducer = (msgState, action) => {
@@ -58,7 +59,9 @@ function PutModuleForm({ fieldValues, cancelOp, handleClick }) {
       teachings: [],
     };
     await api
-      .put("/api/Modules/" + moduleObj.moduleId, moduleObj)
+      .put("/api/Modules/" + moduleObj.moduleId, moduleObj, {
+        headers: authHeader(),
+      })
       .then((e) => {
         displayMsg(e.status);
       })

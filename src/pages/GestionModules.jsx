@@ -9,6 +9,8 @@ import ModulePostNewForm from "../forms/ModulePostNewForm";
 import ConfirmDelete from "../components/ConfirmDelete";
 import PutModuleForm from "../forms/PutModuleForm";
 import Side from "../components/Side";
+import authHeader from "../services/auth-header";
+
 function GestionModules() {
   const modules = useStoreState((state) => state.modules);
   const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
@@ -32,7 +34,9 @@ function GestionModules() {
   };
   const deleteModule = () => {
     api
-      .delete("api/Modules/FD/" + currentUpdated.moduleId)
+      .delete("api/Modules/FD/" + currentUpdated.moduleId, {
+        headers: authHeader(),
+      })
       .then((res) => {
         if (res.status >= 200 && res.status <= 299) {
           setDeleteMessage({ type: "OK", message: "Module has been deleted" });
@@ -110,7 +114,6 @@ function GestionModules() {
             message={deleteMessage.message}
             cancelOp={() => {
               setMessageVisible(false);
-              console.log("bruh", messageVisible);
             }}
           />
         </div>

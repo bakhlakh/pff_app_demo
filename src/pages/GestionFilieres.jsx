@@ -9,6 +9,7 @@ import GMF from "../forms/GMF";
 import ConfirmDelete from "../components/ConfirmDelete";
 import MessageBox from "../components/MessageBox";
 import Side from "../components/Side";
+import authHeader from "../services/auth-header";
 
 //AXIOS SETUP
 const api = axios.create({ baseURL: "https://localhost:7161/" });
@@ -32,7 +33,7 @@ function GestionFilieres() {
   };
   //GET FILIERES
   const getFilieres = async () => {
-    const data = await api.get("/api/Filieres");
+    const data = await api.get("/api/Filieres", { headers: authHeader() });
     setFileres(data.data);
     setFilteredFilieres(data.data);
   };
@@ -55,7 +56,9 @@ function GestionFilieres() {
   //DELETE FILIERE CODE
   const deleteFiliere = () => {
     api
-      .delete("/api/Filieres/" + currentUpdated.filiereId)
+      .delete("/api/Filieres/" + currentUpdated.filiereId, {
+        headers: authHeader(),
+      })
       .then((res) => {
         if (res.status >= 200 && res.status <= 299) {
           setDeleteMessage({ type: "OK", message: "Filiere has been deleted" });

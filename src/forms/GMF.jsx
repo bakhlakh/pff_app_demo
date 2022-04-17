@@ -7,6 +7,8 @@ import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
+import authHeader from "../services/auth-header";
+
 const api = axios.create({ baseURL: "https://localhost:7161/" });
 
 function GMF({ fieldValues, cancelOp, handleClick, f }) {
@@ -24,7 +26,6 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
     type: "OK",
     Message: "Filiere has been updated",
   });
-  console.log("notInModules", notInModules);
   useEffect(() => {
     const doubleUpdated = f.find((e) => {
       return e.filiereId === fieldValues.filiereId;
@@ -41,7 +42,7 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
       _MassHorraire: newMassHorraire,
     };
     await api
-      .post("/api/v1/FiliereModules/", obj)
+      .post("/api/v1/FiliereModules/", obj, { headers: authHeader() })
       .then((e) => {
         displayMsg(e.status);
         handleClick();

@@ -14,7 +14,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import MessageBox from "../components/MessageBox";
-import { color, flexbox, height } from "@mui/system";
+import authHeader from "../services/auth-header";
 function PutStagiereForm({ fieldValues, cancelOp, handleClick }) {
   const api = useStoreState((store) => store.api);
   const getFilieres = useStoreActions((actions) => actions.getFilieres);
@@ -134,7 +134,9 @@ function PutStagiereForm({ fieldValues, cancelOp, handleClick }) {
     };
     console.log("stgObj", stgObj);
     api
-      .put(`/api/Stagiaires/${fieldValues.stagiaireId}`, stgObj)
+      .put(`/api/Stagiaires/${fieldValues.stagiaireId}`, stgObj, {
+        headers: authHeader(),
+      })
       .then((res) => {
         console.log("res", res);
         handleClick();
@@ -366,16 +368,17 @@ function PutStagiereForm({ fieldValues, cancelOp, handleClick }) {
                   </FormControl>
                 )}
                 <div className="modalBtns mt-2">
-                  <button
-                    id="modalCancelBtn"
-                    className="btn btn-secondary"
+                  <input
+                    type="button"
+                    className="m-1 btn btn-secondary"
                     onClick={cancelOp}
-                  >
-                    Cancel
-                  </button>
-                  <button id="modalAjouterBtn" className="btn" type="submit">
-                    Update
-                  </button>
+                    value="cancel"
+                  />
+                  <input
+                    type="submit"
+                    className="m-1 btn btn-success"
+                    value="Update"
+                  />
                 </div>
               </div>
             </div>

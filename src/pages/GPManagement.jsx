@@ -8,6 +8,8 @@ import PostGroupForm from "../forms/PostGroupForm";
 import ConfirmDelete from "../components/ConfirmDelete";
 import MessageBox from "../components/MessageBox";
 import Side from "../components/Side";
+import authHeader from "../services/auth-header";
+
 function GPManagement() {
   const groupes = useStoreState((state) => state.groupes);
   const api = useStoreState((state) => state.api);
@@ -30,7 +32,8 @@ function GPManagement() {
   const deleteGroupe = () => {
     api
       .delete(
-        `/api/Groupes/${currentUpdated.anneScolaire}/${currentUpdated.groupId}`
+        `/api/Groupes/${currentUpdated.anneScolaire}/${currentUpdated.groupId}`,
+        { headers: authHeader() }
       )
       .then((res) => {
         if (res.status >= 200 && res.status <= 299) {

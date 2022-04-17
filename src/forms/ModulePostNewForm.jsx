@@ -8,6 +8,7 @@ import MessageBox from "../components/MessageBox";
 import TextField from "@mui/material/TextField";
 import { useStoreState } from "easy-peasy";
 import "./css/moduleForm.css";
+import authHeader from "../services/auth-header";
 
 const msgReducer = (_, action) => {
   switch (action.type) {
@@ -61,7 +62,7 @@ function ModulePostNewForm({ handleClick, cancelOp }) {
       teachings: [],
     };
     await api
-      .post("/api/Modules", moduleObj)
+      .post("/api/Modules", moduleObj, { headers: authHeader() })
       .then((e) => {
         displayMsg(e.status);
       })

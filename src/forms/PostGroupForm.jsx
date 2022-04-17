@@ -7,7 +7,7 @@ import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import OutlinedInput from "@mui/material/OutlinedInput";
-import { TextField } from "@mui/material";
+import authHeader from "../services/auth-header";
 function PostGroupForm({ handleClick, cancelOp }) {
   const api = useStoreState((store) => store.api);
   const getFilieres = useStoreActions((actions) => actions.getFilieres);
@@ -31,12 +31,16 @@ function PostGroupForm({ handleClick, cancelOp }) {
   }
   const handleSubmit = () => {
     api
-      .post("/api/Groupes", {
-        anneScolaire: anneScolaire,
-        groupId: groupId,
-        filiereId: filiereId,
-        niveau: niveau,
-      })
+      .post(
+        "/api/Groupes",
+        {
+          anneScolaire: anneScolaire,
+          groupId: groupId,
+          filiereId: filiereId,
+          niveau: niveau,
+        },
+        { headers: authHeader() }
+      )
       .then((e) => {
         handleClick(e.status);
       });

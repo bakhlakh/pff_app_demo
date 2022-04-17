@@ -11,6 +11,8 @@ import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
+import authHeader from "../services/auth-header";
+
 function FilierePutForm({ fieldValues, cancelOp, handleClick }) {
   const msgReducer = (msgState, action) => {
     console.log("second");
@@ -77,7 +79,9 @@ function FilierePutForm({ fieldValues, cancelOp, handleClick }) {
       stagiaires: [],
     };
     api
-      .put(`/api/Filieres/${values.txt_idFilierePUT}`, obj)
+      .put(`/api/Filieres/${values.txt_idFilierePUT}`, obj, {
+        headers: authHeader(),
+      })
       .then((e) => {
         displayMsg(e.status);
       })
