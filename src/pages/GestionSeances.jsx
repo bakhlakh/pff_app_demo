@@ -20,6 +20,9 @@ import SeancesCalendar from "../components/SeancesCalendar";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import PostSeance from "../forms/PostSeance";
 
+const getDateTimeless = (date) => {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+};
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
   ...theme.typography.body2,
@@ -45,12 +48,19 @@ function GestionSeances() {
     setSelectedSeances([]);
     setSelectedSeances(
       seances.filter((seance) => {
+        console.log(
+          "first",
+          getDateTimeless(new Date(seance.dateSeance)) ===
+            getDateTimeless(new Date(selectedDate))
+        );
         return (
-          seance.groupe === selectedGroupe &&
-          seance.date === selectedDate.toISOString().slice(0, 10)
+          seance.groupId === selectedGroupe &&
+          getDateTimeless(new Date(seance.dateSeance)) ===
+            getDateTimeless(new Date(selectedDate))
         );
       })
     );
+    console.log("selectedSeances", selectedSeances);
   };
   return (
     <>
@@ -86,12 +96,12 @@ function GestionSeances() {
                   inputformat="yyyy/mm/dd"
                   value={selectedDate}
                   onChange={(e) => {
-                    setSelectedDate(e.target.value);
+                    setSelectedDate(e);
                     handleSelectedValuesChange();
                   }}
                   renderInput={(params) => (
                     <TextField
-                      name="dateNaissance"
+                      name="dateSeance"
                       inputformat="yyyy/mm/dd"
                       {...params}
                     />

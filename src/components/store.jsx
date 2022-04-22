@@ -11,11 +11,24 @@ const store = createStore({
   groupes: [],
   seances: [],
   rooms: [],
+  formateurs: [],
   currentUpdatedGroupId: "",
   userAuthentificated: false,
   user: null,
   isPost: false,
   //Thunks
+  verifyClient: thunk(async (actions) => {
+    let res = await api
+      .get("/api/Modules", { headers: authHeader() })
+      .catch((err) => {
+        return err.response.status;
+      });
+    if (res === 401) {
+      actions.setUserAuthentificated(false);
+    } else {
+      actions.setUserAuthentificated(true);
+    }
+  }),
   getModules: thunk(async (actions) => {
     const res = await api
       .get("/api/Modules", { headers: authHeader() })
@@ -46,6 +59,12 @@ const store = createStore({
       .then(({ data }) => data);
     actions.setSeances(res);
   }),
+  postSeance: thunk(async (actions, seance) => {
+    const res = await api
+      .post("/api/Seances", seance, { headers: authHeader() })
+      .then((r) => r.status);
+    return res;
+  }),
   getRooms: thunk(async (actions) => {
     const res = await api
       .get("/api/Rooms", { headers: authHeader() })
@@ -65,7 +84,16 @@ const store = createStore({
       .then(({ data }) => data);
     actions.setRooms(res);
   }),
+  getFormateurs: thunk(async (actions) => {
+    const res = await api
+      .get("/api/Formateurs", { headers: authHeader() })
+      .then(({ data }) => data);
+    actions.setFormateurs(res);
+  }),
   //actions
+  setUserAuthentificated: action((state, userAuthentificated) => {
+    state.userAuthentificated = userAuthentificated;
+  }),
   setModules: action((state, res) => {
     state.modules = res;
   }),
@@ -86,6 +114,9 @@ const store = createStore({
   }),
   setRooms: action((state, res) => {
     state.rooms = res;
+  }),
+  setFormateurs: action((state, res) => {
+    state.formateurs = res;
   }),
 });
 export default store;
