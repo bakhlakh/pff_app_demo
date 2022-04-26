@@ -228,10 +228,10 @@ function PostSeance({ handleClick, cancelOp }) {
                         });
                       }}
                     >
-                      <MenuItem value={"8"}>8:30</MenuItem>
-                      <MenuItem value={"11"}>11:00</MenuItem>
-                      <MenuItem value={"13"}>13:30</MenuItem>
-                      <MenuItem value={"16"}>16:00</MenuItem>
+                      <MenuItem value={"08:30"}>8:30</MenuItem>
+                      <MenuItem value={"11:00"}>11:00</MenuItem>
+                      <MenuItem value={"13:30"}>13:30</MenuItem>
+                      <MenuItem value={"16:00"}>16:00</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>

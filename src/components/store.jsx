@@ -16,6 +16,7 @@ const store = createStore({
   userAuthentificated: false,
   user: null,
   isPost: false,
+  weekSeances: [],
   //Thunks
   verifyClient: thunk(async (actions) => {
     let res = await api
@@ -78,7 +79,6 @@ const store = createStore({
     actions.setRooms(res);
   }),
   deleteRoom: thunk(async (actions, id) => {
-    console.log("first", `/api/Rooms/${id}`);
     const res = await api
       .delete(`/api/Rooms/${parseInt(id)}`, { headers: authHeader() })
       .then(({ data }) => data);
@@ -89,6 +89,24 @@ const store = createStore({
       .get("/api/Formateurs", { headers: authHeader() })
       .then(({ data }) => data);
     actions.setFormateurs(res);
+  }),
+  getWeekSeances: thunk(async (actions, obj) => {
+    const bruh = new Date(obj.selectedDate);
+    const res = await api
+      .get(
+        `/api/Seances/getWeekSeances?date=${
+          bruh.getFullYear() +
+          "-" +
+          (bruh.getMonth() + 1) +
+          "-" +
+          bruh.getDate()
+        }&groupId=${obj.selectedGroupe}`,
+        {
+          headers: authHeader(),
+        }
+      )
+      .then(({ data }) => data);
+    actions.setWeekSeances(res);
   }),
   //actions
   setUserAuthentificated: action((state, userAuthentificated) => {
@@ -117,6 +135,9 @@ const store = createStore({
   }),
   setFormateurs: action((state, res) => {
     state.formateurs = res;
+  }),
+  setWeekSeances: action((state, res) => {
+    state.weekSeances = res;
   }),
 });
 export default store;
