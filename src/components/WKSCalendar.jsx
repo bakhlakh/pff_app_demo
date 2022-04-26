@@ -143,8 +143,6 @@ function WKSCalendar({ data }) {
         },
       });
     }
-    console.log("data", data);
-    console.log("obj", seances);
   }, [data]);
 
   return (
