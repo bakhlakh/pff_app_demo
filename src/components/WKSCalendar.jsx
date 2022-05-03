@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./css/WKSCalendar.css";
+import SeanceBox from "./SeanceBox";
 function WKSCalendar({ data }) {
   const [seances, setSeances] = useState({
     lundi: { s8: null, s11: null, s13: null, s16: null },
@@ -147,260 +148,171 @@ function WKSCalendar({ data }) {
 
   return (
     <div className="WKSCalendar">
-      <table className="table" style={{ height: "500px" }}>
+      <table className=" WKSCalendarTable" style={{ height: "500px" }}>
         <thead>
           <tr>
-            <th>
+            <th style={{ paddingLeft: "20px", width: "250px" }}>
               <div className="d-flex justify-content-between w-75">
                 <h6>Jours</h6>
                 <h6>/</h6>
                 <h6>Heures</h6>
               </div>
             </th>
-            <th>
+            <th style={{ width: "250px" }}>
               <div className="d-flex justify-content-between">
                 <h6>8:30</h6>
                 <h6>11:00</h6>
               </div>
             </th>
-            <th>
-              <div className="d-flex justify-content-between">
-                <h6></h6>
+            <th style={{ width: "250px" }}>
+              <div className="d-flex justify-content-end">
                 <h6>13:30</h6>
               </div>
             </th>
 
-            <th>
-              <div className="d-flex justify-content-between">
-                <h6></h6>
+            <th style={{ width: "250px" }}>
+              <div className="d-flex justify-content-end">
                 <h6>16:00</h6>
               </div>
             </th>
-            <th>
-              <div className="d-flex justify-content-between">
-                <h6></h6>
+            <th style={{ paddingRight: "20px", width: "250px" }}>
+              <div className="d-flex justify-content-end">
                 <h6>18:30</h6>
               </div>
             </th>
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr className={new Date().getDay() !== 1 ? "WKSCalendarToday" : ""}>
             <td>
-              <div className="d-flex justify-content-center align-items-center   ">
+              <div className=" d-flex justify-content-center align-items-center">
                 <h6>Lundi</h6>
               </div>
             </td>
 
             <td>
-              {seances.lundi.s8 && (
-                <div className="d-flex justify-content-center flex-column align-items-center ">
-                  <h6>{seances.lundi.s8.moduleId}</h6>
-                  <h6>
-                    {seances.lundi.s8.formateur.firstName +
-                      " " +
-                      seances.lundi.s8.formateur.lastName}
-                  </h6>
-                  <h6>{seances.lundi.s8.intitule}</h6>
-                </div>
-              )}
+              {seances.lundi.s8 && <SeanceBox seance={seances.lundi.s8} />}
             </td>
             <td>
-              {seances.lundi.s11 && (
-                <div className="d-flex justify-content-center align-items-center   ">
-                  <h6>{seances.lundi.s11.moduleId}</h6>
-                </div>
-              )}
+              {seances.lundi.s11 && <SeanceBox seance={seances.lundi.s11} />}
             </td>
 
             <td>
-              {seances.lundi.s13 && (
-                <div className="d-flex justify-content-center align-items-center   ">
-                  <h6>{seances.lundi.s13.moduleId}</h6>
-                </div>
-              )}
+              {seances.lundi.s13 && <SeanceBox seance={seances.lundi.s13} />}
             </td>
             <td>
-              {seances.lundi.s16 && (
-                <div className="d-flex justify-content-center align-items-center   ">
-                  <h6>{seances.lundi.s16.moduleId}</h6>
-                </div>
-              )}
+              {seances.lundi.s16 && <SeanceBox seance={seances.lundi.s16} />}
             </td>
           </tr>
-          <tr>
+          <tr className={new Date().getDay() === 2 ? "WKSCalendarToday" : ""}>
             <td>
-              <div className="d-flex justify-content-center align-items-center   ">
+              <div className=" d-flex justify-content-center align-items-center">
                 <h6>Mardi</h6>
               </div>
             </td>
             <td>
-              {seances.mardi.s8 && (
-                <div className="d-flex justify-content-center align-items-center   ">
-                  <h6>{seances.mardi.s8.moduleId}</h6>
-                </div>
-              )}
+              {seances.mardi.s8 && <SeanceBox seance={seances.mardi.s8} />}
             </td>
             <td>
-              {seances.mardi.s11 && (
-                <div className="d-flex justify-content-center align-items-center   ">
-                  <h6>{seances.mardi.s11.moduleId}</h6>
-                </div>
-              )}
+              {seances.mardi.s11 && <SeanceBox seance={seances.mardi.s11} />}
             </td>
             <td>
-              {seances.mardi.s13 && (
-                <div className="d-flex justify-content-center align-items-center   ">
-                  <h6>{seances.mardi.s13.moduleId}</h6>
-                </div>
-              )}
+              {seances.mardi.s13 && <SeanceBox seance={seances.mardi.s13} />}
             </td>
             <td>
-              {seances.mardi.s16 && (
-                <div className="d-flex justify-content-center align-items-center   ">
-                  <h6>{seances.mardi.s16.moduleId}</h6>
-                </div>
-              )}
+              {seances.mardi.s16 && <SeanceBox seance={seances.mardi.s16} />}
             </td>
           </tr>
-          <tr>
+          <tr className={new Date().getDay() === 3 ? "WKSCalendarToday" : ""}>
             <td>
-              <div className="d-flex justify-content-center align-items-center  ">
+              <div className=" d-flex justify-content-center align-items-center">
                 <h6>Mercredi</h6>
               </div>
             </td>
             <td>
               {seances.mercredi.s8 && (
-                <div className="d-flex justify-content-center align-items-center   ">
-                  <h6>{seances.mercredi.s8.moduleId}</h6>
-                </div>
+                <SeanceBox seance={seances.mercredi.s8} />
               )}
             </td>
             <td>
               {seances.mercredi.s11 && (
-                <div className="d-flex justify-content-center align-items-center   ">
-                  <h6>{seances.mercredi.s11.moduleId}</h6>
-                </div>
+                <SeanceBox seance={seances.mercredi.s11} />
               )}
             </td>
             <td>
               {seances.mercredi.s13 && (
-                <div className="d-flex justify-content-center align-items-center   ">
-                  <h6>{seances.mercredi.s13.moduleId}</h6>
-                </div>
+                <SeanceBox seance={seances.mercredi.s13} />
               )}
             </td>
             <td>
               {seances.mercredi.s16 && (
-                <div className="d-flex justify-content-center align-items-center   ">
-                  <h6>{seances.mercredi.s16.moduleId}</h6>
-                </div>
+                <SeanceBox seance={seances.mercredi.s16} />
               )}
             </td>
           </tr>
-          <tr>
+          <tr className={new Date().getDay() === 4 ? "WKSCalendarToday" : ""}>
             <td>
-              <div className="d-flex justify-content-center align-items-center h-100">
+              <div className=" d-flex justify-content-center align-items-center">
                 <h6>Jeudi</h6>
               </div>
             </td>
             <td>
-              {seances.jeudi.s8 && (
-                <div className="d-flex justify-content-center align-items-center h-100 ">
-                  <h6>{seances.jeudi.s8.moduleId}</h6>
-                </div>
-              )}
+              {seances.jeudi.s8 && <SeanceBox seance={seances.jeudi.s8} />}
             </td>
             <td>
-              {seances.jeudi.s11 && (
-                <div className="d-flex justify-content-center align-items-center h-100 ">
-                  <h6>{seances.jeudi.s11.moduleId}</h6>
-                </div>
-              )}
+              {seances.jeudi.s11 && <SeanceBox seance={seances.jeudi.s11} />}
             </td>
             <td>
-              {seances.jeudi.s13 && (
-                <div className="d-flex justify-content-center align-items-center h-100 ">
-                  <h6>{seances.jeudi.s13.moduleId}</h6>
-                </div>
-              )}
+              {seances.jeudi.s13 && <SeanceBox seance={seances.jeudi.s13} />}
             </td>
             <td>
-              {seances.jeudi.s16 && (
-                <div className="d-flex justify-content-center align-items-center h-100 ">
-                  <h6>{seances.jeudi.s16.moduleId}</h6>
-                </div>
-              )}
+              {seances.jeudi.s16 && <SeanceBox seance={seances.jeudi.s16} />}
             </td>
           </tr>
-          <tr>
+          <tr className={new Date().getDay() === 5 ? "WKSCalendarToday" : ""}>
             <td>
-              <div className="d-flex justify-content-center align-items-center h-100">
+              <div className=" d-flex justify-content-center align-items-center">
                 <h6>Vendredi</h6>
               </div>
             </td>
             <td>
               {seances.vendredi.s8 && (
-                <div className="d-flex justify-content-center align-items-center h-100 ">
-                  <h6>{seances.vendredi.s8.moduleId}</h6>
-                </div>
+                <SeanceBox seance={seances.vendredi.s8} />
               )}
             </td>
             <td>
               {seances.vendredi.s11 && (
-                <div className="d-flex justify-content-center align-items-center h-100 ">
-                  <h6>{seances.vendredi.s11.moduleId}</h6>
-                </div>
+                <SeanceBox seance={seances.vendredi.s11} />
               )}
             </td>
             <td>
               {seances.vendredi.s13 && (
-                <div className="d-flex justify-content-center align-items-center h-100 ">
-                  <h6>{seances.vendredi.s13.moduleId}</h6>
-                </div>
+                <SeanceBox seance={seances.vendredi.s13} />
               )}
             </td>
             <td>
               {seances.vendredi.s16 && (
-                <div className="d-flex justify-content-center align-items-center h-100 ">
-                  <h6>{seances.vendredi.s16.moduleId}</h6>
-                </div>
+                <SeanceBox seance={seances.vendredi.s16} />
               )}
             </td>
           </tr>
-          <tr>
+          <tr className={new Date().getDay() === 6 ? "WKSCalendarToday" : ""}>
             <td>
-              <div className="d-flex justify-content-center align-items-center h-100">
+              <div className=" d-flex justify-content-center align-items-center">
                 <h6>Samedi</h6>
               </div>
             </td>
             <td>
-              {seances.samedi.s8 && (
-                <div className="d-flex justify-content-center align-items-center h-100 ">
-                  <h6>{seances.samedi.s8.moduleId}</h6>
-                </div>
-              )}
+              {seances.samedi.s8 && <SeanceBox seance={seances.samedi.s8} />}
             </td>
             <td>
-              {seances.samedi.s11 && (
-                <div className="d-flex justify-content-center align-items-center h-100 ">
-                  <h6>{seances.samedi.s11.moduleId}</h6>
-                </div>
-              )}
+              {seances.samedi.s11 && <SeanceBox seance={seances.samedi.s11} />}
             </td>
             <td>
-              {seances.samedi.s13 && (
-                <div className="d-flex justify-content-center align-items-center h-100 ">
-                  <h6>{seances.samedi.s13.moduleId}</h6>
-                </div>
-              )}
+              {seances.samedi.s13 && <SeanceBox seance={seances.samedi.s13} />}
             </td>
             <td>
-              {seances.samedi.s16 && (
-                <div className="d-flex justify-content-center align-items-center h-100 ">
-                  <h6>{seances.samedi.s16.moduleId}</h6>
-                </div>
-              )}
+              {seances.samedi.s16 && <SeanceBox seance={seances.samedi.s16} />}
             </td>
           </tr>
         </tbody>

@@ -97,7 +97,6 @@ function GestionSeances() {
           <Grid item xs={3}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DesktopDatePicker
-                minDate={new Date()}
                 label="Date seance"
                 inputformat="yyyy/mm/dd"
                 value={selectedDate}

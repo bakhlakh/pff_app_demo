@@ -21,13 +21,24 @@ function PostSeance({ handleClick, cancelOp }) {
   const [nbchars, setnbchars] = useState(300);
   const getRooms = useStoreActions((actions) => actions.getRooms);
   const rooms = useStoreState((state) => state.rooms);
-  const getModules = useStoreActions((actions) => actions.getModules);
-  const modules = useStoreState((state) => state.modules);
-  const getGroupes = useStoreActions((actions) => actions.getGroupes);
-  const groupes = useStoreState((state) => state.groupes);
+  const filteredModules = useStoreState((state) => state.filteredModules);
+  const getFiliereModules = useStoreActions(
+    (actions) => actions.getFiliereModules
+  );
+  const getFiliereGroupes = useStoreActions(
+    (actions) => actions.getFiliereGroupes
+  );
+  const filteredGroupes = useStoreState((state) => state.filteredGroupes);
   const getFormateurs = useStoreActions((actions) => actions.getFormateurs);
   const formateurs = useStoreState((state) => state.formateurs);
+  const getFilieres = useStoreActions((actions) => actions.getFilieres);
+  const filieres = useStoreState((state) => state.filieres);
   const postSeance = useStoreActions((actions) => actions.postSeance);
+  const [selectedFiliere, setSelectedFiliere] = useState("");
+  const availableStartTime = useStoreState((state) => state.availableStartTime);
+  const getAvailableStartTime = useStoreActions(
+    (actions) => actions.getAvailableStartTime
+  );
   const [newSeance, setNewSeance] = useState({
     title: "",
     roomId: "",
@@ -41,23 +52,28 @@ function PostSeance({ handleClick, cancelOp }) {
     anneScolaire: "",
   });
   useEffect(() => {
-    setNewSeance({
-      ...newSeance,
-      anneScolaire: groupes[0].anneScolaire,
-    });
-  }, [groupes]);
+    if (filteredGroupes.length > 0) {
+      setNewSeance({
+        ...newSeance,
+        anneScolaire: filteredGroupes[0].anneScolaire,
+      });
+    }
+  }, [filteredGroupes]);
   useEffect(() => {
+    getFilieres();
     getRooms();
-    getModules();
-    getGroupes();
     getFormateurs();
-    console.log("formateurs", formateurs);
+    getFiliereModules("TDI");
+    getFiliereGroupes("TDI");
   }, []);
+  useEffect(() => {
+    handleDateGroupeChange();
+  }, [newSeance]);
   const validate = Yup.object({
     title: Yup.string().required("Le titre est obligatoire").min(3),
     dateSeance: Yup.date().required("La date est obligatoire"),
   });
-  const handleSubmit = (values) => {
+  const handleSubmit = async (values) => {
     const scObj = {
       title: values.title,
       roomId: newSeance.roomId,
@@ -70,12 +86,21 @@ function PostSeance({ handleClick, cancelOp }) {
       groupId: newSeance.groupId,
       anneScolaire: newSeance.anneScolaire,
     };
-    let res = postSeance(scObj);
-    if (res >= 201 && res <= 299) {
+    let res = await postSeance(scObj);
+    console.log("res", res);
+    if (res.status >= 201 && res.status <= 299) {
       console.log("Ok");
       cancelOp();
     } else {
       console.log("error");
+    }
+  };
+  const handleDateGroupeChange = () => {
+    if (newSeance.groupId !== "" && newSeance.dateSeance !== "") {
+      getAvailableStartTime({
+        dateSeance: newSeance.dateSeance,
+        groupId: newSeance.groupId,
+      });
     }
   };
   return (
@@ -92,7 +117,39 @@ function PostSeance({ handleClick, cancelOp }) {
             <div className="formContent">
               <CssBaseline />
               <Grid container spacing={3}>
-                <Grid item xs={12}>
+                <Grid item xs={6}>
+                  <FormControl fullWidth sx={{ mb: 1 }}>
+                    <InputLabel id="filieres">Filiere</InputLabel>
+                    <Select
+                      labelId="filieres"
+                      name="filiereId"
+                      required
+                      value={filieres ? selectedFiliere : null}
+                      label="Filieres"
+                      onChange={(e) => {
+                        setSelectedFiliere(e.target.value);
+                        getFiliereModules(e.target.value);
+                        getFiliereGroupes(e.target.value);
+                        setNewSeance({
+                          ...newSeance,
+                          moduleId: "",
+                          groupId: "",
+                        });
+                      }}
+                    >
+                      {filieres.map((item) => (
+                        <MenuItem
+                          key={item.filiereId + "filiere"}
+                          value={item.filiereId}
+                          selected={item.filiereId === newSeance.filiereId}
+                        >
+                          {item.filiereId}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid item xs={6}>
                   <FieldComp
                     type="text"
                     name="title"
@@ -134,7 +191,7 @@ function PostSeance({ handleClick, cancelOp }) {
                       id="modules"
                       required
                       name="moduleId"
-                      value={modules && newSeance.moduleId}
+                      value={filteredModules && newSeance.moduleId}
                       label="modules"
                       onChange={(e) => {
                         setNewSeance({
@@ -143,13 +200,13 @@ function PostSeance({ handleClick, cancelOp }) {
                         });
                       }}
                     >
-                      {modules.map((item) => (
+                      {filteredModules.map((item) => (
                         <MenuItem
-                          key={item.moduleId + "module"}
-                          value={item.moduleId}
-                          selected={item.moduleId === newSeance.moduleId}
+                          key={item.module.moduleId + "module"}
+                          value={item.module.moduleId}
+                          selected={item.module.moduleId === newSeance.moduleId}
                         >
-                          {item.intitule}
+                          {item.module.intitule}
                         </MenuItem>
                       ))}
                     </Select>
@@ -162,7 +219,7 @@ function PostSeance({ handleClick, cancelOp }) {
                       labelId="groupes"
                       id="groupes"
                       name="groupId"
-                      value={groupes && newSeance.groupId}
+                      value={filteredGroupes && newSeance.groupId}
                       label="groupes"
                       required
                       onChange={(e) => {
@@ -172,7 +229,7 @@ function PostSeance({ handleClick, cancelOp }) {
                         });
                       }}
                     >
-                      {groupes.map((item) => (
+                      {filteredGroupes.map((item) => (
                         <MenuItem
                           key={item.groupId + "groupe"}
                           value={item.groupId}
@@ -187,7 +244,7 @@ function PostSeance({ handleClick, cancelOp }) {
                 <Grid item xs={4}>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DesktopDatePicker
-                      minDate={newSeance.dateSeance}
+                      minDate={new Date()}
                       label="Date Seance"
                       inputformat="yyyy/mm/dd"
                       required
@@ -228,10 +285,11 @@ function PostSeance({ handleClick, cancelOp }) {
                         });
                       }}
                     >
-                      <MenuItem value={"08:30"}>8:30</MenuItem>
-                      <MenuItem value={"11:00"}>11:00</MenuItem>
-                      <MenuItem value={"13:30"}>13:30</MenuItem>
-                      <MenuItem value={"16:00"}>16:00</MenuItem>
+                      {availableStartTime.map((item) => (
+                        <MenuItem key={item + "heure"} value={item}>
+                          {item}
+                        </MenuItem>
+                      ))}
                     </Select>
                   </FormControl>
                 </Grid>

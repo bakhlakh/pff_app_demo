@@ -11,6 +11,9 @@ const store = createStore({
   groupes: [],
   seances: [],
   rooms: [],
+  filteredGroupes: [],
+  availableStartTime: ["08:30", "11:00", "13:30", "16:00"],
+  filteredModules: [],
   formateurs: [],
   currentUpdatedGroupId: "",
   userAuthentificated: false,
@@ -42,6 +45,38 @@ const store = createStore({
       .then(({ data }) => data);
     actions.setFilieres(res);
   }),
+  getFiliereGroupes: thunk(async (actions, id) => {
+    const res = await api
+      .get(`/api/Groupes/GetFiliereGroupes/${id}`, { headers: authHeader() })
+      .then(({ data }) => data);
+    actions.setFilteredGroupes(res);
+  }),
+  getFiliereModules: thunk(async (actions, filiereId) => {
+    const res = await api
+      .get(`/api/Modules/GetModulesInFiliere/${filiereId}`, {
+        headers: authHeader(),
+      })
+      .then(({ data }) => data);
+    actions.setFilteredModules(res);
+  }),
+  getAvailableStartTime: thunk(async (actions, obj) => {
+    const bruh = new Date(obj.dateSeance);
+    const res = await api
+      .get(
+        `/api/Seances/getFreeSeances?date=${
+          bruh.getFullYear() +
+          "-" +
+          (bruh.getMonth() + 1) +
+          "-" +
+          bruh.getDate()
+        }&groupId=${obj.groupId}`,
+        {
+          headers: authHeader(),
+        }
+      )
+      .then(({ data }) => data);
+    actions.setAvailableStartTime(res);
+  }),
   getGroupes: thunk(async (actions) => {
     const res = await api
       .get("/api/Groupes", { headers: authHeader() })
@@ -60,10 +95,13 @@ const store = createStore({
       .then(({ data }) => data);
     actions.setSeances(res);
   }),
-  postSeance: thunk(async (actions, seance) => {
+  postSeance: thunk(async (_, seance) => {
     const res = await api
       .post("/api/Seances", seance, { headers: authHeader() })
-      .then((r) => r.status);
+      .then((r) => {
+        console.log("first", r);
+        return r;
+      });
     return res;
   }),
   getRooms: thunk(async (actions) => {
@@ -138,6 +176,15 @@ const store = createStore({
   }),
   setWeekSeances: action((state, res) => {
     state.weekSeances = res;
+  }),
+  setFilteredModules: action((state, res) => {
+    state.filteredModules = res;
+  }),
+  setFilteredGroupes: action((state, res) => {
+    state.filteredGroupes = res;
+  }),
+  setAvailableStartTime: action((state, res) => {
+    state.availableStartTime = res;
   }),
 });
 export default store;

@@ -1,2 +1,63 @@
 td {
 }
+.WKSCalendarTable {
+  border-collapse: collapse;
+  border: 1px solid #000000;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  width: 100%;
+  border-radius: 10px;
+}
+.WKSCalendarTable th {
+  background-color: #000000;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 2px;
+  text-align: center;
+}
+.WKSCalendarTable td {
+  background-color: #ffffff;
+  color: #000000;
+  font-size: 12px;
+  text-align: center;
+  border: #000000 1px solid;
+  max-height: 100px !important;
+}
+.WKSCalendarTable tr {
+  height: 100px !important;
+}
+.WKSCalendarToday > td {
+  background-color: #f5e4ff !important;
+}
+.seance-box {
+  font-size: 1rem;
+  height: 100px;
+  box-sizing: border-box;
+}
+.seance-box-header-module {
+  margin-top: 5px;
+  font-weight: bold;
+  background-color: #eca63c;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.seance-box-body {
+  font-size: 0.85rem;
+  padding: 5px;
+}
+.seance-box-body-intitule {
+  color: #000000;
+  border-radius: 5px;
+}
+.seance-box-body-formateur {
+  color: #000000;
+  border-radius: 5px;
+}
+@media screen and (min-width: 1000px) {
+  .seance-box-body {
+    margin-top: 10px;
+  }
+}
