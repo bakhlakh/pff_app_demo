@@ -1,14 +1,12 @@
 import { useStoreActions, useStoreState } from "easy-peasy";
 import React, { useEffect, useState } from "react";
 import "./css/GPManagement.css";
-import BootstrapTable from "react-bootstrap-table-next";
-import paginationFactory from "react-bootstrap-table2-paginator";
-import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
 import PostGroupForm from "../forms/PostGroupForm";
 import ConfirmDelete from "../components/ConfirmDelete";
 import MessageBox from "../components/MessageBox";
 import authHeader from "../services/auth-header";
 import NewSide from "../components/NewSide";
+import { DataGrid } from "@mui/x-data-grid";
 
 function GPManagement() {
   const groupes = useStoreState((state) => state.groupes);
@@ -25,9 +23,9 @@ function GPManagement() {
   useEffect(() => {
     getGroupes();
   }, [getGroupes]);
-  const handleDelete = (row) => {
+  const handleDelete = (data) => {
     setConfirmDeleteVisible(true);
-    setCurrentUpdated(row);
+    setCurrentUpdated(data.row);
   };
   const deleteGroupe = () => {
     api
@@ -53,55 +51,50 @@ function GPManagement() {
   groupes.forEach((element) => {
     element.groupKey = element.groupId + element.anneScolaire + element.niveau;
   });
-  const columns = [
-    { dataField: "groupKey", text: "bruh", hidden: true },
+  const muiColumns = [
+    { field: "groupId", headerName: "ID Groupe", width: 90 },
     {
-      dataField: "groupId",
-      text: "ID Groupe",
-      sort: true,
-      filter: textFilter(),
-    },
-    { dataField: "anneScolaire", text: "Anne scolaire", sort: true },
-    {
-      dataField: "filiere.nomFiliere",
-      text: "Nom Filiere",
-      sort: true,
-      filter: textFilter(),
+      field: "anneScolaire",
+      headerName: "Anne Scolaire",
+      width: 150,
     },
     {
-      dataField: "filiereId",
-      text: "ID Filiere",
-      sort: true,
-      filter: textFilter(),
+      field: "",
+      headerName: "Nom filiere",
+      width: 400,
+      renderCell: (cell) => {
+        return cell.row.filiere.nomFiliere;
+      },
     },
     {
-      dataField: "Operations",
-      text: "Operations",
-      formatter: (cellContent, row) => {
+      field: "update",
+      headerName: "Operations",
+      width: 300,
+      renderCell: (cell) => {
         return (
-          <div className="d-flex">
+          <div className="btn-group">
             <button
-              className="btn btn-danger m-1"
-              onClick={() => handleDelete(row)}
+              className="btn btn-warning"
+              onClick={() => {
+                console.log(cell);
+              }}
+            >
+              Update
+            </button>
+            <button
+              className="btn btn-danger"
+              onClick={() => {
+                handleDelete(cell);
+              }}
             >
               Delete
             </button>
-            <button className="btn btn-primary m-1">stagiaires</button>
           </div>
         );
       },
     },
   ];
-  const pagination = paginationFactory({
-    page: 1,
-    sizePerPage: 10,
-    lastPageText: ">>",
-    firstPageText: "<<",
-    nextPageText: ">",
-    prePageText: "<",
-    showTotal: true,
-    alwaysShowAllBtns: true,
-  });
+
   return (
     <>
       <NewSide title="Gestion des groupes" />
@@ -118,7 +111,7 @@ function GPManagement() {
         </div>
       )}
       <div className="GestionModules d-grid">
-        <div className="gestionModulesContent">
+        <div className="gestionModulesContent m-5 ">
           <div className="content">
             {postNewFormVisible && (
               <PostGroupForm
@@ -145,19 +138,14 @@ function GPManagement() {
                 Ajouter un groupe
               </button>
             </div>
-            <BootstrapTable
-              columns={columns}
-              data={groupes}
-              keyField="groupKey"
-              bordered={false}
-              rowStyle={{ color: "gainsboro" }}
-              headerClasses="text-white bg-dark"
-              filterPosition="bottom"
-              classes="BTtable m-2"
-              wrapperClasses="BTwrapper"
-              pagination={pagination}
-              filter={filterFactory()}
-            />
+            <div style={{ height: 800, width: "100%" }}>
+              <DataGrid
+                rows={groupes}
+                columns={muiColumns}
+                rowsPerPageOptions={[5, 10, 20, 50, 100]}
+                getRowId={(row) => row.groupId}
+              />
+            </div>
           </div>
         </div>
         {confirmDeleteVisible && (

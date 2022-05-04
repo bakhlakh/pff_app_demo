@@ -1,15 +1,13 @@
 import { useStoreActions, useStoreState } from "easy-peasy";
 import React, { useEffect, useState } from "react";
 import "./css/GPManagement.css";
-import BootstrapTable from "react-bootstrap-table-next";
-import paginationFactory from "react-bootstrap-table2-paginator";
-import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
 import PostStagiaireForm from "../forms/PostStagiaireForm";
 import ConfirmDelete from "../components/ConfirmDelete";
 import MessageBox from "../components/MessageBox";
 import PutStagiereForm from "../forms/PutStagiereForm";
 import authHeader from "../services/auth-header";
 import NewSide from "../components/NewSide";
+import { DataGrid } from "@mui/x-data-grid";
 
 function STManagement() {
   const getStagiaires = useStoreActions((actions) => actions.getStagiaires);
@@ -59,61 +57,65 @@ function STManagement() {
     let stgObj = stagiaires.find((x) => x.stagiaireId === row.stagiaireId);
     setCurrentUpdated(stgObj);
   };
-  const columns = [
+  const muiColumns = [
     {
-      dataField: "stagiaireId",
-      text: "ID Stagiaire",
-      hidden: true,
+      field: "cin",
+      headerName: "CIN",
+      width: 150,
     },
     {
-      dataField: "cin",
-      text: "CIN",
-      sort: true,
-      filter: textFilter(),
+      field: "NomComplet",
+      headerName: "Nom Complet",
+      width: 200,
+      sortable: false,
+      filter: true,
+      operatorValue: "contains",
+      valueGetter: (params) => {
+        return `${params.row.firstName} ${params.row.lastName}`;
+      },
     },
     {
-      dataField: "firstName",
-      text: "Prenom",
-      sort: true,
-      filter: textFilter(),
-    },
-    { dataField: "lastName", text: "Nom", sort: true, filter: textFilter() },
-    {
-      dataField: "groupId",
-      text: "Groupe",
-      sort: true,
-      filter: textFilter(),
+      field: "groupId",
+      headerName: "Groupe",
+      width: 150,
+      sortable: false,
+      filter: true,
+      operatorValue: "contains",
     },
     {
-      dataField: "birthDate",
-      text: "Date Naissance",
-      sort: true,
-      filter: textFilter(),
+      field: "birthDate",
+      headerName: "Date Naissance",
+      width: 150,
+      sortable: false,
+      filter: true,
     },
     {
-      dataField: "statue",
-      text: "Statue",
-      sort: true,
-      filter: textFilter(),
+      field: "statue",
+      headerName: "Statue",
+      width: 150,
+      sortable: false,
     },
     {
-      dataField: "Operations",
-      text: "Operations",
-      formatter: (cellContent, row) => {
+      field: "update",
+      headerName: "Operations",
+      width: 300,
+      renderCell: (cell) => {
         return (
-          <div className="d-flex">
+          <div className="btn-group">
             <button
-              className="btn btn-warning m-1"
+              className="btn btn-warning"
               onClick={() => {
-                setCurrentUpdatedToObject(row);
+                setCurrentUpdatedToObject(cell.row);
                 setUpdateStagiaireFormVisible(true);
               }}
             >
               Update
             </button>
             <button
-              className="btn btn-danger m-1"
-              onClick={() => handleDeleteClick(row)}
+              className="btn btn-danger"
+              onClick={() => {
+                handleDeleteClick(cell.row);
+              }}
             >
               Delete
             </button>
@@ -122,17 +124,6 @@ function STManagement() {
       },
     },
   ];
-  const pagination = paginationFactory({
-    page: 1,
-    sizePerPage: 10,
-    lastPageText: ">>",
-    firstPageText: "<<",
-    nextPageText: ">",
-    prePageText: "<",
-    showTotal: true,
-    alwaysShowAllBtns: true,
-  });
-
   return (
     <>
       <NewSide title="Gestion des stagieres" />
@@ -149,7 +140,7 @@ function STManagement() {
         </div>
       )}
       <div className="GestionModules d-grid">
-        <div className="gestionModulesContent">
+        <div className="gestionModulesContent m-5">
           <div className="content">
             {updateStagiaireFormVisible && (
               <PutStagiereForm
@@ -176,7 +167,7 @@ function STManagement() {
             )}
             <div className="d-flex justify-content-end">
               <button
-                className="btn btn-success"
+                className="btn btn-success mb-2"
                 onClick={() => {
                   setPostNewFormVisible(true);
                 }}
@@ -184,19 +175,14 @@ function STManagement() {
                 Ajouter un stagiaire
               </button>
             </div>
-            <BootstrapTable
-              columns={columns}
-              data={stagiaires}
-              keyField="stagiaireId"
-              bordered={false}
-              rowStyle={{ color: "gainsboro" }}
-              headerClasses="text-white bg-dark"
-              filterPosition="bottom"
-              classes="BTtable m-2"
-              wrapperClasses="BTwrapper"
-              pagination={pagination}
-              filter={filterFactory()}
-            />
+            <div style={{ height: 500, width: "100%" }}>
+              <DataGrid
+                rows={stagiaires}
+                columns={muiColumns}
+                rowsPerPageOptions={[5, 10, 20, 50, 100]}
+                getRowId={(row) => row.stagiaireId}
+              />
+            </div>
           </div>
         </div>
         {confirmDeleteVisible && (

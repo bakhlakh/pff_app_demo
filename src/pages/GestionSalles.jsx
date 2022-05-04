@@ -2,12 +2,8 @@ import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import {
   Grid,
-  Paper,
-  styled,
   TextField,
   Button,
-  FormControl,
-  InputLabel,
   Container,
   CssBaseline,
   colors,
@@ -46,6 +42,7 @@ function GestionSalles() {
   };
   useEffect(() => {
     getRooms();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const columns = [
     { field: "roomId", headerName: "Salle ID", width: 70 },

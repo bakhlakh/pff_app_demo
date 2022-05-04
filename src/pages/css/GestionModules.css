@@ -3,11 +3,8 @@
   color: gainsboro;
 }
 .GestionModules {
-  display: flex;
   width: auto;
   align-items: center;
-  justify-content: end;
-  margin-top: 100px;
 }
 
 .recherche {

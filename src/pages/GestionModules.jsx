@@ -2,14 +2,12 @@ import React, { useState, useEffect } from "react";
 import MessageBox from "../components/MessageBox";
 import "./css/GestionModules.css";
 import { useStoreState, useStoreActions } from "easy-peasy";
-import BootstrapTable from "react-bootstrap-table-next";
-import paginationFactory from "react-bootstrap-table2-paginator";
-import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
 import ModulePostNewForm from "../forms/ModulePostNewForm";
 import ConfirmDelete from "../components/ConfirmDelete";
 import PutModuleForm from "../forms/PutModuleForm";
 import authHeader from "../services/auth-header";
 import NewSide from "../components/NewSide";
+import { DataGrid } from "@mui/x-data-grid";
 
 function GestionModules() {
   const modules = useStoreState((state) => state.modules);
@@ -24,17 +22,17 @@ function GestionModules() {
   const [updateFormVisible, setUpdateFormVisible] = useState(false);
   const api = useStoreState((store) => store.api);
   const getModules = useStoreActions((actions) => actions.getModules);
-  const handleDelete = (row) => {
+  const handleDelete = (data) => {
     setConfirmDeleteVisible(true);
-    setCurrentUpdated(row);
+    setCurrentUpdated(data.row);
   };
-  const handleUpdate = (row) => {
-    setCurrentUpdated(row);
+  const handleUpdate = (data) => {
+    setCurrentUpdated(data.row);
     setUpdateFormVisible(true);
   };
   const deleteModule = () => {
     api
-      .delete("api/Modules/FD/" + currentUpdated.moduleId, {
+      .delete("/api/Modules/FD/" + currentUpdated.moduleId, {
         headers: authHeader(),
       })
       .then((res) => {
@@ -56,59 +54,54 @@ function GestionModules() {
   useEffect(() => {
     getModules();
   }, [getModules]);
-  const columns = [
-    { dataField: "moduleId", text: "ID Module", filter: textFilter() },
+  const muiColumns = [
+    { field: "moduleId", headerName: "ID Module", width: 90 },
     {
-      dataField: "intitule",
-      text: "Intitule module",
-      sort: true,
-      filter: textFilter(),
+      field: "intitule",
+      headerName: "Intitule",
+      width: 150,
     },
     {
-      dataField: "description",
-      text: "Description",
-      filter: textFilter(),
-      style: { maxWidth: "400px", overflow: "auto" },
+      field: "description",
+      headerName: "Description",
+      width:
+        window.screen.width > 1000
+          ? window.screen.width - 700
+          : window.screen.width - 800,
     },
-    // columns follow dataField and text structure
     {
-      dataField: "update",
-      text: "Update",
-      formatter: (cellContent, row) => {
+      field: "update",
+      headerName: "Operations",
+      width: 300,
+      renderCell: (cell) => {
         return (
-          <button className="btn btn-warning" onClick={() => handleUpdate(row)}>
-            Update
-          </button>
-        );
-      },
-    },
-    {
-      dataField: "remove",
-      text: "Delete",
-      formatter: (cellContent, row) => {
-        return (
-          <button className="btn btn-danger" onClick={() => handleDelete(row)}>
-            Delete
-          </button>
+          <div className="btn-group">
+            <button
+              className="btn btn-warning"
+              onClick={() => {
+                handleUpdate(cell);
+              }}
+            >
+              Update
+            </button>
+            <button
+              className="btn btn-danger"
+              onClick={() => {
+                handleDelete(cell);
+              }}
+            >
+              Delete
+            </button>
+          </div>
         );
       },
     },
   ];
-  const pagination = paginationFactory({
-    page: 1,
-    sizePerPage: 10,
-    lastPageText: ">>",
-    firstPageText: "<<",
-    nextPageText: ">",
-    prePageText: "<",
-    showTotal: true,
-    alwaysShowAllBtns: true,
-  });
   return (
     <>
       <NewSide title="Gestion des modules" />
       {messageVisible && (
-        <div className="messageContainer m-5">
+        <div className="messageContainer m-5 mt-0">
           <MessageBox
             type={deleteMessage.type}
             message={deleteMessage.message}
@@ -119,7 +112,7 @@ function GestionModules() {
         </div>
       )}
       <div className="GestionModules d-grid">
-        <div className="gestionModulesContent">
+        <div className="gestionModulesContent m-5">
           <div className="content">
             {updateFormVisible && (
               <PutModuleForm
@@ -152,19 +145,15 @@ function GestionModules() {
             >
               Ajouter Module
             </button>
-            <BootstrapTable
-              columns={columns}
-              keyField="moduleId"
-              data={modules || []}
-              bordered={false}
-              headerClasses="text-dark"
-              pagination={pagination}
-              filter={filterFactory()}
-              filterPosition="bottom"
-              classes="BTtable m-2"
-              wrapperClasses="BTwrapper"
-              bodyClasses="BTbody"
-            />
+            <div style={{ height: 500, width: "100%" }}>
+              <DataGrid
+                rows={modules}
+                columns={muiColumns}
+                pageSize={10}
+                rowsPerPageOptions={[5, 10, 20, 50, 100]}
+                getRowId={(row) => row.moduleId}
+              />
+            </div>
           </div>
         </div>
         {confirmDeleteVisible && (

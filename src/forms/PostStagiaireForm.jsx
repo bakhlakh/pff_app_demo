@@ -14,6 +14,8 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import MessageBox from "../components/MessageBox";
+import authHeader from "../services/auth-header";
+
 function PostStagiaireForm({ handleClick, cancelOp }) {
   const api = useStoreState((store) => store.api);
   const getFilieres = useStoreActions((actions) => actions.getFilieres);
@@ -123,7 +125,9 @@ function PostStagiaireForm({ handleClick, cancelOp }) {
     };
     console.log("stgObj", stgObj);
     api
-      .post("/api/Stagiaires", stgObj)
+      .post("/api/Stagiaires", stgObj, {
+        headers: authHeader(),
+      })
       .then((res) => {
         console.log("res", res);
         handleClick();

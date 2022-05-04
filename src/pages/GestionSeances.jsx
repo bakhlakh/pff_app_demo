@@ -5,8 +5,6 @@ import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import WKSCalendar from "../components/WKSCalendar";
 import {
   Grid,
-  Paper,
-  styled,
   TextField,
   Button,
   FormControl,
@@ -30,13 +28,6 @@ const testDate = (selectedDate, date) => {
     return true;
   } else return false;
 };
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(0, 0, 0, 0),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-}));
 function GestionSeances() {
   const getGroupes = useStoreActions((actions) => actions.getGroupes);
   const groupes = useStoreState((state) => state.groupes);
@@ -53,6 +44,7 @@ function GestionSeances() {
     getSeances();
     getGroupes();
     handleSelectedValuesChange();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedDate, selectedGroupe]);
   const handleSelectedValuesChange = () => {
     if (calType === "WKS") {
