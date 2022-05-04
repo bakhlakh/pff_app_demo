@@ -11,6 +11,8 @@ import { useStoreActions, useStoreState } from "easy-peasy";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GestionSeances from "./pages/GestionSeances";
 import GestionSalles from "./pages/GestionSalles";
+import NewSide from "./components/NewSide";
+
 function Main() {
   const user = JSON.parse(localStorage.getItem("user"));
   const setUser = useStoreActions((actions) => actions.setUser);
@@ -31,16 +33,19 @@ function Main() {
     <>
       <Router>
         <Routes>
-          <Route element={<ProtectedRoute isAuth={auth} />}>
-            <Route exact path="/" element={<Home />} />
-            <Route path="/GestionFilieres" element={<GestionFilieres />} />
-            <Route path="/GestionModules" element={<GestionModules />} />
-            <Route path="/GestionStagiaires" element={<STManagement />} />
-            <Route path="/Groupes" element={<GPManagement />} />
-            <Route path="/GestionSeances" element={<GestionSeances />} />
-            <Route path="/GestionSalles" element={<GestionSalles />} />
-          </Route>
-          <Route path="/Login" element={<LoginPage />} />
+          {userAuthentificated ? (
+            <>
+              <Route exact path="/" element={<Home />} />
+              <Route path="/GestionFilieres" element={<GestionFilieres />} />
+              <Route path="/GestionModules" element={<GestionModules />} />
+              <Route path="/GestionStagiaires" element={<STManagement />} />
+              <Route path="/Groupes" element={<GPManagement />} />
+              <Route path="/GestionSeances" element={<GestionSeances />} />
+              <Route path="/GestionSalles" element={<GestionSalles />} />
+            </>
+          ) : (
+            <Route path="*" element={<LoginPage />}></Route>
+          )}
         </Routes>
       </Router>
     </>

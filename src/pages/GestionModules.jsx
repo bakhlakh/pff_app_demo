@@ -8,8 +8,8 @@ import filterFactory, { textFilter } from "react-bootstrap-table2-filter";
 import ModulePostNewForm from "../forms/ModulePostNewForm";
 import ConfirmDelete from "../components/ConfirmDelete";
 import PutModuleForm from "../forms/PutModuleForm";
-import Side from "../components/Side";
 import authHeader from "../services/auth-header";
+import NewSide from "../components/NewSide";
 
 function GestionModules() {
   const modules = useStoreState((state) => state.modules);
@@ -106,7 +106,7 @@ function GestionModules() {
   });
   return (
     <>
-      <Side />
+      <NewSide title="Gestion des modules" />
       {messageVisible && (
         <div className="messageContainer m-5">
           <MessageBox

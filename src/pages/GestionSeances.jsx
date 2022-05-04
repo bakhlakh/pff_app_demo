@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Side from "../components/Side";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
@@ -20,6 +19,7 @@ import {
 import SeancesCalendar from "../components/SeancesCalendar";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import PostSeance from "../forms/PostSeance";
+import NewSide from "../components/NewSide";
 
 const testDate = (selectedDate, date) => {
   if (
@@ -71,7 +71,7 @@ function GestionSeances() {
   };
   return (
     <>
-      <Side />
+      <NewSide title="Gestion des seances" />
       <CssBaseline />
       {postFormVisible && (
         <PostSeance

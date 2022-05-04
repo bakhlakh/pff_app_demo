@@ -8,8 +8,8 @@ import PostStagiaireForm from "../forms/PostStagiaireForm";
 import ConfirmDelete from "../components/ConfirmDelete";
 import MessageBox from "../components/MessageBox";
 import PutStagiereForm from "../forms/PutStagiereForm";
-import Side from "../components/Side";
 import authHeader from "../services/auth-header";
+import NewSide from "../components/NewSide";
 
 function STManagement() {
   const getStagiaires = useStoreActions((actions) => actions.getStagiaires);
@@ -135,7 +135,7 @@ function STManagement() {
 
   return (
     <>
-      <Side />
+      <NewSide title="Gestion des stagieres" />
       {messageVisible && (
         <div className="messageContainer m-5">
           <MessageBox

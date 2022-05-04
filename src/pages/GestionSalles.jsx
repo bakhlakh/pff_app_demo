@@ -13,8 +13,8 @@ import {
   colors,
 } from "@mui/material";
 import { useStoreState, useStoreActions } from "easy-peasy";
-import Side from "../components/Side";
 import ConfirmDelete from "../components/ConfirmDelete";
+import NewSide from "../components/NewSide";
 
 function GestionSalles() {
   const getRooms = useStoreActions((actions) => actions.getRooms);
@@ -95,7 +95,7 @@ function GestionSalles() {
 
   return (
     <>
-      <Side />
+      <NewSide title="Gestion des salles" />
       <CssBaseline />
       <Container maxWidth="lg" sx={{ marginTop: "100px" }}>
         {confirmDeleteVisible && (

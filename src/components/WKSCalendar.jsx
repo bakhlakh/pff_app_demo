@@ -183,7 +183,7 @@ function WKSCalendar({ data }) {
           </tr>
         </thead>
         <tbody>
-          <tr className={new Date().getDay() !== 1 ? "WKSCalendarToday" : ""}>
+          <tr className={new Date().getDay() === 1 ? "WKSCalendarToday" : ""}>
             <td>
               <div className=" d-flex justify-content-center align-items-center">
                 <h6>Lundi</h6>

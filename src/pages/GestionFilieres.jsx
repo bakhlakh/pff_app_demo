@@ -8,8 +8,8 @@ import FilierePutForm from "../forms/FilierePutForm";
 import GMF from "../forms/GMF";
 import ConfirmDelete from "../components/ConfirmDelete";
 import MessageBox from "../components/MessageBox";
-import Side from "../components/Side";
 import authHeader from "../services/auth-header";
+import NewSide from "../components/NewSide";
 
 //AXIOS SETUP
 const api = axios.create({ baseURL: "https://localhost:7161/" });
@@ -87,7 +87,7 @@ function GestionFilieres() {
 
   return (
     <>
-      <Side />
+      <NewSide title="Gestion des filieres" />
       {messageVisible ? (
         <div className="messageContainer m-5">
           <MessageBox
