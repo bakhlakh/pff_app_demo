@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useStoreActions, useStoreState } from "easy-peasy";
-import "./css/moduleForm.css";
+import "../styles/formsStyles/moduleForm.css";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";

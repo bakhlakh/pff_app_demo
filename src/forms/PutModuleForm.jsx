@@ -3,7 +3,7 @@ import { Formik, Form, Field } from "formik";
 import { FieldComp } from "../components/FieldComp";
 import { useState } from "react";
 import * as Yup from "yup";
-import "./css/POSTForm.css";
+import "../styles/formsStyles/POSTForm.css";
 import MessageBox from "../components/MessageBox";
 import { useStoreState } from "easy-peasy";
 import authHeader from "../services/auth-header";

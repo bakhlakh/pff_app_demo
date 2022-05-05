@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./css/POSTForm.css";
+import "../styles/formsStyles/POSTForm.css";
 import axios from "axios";
 import MessageBox from "../components/MessageBox";
 import FormControl from "@mui/material/FormControl";

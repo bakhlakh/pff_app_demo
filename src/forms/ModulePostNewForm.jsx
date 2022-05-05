@@ -3,11 +3,11 @@ import { Formik, Form, Field } from "formik";
 import { FieldComp } from "../components/FieldComp";
 import { useState } from "react";
 import * as Yup from "yup";
-import "./css/POSTForm.css";
+import "../styles/formsStyles/POSTForm.css";
 import MessageBox from "../components/MessageBox";
 import TextField from "@mui/material/TextField";
 import { useStoreState } from "easy-peasy";
-import "./css/moduleForm.css";
+import "../styles/formsStyles/moduleForm.css";
 import authHeader from "../services/auth-header";
 
 const msgReducer = (_, action) => {

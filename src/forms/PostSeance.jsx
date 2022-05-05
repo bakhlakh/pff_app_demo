@@ -15,7 +15,7 @@ import {
   MenuItem,
   CssBaseline,
 } from "@mui/material";
-import "./css/PostSeance.css";
+import "../styles/formsStyles/PostSeance.css";
 
 function PostSeance({ handleClick, cancelOp }) {
   const [nbchars, setnbchars] = useState(300);

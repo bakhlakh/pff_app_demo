@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import { Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import "./css/PostStagiaireForm.css";
+import "../styles/formsStyles/PostStagiaireForm.css";
 import { FieldComp } from "../components/FieldComp";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
