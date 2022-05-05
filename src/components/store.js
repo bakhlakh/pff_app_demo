@@ -1,6 +1,13 @@
 import { createStore, action, thunk } from "easy-peasy";
 import axios from "axios";
 import authHeader from "../services/auth-header";
+import modulesServices from "../services/modulesServices";
+import filiereServices from "../services/filiereServices";
+import groupeServices from "../services/groupeServices";
+import stagiaireServices from "../services/stagiaireServices";
+import seanceServices from "../services/seanceServices";
+import roomServices from "../services/roomServices";
+import formateurServices from "../services/formateurServices";
 const api = axios.create({ baseURL: "https://localhost:7161/" });
 const store = createStore({
   //states
@@ -34,116 +41,59 @@ const store = createStore({
     }
   }),
   getModules: thunk(async (actions) => {
-    const res = await api
-      .get("/api/Modules", { headers: authHeader() })
-      .then(({ data }) => data);
+    const res = await modulesServices.getModules();
     actions.setModules(res);
   }),
   getFilieres: thunk(async (actions) => {
-    const res = await api
-      .get("/api/Filieres", { headers: authHeader() })
-      .then(({ data }) => data);
+    const res = await filiereServices.getFilieres();
     actions.setFilieres(res);
   }),
   getFiliereGroupes: thunk(async (actions, id) => {
-    const res = await api
-      .get(`/api/Groupes/GetFiliereGroupes/${id}`, { headers: authHeader() })
-      .then(({ data }) => data);
+    const res = await groupeServices.getFiliereGroupes(id);
     actions.setFilteredGroupes(res);
   }),
   getFiliereModules: thunk(async (actions, filiereId) => {
-    const res = await api
-      .get(`/api/Modules/GetModulesInFiliere/${filiereId}`, {
-        headers: authHeader(),
-      })
-      .then(({ data }) => data);
+    const res = await modulesServices.getFiliereModules(filiereId);
     actions.setFilteredModules(res);
   }),
   getAvailableStartTime: thunk(async (actions, obj) => {
-    const bruh = new Date(obj.dateSeance);
-    const res = await api
-      .get(
-        `/api/Seances/getFreeSeances?date=${
-          bruh.getFullYear() +
-          "-" +
-          (bruh.getMonth() + 1) +
-          "-" +
-          bruh.getDate()
-        }&groupId=${obj.groupId}`,
-        {
-          headers: authHeader(),
-        }
-      )
-      .then(({ data }) => data);
+    const res = await seanceServices.getAvailableStartTime(obj);
     actions.setAvailableStartTime(res);
   }),
   getGroupes: thunk(async (actions) => {
-    const res = await api
-      .get("/api/Groupes", { headers: authHeader() })
-      .then(({ data }) => data);
+    const res = await groupeServices.getGroupes();
     actions.setGroupes(res);
   }),
   getStagiaires: thunk(async (actions) => {
-    const res = await api
-      .get("/api/Stagiaires", { headers: authHeader() })
-      .then(({ data }) => data);
+    const res = await stagiaireServices.getStagiaires();
     actions.setStagiaires(res);
   }),
   getSeances: thunk(async (actions) => {
-    const res = await api
-      .get("/api/Seances", { headers: authHeader() })
-      .then(({ data }) => data);
+    const res = seanceServices.getSeances();
     actions.setSeances(res);
   }),
   postSeance: thunk(async (_, seance) => {
-    const res = await api
-      .post("/api/Seances", seance, { headers: authHeader() })
-      .then((r) => {
-        console.log("first", r);
-        return r;
-      });
+    const res = await seanceServices.postSeances(seance);
     return res;
   }),
   getRooms: thunk(async (actions) => {
-    const res = await api
-      .get("/api/Rooms", { headers: authHeader() })
-      .then(({ data }) => data);
+    const res = await roomServices.getRooms();
     actions.setRooms(res);
   }),
   postRoom: thunk(async (actions, room) => {
-    const res = await api
-      .post("/api/Rooms", room, { headers: authHeader() })
-      .then(({ data }) => data);
+    const res = await roomServices.postRoom(room);
     actions.setRooms(res);
   }),
   deleteRoom: thunk(async (actions, id) => {
-    const res = await api
-      .delete(`/api/Rooms/${parseInt(id)}`, { headers: authHeader() })
-      .then(({ data }) => data);
+    const res = await roomServices.deleteRoom(id);
     actions.setRooms(res);
   }),
   getFormateurs: thunk(async (actions) => {
-    const res = await api
-      .get("/api/Formateurs", { headers: authHeader() })
-      .then(({ data }) => data);
+    const res = await formateurServices.getFormateurs();
     actions.setFormateurs(res);
   }),
   getWeekSeances: thunk(async (actions, obj) => {
-    const bruh = new Date(obj.selectedDate);
-    const res = await api
-      .get(
-        `/api/Seances/getWeekSeances?date=${
-          bruh.getFullYear() +
-          "-" +
-          (bruh.getMonth() + 1) +
-          "-" +
-          bruh.getDate()
-        }&groupId=${obj.selectedGroupe}`,
-        {
-          headers: authHeader(),
-        }
-      )
-      .then(({ data }) => data);
+    const res = await seanceServices.getWeekSeances(obj);
     actions.setWeekSeances(res);
   }),
   //actions

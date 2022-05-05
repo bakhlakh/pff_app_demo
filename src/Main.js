@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
 import "./main.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import GestionFilieres from "./pages/GestionFilieres";
-import GestionModules from "./pages/GestionModules";
-import STManagement from "./pages/STManagement";
-import GPManagement from "./pages/GPManagement";
-import Home from "./pages/Home";
-import LoginPage from "./pages/LoginPage";
+import GestionFilieres from "./pages/GestionFilieres.jsx";
+import GestionModules from "./pages/GestionModules.jsx";
+import STManagement from "./pages/STManagement.jsx";
+import GPManagement from "./pages/GPManagement.jsx";
+import Home from "./pages/Home.jsx";
+import LoginPage from "./pages/LoginPage.jsx";
 import { useStoreActions, useStoreState } from "easy-peasy";
-import ProtectedRoute from "./components/ProtectedRoute";
-import GestionSeances from "./pages/GestionSeances";
-import GestionSalles from "./pages/GestionSalles";
+import GestionSeances from "./pages/GestionSeances.jsx";
+import GestionSalles from "./pages/GestionSalles.jsx";
 
 function Main() {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -19,15 +18,10 @@ function Main() {
   const userAuthentificated = useStoreState(
     (state) => state.userAuthentificated
   );
-  const [auth, setAuth] = useState(false);
   useEffect(() => {
     setUser(user);
     verifyClient();
   }, []);
-  useEffect(() => {
-    if (user !== null && userAuthentificated) setAuth(true);
-    else setAuth(false);
-  }, [user, userAuthentificated]);
   return (
     <>
       <Router>
