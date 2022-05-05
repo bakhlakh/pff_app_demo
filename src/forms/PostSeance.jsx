@@ -88,7 +88,7 @@ function PostSeance({ handleClick, cancelOp }) {
     };
     let res = await postSeance(scObj);
     console.log("res", res);
-    if ((res.status >= 201 && res.status <= 299) || res?.seanceId) {
+    if (res?.seanceId) {
       console.log("Ok");
       cancelOp();
     } else {
