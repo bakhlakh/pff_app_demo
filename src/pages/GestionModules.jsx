@@ -53,7 +53,8 @@ function GestionModules() {
   };
   useEffect(() => {
     getModules();
-  }, [getModules]);
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const muiColumns = [
     { field: "moduleId", headerName: "ID Module", width: 90 },
     {
