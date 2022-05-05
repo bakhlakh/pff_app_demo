@@ -27,6 +27,7 @@ const store = createStore({
   user: null,
   isPost: false,
   weekSeances: [],
+  apiError: null,
   //Thunks
   verifyClient: thunk(async (actions) => {
     let res = await api
@@ -41,60 +42,116 @@ const store = createStore({
     }
   }),
   getModules: thunk(async (actions) => {
-    const res = await modulesServices.getModules();
-    actions.setModules(res);
+    try {
+      const res = await modulesServices.getModules();
+      actions.setModules(res);
+    } catch (error) {
+      actions.setApiError(error);
+    }
   }),
   getFilieres: thunk(async (actions) => {
-    const res = await filiereServices.getFilieres();
-    actions.setFilieres(res);
+    try {
+      const res = await filiereServices.getFilieres();
+      actions.setFilieres(res);
+    } catch (error) {
+      actions.setApiError(error);
+    }
   }),
   getFiliereGroupes: thunk(async (actions, id) => {
-    const res = await groupeServices.getFiliereGroupes(id);
-    actions.setFilteredGroupes(res);
+    try {
+      const res = await groupeServices.getFiliereGroupes(id);
+      actions.setFilteredGroupes(res);
+    } catch (error) {
+      actions.setApiError(error);
+    }
   }),
   getFiliereModules: thunk(async (actions, filiereId) => {
-    const res = await modulesServices.getFiliereModules(filiereId);
-    actions.setFilteredModules(res);
+    try {
+      const res = await modulesServices.getFiliereModules(filiereId);
+      actions.setFilteredModules(res);
+    } catch (error) {
+      actions.setApiError(error);
+    }
   }),
   getAvailableStartTime: thunk(async (actions, obj) => {
-    const res = await seanceServices.getAvailableStartTime(obj);
-    actions.setAvailableStartTime(res);
+    try {
+      const res = await seanceServices.getAvailableStartTime(obj);
+      actions.setAvailableStartTime(res);
+    } catch (error) {
+      actions.setApiError(error);
+    }
   }),
   getGroupes: thunk(async (actions) => {
-    const res = await groupeServices.getGroupes();
-    actions.setGroupes(res);
+    try {
+      const res = await groupeServices.getGroupes();
+      actions.setGroupes(res);
+    } catch (error) {
+      actions.setApiError(error);
+    }
   }),
   getStagiaires: thunk(async (actions) => {
-    const res = await stagiaireServices.getStagiaires();
-    actions.setStagiaires(res);
+    try {
+      const res = await stagiaireServices.getStagiaires();
+      actions.setStagiaires(res);
+    } catch (error) {
+      actions.setApiError(error);
+    }
   }),
   getSeances: thunk(async (actions) => {
-    const res = seanceServices.getSeances();
-    actions.setSeances(res);
+    try {
+      const res = seanceServices.getSeances();
+      actions.setSeances(res);
+    } catch (error) {
+      actions.setApiError(error);
+    }
   }),
-  postSeance: thunk(async (_, seance) => {
-    const res = await seanceServices.postSeances(seance);
-    return res;
+  postSeance: thunk(async (actions, seance) => {
+    try {
+      const res = await seanceServices.postSeances(seance);
+      return res;
+    } catch (error) {
+      actions.setApiError(error);
+    }
   }),
   getRooms: thunk(async (actions) => {
-    const res = await roomServices.getRooms();
-    actions.setRooms(res);
+    try {
+      const res = await roomServices.getRooms();
+      actions.setRooms(res);
+    } catch (error) {
+      actions.setApiError(error);
+    }
   }),
   postRoom: thunk(async (actions, room) => {
-    const res = await roomServices.postRoom(room);
-    actions.setRooms(res);
+    try {
+      const res = await roomServices.postRoom(room);
+      actions.setRooms(res);
+    } catch (error) {
+      actions.setApiError(error);
+    }
   }),
   deleteRoom: thunk(async (actions, id) => {
-    const res = await roomServices.deleteRoom(id);
-    actions.setRooms(res);
+    try {
+      const res = await roomServices.deleteRoom(id);
+      actions.setRooms(res);
+    } catch (error) {
+      actions.setApiError(error);
+    }
   }),
   getFormateurs: thunk(async (actions) => {
-    const res = await formateurServices.getFormateurs();
-    actions.setFormateurs(res);
+    try {
+      const res = await formateurServices.getFormateurs();
+      actions.setFormateurs(res);
+    } catch (error) {
+      actions.setApiError(error);
+    }
   }),
   getWeekSeances: thunk(async (actions, obj) => {
-    const res = await seanceServices.getWeekSeances(obj);
-    actions.setWeekSeances(res);
+    try {
+      const res = await seanceServices.getWeekSeances(obj);
+      actions.setWeekSeances(res);
+    } catch (error) {
+      actions.setApiError(error);
+    }
   }),
   //actions
   setUserAuthentificated: action((state, userAuthentificated) => {
@@ -135,6 +192,9 @@ const store = createStore({
   }),
   setAvailableStartTime: action((state, res) => {
     state.availableStartTime = res;
+  }),
+  setApiError: action((state, res) => {
+    state.apiError = res;
   }),
 });
 export default store;

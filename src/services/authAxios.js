@@ -3,22 +3,15 @@ import authHeader from "./auth-header";
 const api = axios.create({ baseURL: "https://localhost:7161/" });
 export default class authAxios {
   static async get(url) {
-    return api
-      .get(url, { headers: authHeader() })
-      .then(({ data }) => data)
-      .catch((err) => err.response.status);
+    const { data } = await api.get(url, { headers: authHeader() });
+    return data;
   }
-
   static async post(url, data) {
-    return api
-      .post(url, data, { headers: authHeader() })
-      .then(({ data }) => data)
-      .catch((err) => err.response.status);
+    const { dt } = await api.post(url, data, { headers: authHeader() });
+    return dt;
   }
   static async delete(url) {
-    return api
-      .delete(url, { headers: authHeader() })
-      .then(({ data }) => data)
-      .catch((err) => err.response.status);
+    const { data } = await api.delete(url, { headers: authHeader() });
+    return data;
   }
 }
