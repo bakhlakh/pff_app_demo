@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
-import "./css/GestionFilieres.css";
-import Searchbar from "../components/Searchbar";
+import "../styles/pagesStyles/GestionFilieres.css";
 import axios from "axios";
 import FilierePostNewForm from "../forms/FilierePostNewForm";
 import FilierePutForm from "../forms/FilierePutForm";
@@ -10,6 +9,7 @@ import ConfirmDelete from "../components/ConfirmDelete";
 import MessageBox from "../components/MessageBox";
 import authHeader from "../services/auth-header";
 import NewSide from "../components/NewSide";
+import TextField from "@mui/material/TextField";
 
 //AXIOS SETUP
 const api = axios.create({ baseURL: "https://localhost:7161/" });
@@ -104,8 +104,8 @@ function GestionFilieres() {
       <div className="container">
         <div className="searchbr">
           <div className="recherche d-flex justify-content-between">
-            <Searchbar
-              searchItem="Filiere"
+            <TextField
+              label="Filiere"
               handleChange={(str) => {
                 filterFilieres(str);
               }}

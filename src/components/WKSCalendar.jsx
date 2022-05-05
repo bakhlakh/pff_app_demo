@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./css/WKSCalendar.css";
+import "../styles/componentStyles/WKSCalendar.css";
 import SeanceBox from "./SeanceBox";
 function WKSCalendar({ data }) {
   const [seances, setSeances] = useState({

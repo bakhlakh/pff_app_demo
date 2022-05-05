@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import MessageBox from "../components/MessageBox";
-import "./css/GestionModules.css";
+import "../styles/pagesStyles/GestionModules.css";
 import { useStoreState, useStoreActions } from "easy-peasy";
 import ModulePostNewForm from "../forms/ModulePostNewForm";
 import ConfirmDelete from "../components/ConfirmDelete";

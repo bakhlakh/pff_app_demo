@@ -1,5 +1,5 @@
 import React from "react";
-import "./css/confirmDelete.css";
+import "../styles/componentStyles/confirmDelete.css";
 function ConfirmDelete({ handleDelete, cancelOp }) {
   return (
     <div id="myModal" className="modal">

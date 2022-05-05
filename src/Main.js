@@ -11,7 +11,6 @@ import { useStoreActions, useStoreState } from "easy-peasy";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GestionSeances from "./pages/GestionSeances";
 import GestionSalles from "./pages/GestionSalles";
-import NewSide from "./components/NewSide";
 
 function Main() {
   const user = JSON.parse(localStorage.getItem("user"));

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import "./css/LoginPage.css";
-import logo from "../Resources/ofppt_logo.png";
+import "../styles/pagesStyles/LoginPage.css";
+import logo from "../Assets/ofppt_logo.png";
 import { FaUser, FaLock } from "react-icons/fa";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
