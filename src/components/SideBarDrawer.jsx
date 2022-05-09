@@ -8,7 +8,6 @@ import {
   Typography,
 } from "@mui/material";
 import { SidebarDATA } from "./SidebarDATA";
-import { Link } from "react-router-dom";
 
 function SideBarDrawer(props) {
   return (
@@ -22,17 +21,21 @@ function SideBarDrawer(props) {
         <List>
           {SidebarDATA.map((item, index) => {
             return (
-              <ListItem button key={index}>
-                <ListItemButton
-                  onClick={() => {
-                    window.location.assign(item.path);
-                  }}
-                >
-                  <IconButton>{item.icon}</IconButton>
-                  <Typography variant="h6" component="div">
-                    {item.title}
-                  </Typography>
-                </ListItemButton>
+              <ListItem
+                button
+                key={index}
+                onClick={() => {
+                  window.location.assign(item.path);
+                }}
+                sx={{
+                  margin: "20px 0px 20px 0px",
+                  height: "80px",
+                }}
+              >
+                <IconButton>{item.icon}</IconButton>
+                <Typography variant="h6" component="div">
+                  {item.title}
+                </Typography>
               </ListItem>
             );
           })}

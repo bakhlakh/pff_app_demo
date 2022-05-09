@@ -7,26 +7,23 @@ import STManagement from "./pages/STManagement.jsx";
 import GPManagement from "./pages/GPManagement.jsx";
 import Home from "./pages/Home.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
-import { useStoreActions, useStoreState } from "easy-peasy";
+import { useStoreActions } from "easy-peasy";
 import GestionSeances from "./pages/GestionSeances.jsx";
 import GestionSalles from "./pages/GestionSalles.jsx";
 
 function Main() {
-  const user = JSON.parse(localStorage.getItem("user"));
-  const setUser = useStoreActions((actions) => actions.setUser);
+  //const user = JSON.parse(localStorage.getItem("user"));
   const verifyClient = useStoreActions((actions) => actions.verifyClient);
-  const userAuthentificated = useStoreState(
-    (state) => state.userAuthentificated
-  );
+  const [userAuth, setUserAuth] = useState(false);
+
   useEffect(() => {
-    setUser(user);
-    verifyClient();
+    setUserAuth(async () => await verifyClient());
   }, []);
   return (
     <>
       <Router>
         <Routes>
-          {userAuthentificated ? (
+          {userAuth ? (
             <>
               <Route exact path="/" element={<Home />} />
               <Route path="/GestionFilieres" element={<GestionFilieres />} />

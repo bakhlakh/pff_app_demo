@@ -22,7 +22,7 @@ function NewSide(props) {
   };
 
   return (
-    <AppBar position="static" color="secondary">
+    <AppBar position="static" sx={{ backgroundColor: "#263ab9" }}>
       <Toolbar>
         <IconButton
           size="large"

@@ -23,8 +23,7 @@ const store = createStore({
   filteredModules: [],
   formateurs: [],
   currentUpdatedGroupId: "",
-  userAuthentificated: false,
-  user: null,
+  user: JSON.parse(localStorage.getItem("user")),
   isPost: false,
   weekSeances: [],
   apiError: null,
@@ -35,11 +34,7 @@ const store = createStore({
       .catch((err) => {
         return err.response.status;
       });
-    if (res === 401) {
-      actions.setUserAuthentificated(false);
-    } else {
-      actions.setUserAuthentificated(true);
-    }
+    return res;
   }),
   getModules: thunk(async (actions) => {
     try {
@@ -53,6 +48,15 @@ const store = createStore({
     try {
       const res = await filiereServices.getFilieres();
       actions.setFilieres(res);
+    } catch (error) {
+      actions.setApiError(error);
+    }
+  }),
+  deleteFiliere: thunk(async (actions, id) => {
+    try {
+      const res = await filiereServices.deleteFiliere(id);
+      actions.setFilieres(res);
+      return res;
     } catch (error) {
       actions.setApiError(error);
     }
@@ -154,9 +158,6 @@ const store = createStore({
     }
   }),
   //actions
-  setUserAuthentificated: action((state, userAuthentificated) => {
-    state.userAuthentificated = userAuthentificated;
-  }),
   setModules: action((state, res) => {
     state.modules = res;
   }),

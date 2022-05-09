@@ -10,6 +10,7 @@ import MessageBox from "../components/MessageBox";
 import authHeader from "../services/auth-header";
 import NewSide from "../components/NewSide";
 import TextField from "@mui/material/TextField";
+import { useStoreActions } from "easy-peasy";
 
 //AXIOS SETUP
 const api = axios.create({ baseURL: "https://localhost:7161/" });
@@ -24,6 +25,7 @@ function GestionFilieres() {
   const [filteredFilieres, setFilteredFilieres] = useState([]);
   const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
   const [messageVisible, setMessageVisible] = useState(false);
+  const deleteFiliere = useStoreActions((actions) => actions.deleteFiliere);
   const [deleteMessage, setDeleteMessage] = useState({
     type: "OK",
     Message: "Filiere has been deleted",
@@ -54,26 +56,23 @@ function GestionFilieres() {
     } else setFilteredFilieres(filieres);
   };
   //DELETE FILIERE CODE
-  const deleteFiliere = () => {
-    api
-      .delete("/api/Filieres/" + currentUpdated.filiereId, {
-        headers: authHeader(),
-      })
-      .then((res) => {
-        if (res.status >= 200 && res.status <= 299) {
-          setDeleteMessage({ type: "OK", message: "Filiere has been deleted" });
-          setMessageVisible(true);
-        }
-      })
-      .then(() => getFilieres())
-      .catch(() => {
-        setDeleteMessage({
-          type: "ERR",
-          message: "Filiere has not been deleted",
-        });
-        setMessageVisible(true);
+  const handleDelete = async () => {
+    const res = await deleteFiliere(currentUpdated.filiereId);
+    console.log("res", res);
+    if (res) {
+      setDeleteMessage({ type: "OK", Message: "Filiere has been deleted" });
+      setConfirmDeleteVisible(false);
+      setMessageVisible(true);
+    } else {
+      setDeleteMessage({
+        type: "ERROR",
+        Message: "Filiere has not been deleted",
       });
+      setConfirmDeleteVisible(false);
+      setMessageVisible(true);
+    }
   };
+
   //FIRST TIME LOADING
   useEffect(() => {
     getFilieres();
@@ -106,8 +105,8 @@ function GestionFilieres() {
           <div className="recherche d-flex justify-content-between">
             <TextField
               label="Filiere"
-              handleChange={(str) => {
-                filterFilieres(str);
+              onChange={(str) => {
+                filterFilieres(str.target.value);
               }}
             />
             <button
@@ -213,7 +212,7 @@ function GestionFilieres() {
         {confirmDeleteVisible ? (
           <ConfirmDelete
             handleDelete={() => {
-              deleteFiliere();
+              handleDelete();
               setConfirmDeleteVisible(false);
             }}
             cancelOp={() => {

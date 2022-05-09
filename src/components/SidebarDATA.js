@@ -1,7 +1,7 @@
 import React from "react";
 import * as FaIcons from "react-icons/fa";
 import * as IoIcons from "react-icons/io";
-
+import BadgeIcon from "@mui/icons-material/Badge";
 export const SidebarDATA = [
   {
     title: "Gestion Filieres",
@@ -30,7 +30,7 @@ export const SidebarDATA = [
   {
     title: "Gestion Formatteurs",
     path: "/GestionFormatteurs",
-    icon: <FaIcons.FaTag />,
+    icon: <FaIcons.FaIdBadge />,
     cName: "nav-text",
   },
   {
@@ -42,7 +42,7 @@ export const SidebarDATA = [
   {
     title: "Gestion des Absences",
     path: "/GestionAbsence",
-    icon: <FaIcons.FaList />,
+    icon: <FaIcons.FaClipboardList />,
     cName: "nav-text",
   },
   {
