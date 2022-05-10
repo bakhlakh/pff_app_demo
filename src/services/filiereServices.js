@@ -10,4 +10,7 @@ export default class filiereServices {
   static async deleteFiliere(id) {
     return authAxios.delete("/api/Filieres/ForceDeleteFiliere/" + id);
   }
+  static async putFiliere(id, data) {
+    return authAxios.put("/api/Filieres/" + id, data);
+  }
 }

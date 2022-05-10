@@ -14,11 +14,10 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import MessageBox from "../components/MessageBox";
-import authHeader from "../services/auth-header";
 
 function PostStagiaireForm({ handleClick, cancelOp }) {
-  const api = useStoreState((store) => store.api);
   const getFilieres = useStoreActions((actions) => actions.getFilieres);
+  const postStagiaire = useStoreActions((actions) => actions.postStagiaire);
   const filieres = useStoreState((state) => state.filieres);
   const getGroupes = useStoreActions((actions) => actions.getGroupes);
   const groupes = useStoreState((state) => state.groupes);
@@ -58,13 +57,18 @@ function PostStagiaireForm({ handleClick, cancelOp }) {
       setFilteredGroups(obj);
     } else setFilteredGroups([]);
   };
-  useEffect(() => {
+  const initDataStores = async () => {
     getFilieres();
     getGroupes();
     filterGroupes();
+  };
+  useEffect(() => {
+    initDataStores();
+    //eslint-disable-next-line
   }, []);
   useEffect(() => {
     filterGroupes();
+    //eslint-disable-next-line
   }, [newStagiaire]);
 
   const validate = Yup.object({
@@ -109,7 +113,7 @@ function PostStagiaireForm({ handleClick, cancelOp }) {
     dateNaissance: Yup.date().nullable(),
     txt_Address: Yup.string(),
   });
-  const handleSubmit = (values) => {
+  const handleSubmit = async (values) => {
     let stgObj = {
       firstName: values.txt_Prenom,
       lastName: values.txt_Nom,
@@ -123,19 +127,11 @@ function PostStagiaireForm({ handleClick, cancelOp }) {
       nationalite: "Maroccain",
       statue: "Active",
     };
-    console.log("stgObj", stgObj);
-    api
-      .post("/api/Stagiaires", stgObj, {
-        headers: authHeader(),
-      })
-      .then((res) => {
-        console.log("res", res);
-        handleClick();
-        cancelOp();
-      })
-      .catch((error) => {
-        setMessageVisible(true);
-      });
+    const res = await postStagiaire(stgObj);
+    if (res) {
+      handleClick();
+      cancelOp();
+    } else setMessageVisible(true);
   };
   return (
     <>
@@ -287,7 +283,6 @@ function PostStagiaireForm({ handleClick, cancelOp }) {
                       value={newStagiaire.groupId}
                       label="Groupe"
                       onChange={(e) => {
-                        console.log("e", e);
                         setNewStagiaire({
                           ...newStagiaire,
                           groupId: e.target.value,

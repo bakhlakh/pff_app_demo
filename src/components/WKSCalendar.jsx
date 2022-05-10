@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "../styles/componentStyles/WKSCalendar.css";
 import SeanceBox from "./SeanceBox";
-function WKSCalendar({ data }) {
+import PutSeance from "../forms/PutSeance";
+function WKSCalendar({ data, handleSeanceUpdated }) {
+  const [putSeanceVisible, setPostSeanceVisible] = useState(false);
+  const [updatedSeance, setUpdatedSeance] = useState({});
   const [seances, setSeances] = useState({
     lundi: { s8: null, s11: null, s13: null, s16: null },
     mardi: {
@@ -145,179 +148,347 @@ function WKSCalendar({ data }) {
       });
     }
   }, [data]);
-
+  const handleUpdate = (props) => {
+    setUpdatedSeance(props);
+    setPostSeanceVisible(true);
+  };
   return (
-    <div className="WKSCalendar">
-      <table className=" WKSCalendarTable" style={{ height: "500px" }}>
-        <thead>
-          <tr>
-            <th style={{ paddingLeft: "20px", width: "250px" }}>
-              <div className="d-flex justify-content-between w-75">
-                <h6>Jours</h6>
-                <h6>/</h6>
-                <h6>Heures</h6>
-              </div>
-            </th>
-            <th style={{ width: "250px" }}>
-              <div className="d-flex justify-content-between">
-                <h6>8:30</h6>
-                <h6>11:00</h6>
-              </div>
-            </th>
-            <th style={{ width: "250px" }}>
-              <div className="d-flex justify-content-end">
-                <h6>13:30</h6>
-              </div>
-            </th>
+    <>
+      {putSeanceVisible && (
+        <PutSeance
+          handleUpdate={() => {
+            handleSeanceUpdated();
+          }}
+          cancelOp={() => {
+            setPostSeanceVisible(false);
+          }}
+          updatedSeance={updatedSeance}
+        />
+      )}
+      <div className="WKSCalendar">
+        <table className=" WKSCalendarTable" style={{ height: "500px" }}>
+          <thead>
+            <tr>
+              <th style={{ paddingLeft: "20px", width: "250px" }}>
+                <div className="d-flex justify-content-between w-75">
+                  <h6>Jours</h6>
+                  <h6>/</h6>
+                  <h6>Heures</h6>
+                </div>
+              </th>
+              <th style={{ width: "250px" }}>
+                <div className="d-flex justify-content-between">
+                  <h6>8:30</h6>
+                  <h6>11:00</h6>
+                </div>
+              </th>
+              <th style={{ width: "250px" }}>
+                <div className="d-flex justify-content-end">
+                  <h6>13:30</h6>
+                </div>
+              </th>
 
-            <th style={{ width: "250px" }}>
-              <div className="d-flex justify-content-end">
-                <h6>16:00</h6>
-              </div>
-            </th>
-            <th style={{ paddingRight: "20px", width: "250px" }}>
-              <div className="d-flex justify-content-end">
-                <h6>18:30</h6>
-              </div>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr className={new Date().getDay() === 1 ? "WKSCalendarToday" : ""}>
-            <td>
-              <div className=" d-flex justify-content-center align-items-center">
-                <h6>Lundi</h6>
-              </div>
-            </td>
+              <th style={{ width: "250px" }}>
+                <div className="d-flex justify-content-end">
+                  <h6>16:00</h6>
+                </div>
+              </th>
+              <th style={{ paddingRight: "20px", width: "250px" }}>
+                <div className="d-flex justify-content-end">
+                  <h6>18:30</h6>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className={new Date().getDay() === 1 ? "WKSCalendarToday" : ""}>
+              <td>
+                <div className=" d-flex justify-content-center align-items-center">
+                  <h6>Lundi</h6>
+                </div>
+              </td>
 
-            <td>
-              {seances.lundi.s8 && <SeanceBox seance={seances.lundi.s8} />}
-            </td>
-            <td>
-              {seances.lundi.s11 && <SeanceBox seance={seances.lundi.s11} />}
-            </td>
+              <td>
+                {seances.lundi.s8 && (
+                  <SeanceBox
+                    onClick={(props) => {
+                      handleUpdate(props);
+                    }}
+                    seance={seances.lundi.s8}
+                  />
+                )}
+              </td>
+              <td>
+                {seances.lundi.s11 && (
+                  <SeanceBox
+                    onClick={(props) => {
+                      handleUpdate(props);
+                    }}
+                    seance={seances.lundi.s11}
+                  />
+                )}
+              </td>
 
-            <td>
-              {seances.lundi.s13 && <SeanceBox seance={seances.lundi.s13} />}
-            </td>
-            <td>
-              {seances.lundi.s16 && <SeanceBox seance={seances.lundi.s16} />}
-            </td>
-          </tr>
-          <tr className={new Date().getDay() === 2 ? "WKSCalendarToday" : ""}>
-            <td>
-              <div className=" d-flex justify-content-center align-items-center">
-                <h6>Mardi</h6>
-              </div>
-            </td>
-            <td>
-              {seances.mardi.s8 && <SeanceBox seance={seances.mardi.s8} />}
-            </td>
-            <td>
-              {seances.mardi.s11 && <SeanceBox seance={seances.mardi.s11} />}
-            </td>
-            <td>
-              {seances.mardi.s13 && <SeanceBox seance={seances.mardi.s13} />}
-            </td>
-            <td>
-              {seances.mardi.s16 && <SeanceBox seance={seances.mardi.s16} />}
-            </td>
-          </tr>
-          <tr className={new Date().getDay() === 3 ? "WKSCalendarToday" : ""}>
-            <td>
-              <div className=" d-flex justify-content-center align-items-center">
-                <h6>Mercredi</h6>
-              </div>
-            </td>
-            <td>
-              {seances.mercredi.s8 && (
-                <SeanceBox seance={seances.mercredi.s8} />
-              )}
-            </td>
-            <td>
-              {seances.mercredi.s11 && (
-                <SeanceBox seance={seances.mercredi.s11} />
-              )}
-            </td>
-            <td>
-              {seances.mercredi.s13 && (
-                <SeanceBox seance={seances.mercredi.s13} />
-              )}
-            </td>
-            <td>
-              {seances.mercredi.s16 && (
-                <SeanceBox seance={seances.mercredi.s16} />
-              )}
-            </td>
-          </tr>
-          <tr className={new Date().getDay() === 4 ? "WKSCalendarToday" : ""}>
-            <td>
-              <div className=" d-flex justify-content-center align-items-center">
-                <h6>Jeudi</h6>
-              </div>
-            </td>
-            <td>
-              {seances.jeudi.s8 && <SeanceBox seance={seances.jeudi.s8} />}
-            </td>
-            <td>
-              {seances.jeudi.s11 && <SeanceBox seance={seances.jeudi.s11} />}
-            </td>
-            <td>
-              {seances.jeudi.s13 && <SeanceBox seance={seances.jeudi.s13} />}
-            </td>
-            <td>
-              {seances.jeudi.s16 && <SeanceBox seance={seances.jeudi.s16} />}
-            </td>
-          </tr>
-          <tr className={new Date().getDay() === 5 ? "WKSCalendarToday" : ""}>
-            <td>
-              <div className=" d-flex justify-content-center align-items-center">
-                <h6>Vendredi</h6>
-              </div>
-            </td>
-            <td>
-              {seances.vendredi.s8 && (
-                <SeanceBox seance={seances.vendredi.s8} />
-              )}
-            </td>
-            <td>
-              {seances.vendredi.s11 && (
-                <SeanceBox seance={seances.vendredi.s11} />
-              )}
-            </td>
-            <td>
-              {seances.vendredi.s13 && (
-                <SeanceBox seance={seances.vendredi.s13} />
-              )}
-            </td>
-            <td>
-              {seances.vendredi.s16 && (
-                <SeanceBox seance={seances.vendredi.s16} />
-              )}
-            </td>
-          </tr>
-          <tr className={new Date().getDay() === 6 ? "WKSCalendarToday" : ""}>
-            <td>
-              <div className=" d-flex justify-content-center align-items-center">
-                <h6>Samedi</h6>
-              </div>
-            </td>
-            <td>
-              {seances.samedi.s8 && <SeanceBox seance={seances.samedi.s8} />}
-            </td>
-            <td>
-              {seances.samedi.s11 && <SeanceBox seance={seances.samedi.s11} />}
-            </td>
-            <td>
-              {seances.samedi.s13 && <SeanceBox seance={seances.samedi.s13} />}
-            </td>
-            <td>
-              {seances.samedi.s16 && <SeanceBox seance={seances.samedi.s16} />}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+              <td>
+                {seances.lundi.s13 && (
+                  <SeanceBox
+                    onClick={(props) => {
+                      handleUpdate(props);
+                    }}
+                    seance={seances.lundi.s13}
+                  />
+                )}
+              </td>
+              <td>
+                {seances.lundi.s16 && (
+                  <SeanceBox
+                    onClick={(props) => {
+                      handleUpdate(props);
+                    }}
+                    seance={seances.lundi.s16}
+                  />
+                )}
+              </td>
+            </tr>
+            <tr className={new Date().getDay() === 2 ? "WKSCalendarToday" : ""}>
+              <td>
+                <div className=" d-flex justify-content-center align-items-center">
+                  <h6>Mardi</h6>
+                </div>
+              </td>
+              <td>
+                {seances.mardi.s8 && (
+                  <SeanceBox
+                    onClick={(props) => {
+                      handleUpdate(props);
+                    }}
+                    seance={seances.mardi.s8}
+                  />
+                )}
+              </td>
+              <td>
+                {seances.mardi.s11 && (
+                  <SeanceBox
+                    onClick={(props) => {
+                      handleUpdate(props);
+                    }}
+                    seance={seances.mardi.s11}
+                  />
+                )}
+              </td>
+              <td>
+                {seances.mardi.s13 && (
+                  <SeanceBox
+                    onClick={(props) => {
+                      handleUpdate(props);
+                    }}
+                    seance={seances.mardi.s13}
+                  />
+                )}
+              </td>
+              <td>
+                {seances.mardi.s16 && (
+                  <SeanceBox
+                    onClick={(props) => {
+                      handleUpdate(props);
+                    }}
+                    seance={seances.mardi.s16}
+                  />
+                )}
+              </td>
+            </tr>
+            <tr className={new Date().getDay() === 3 ? "WKSCalendarToday" : ""}>
+              <td>
+                <div className=" d-flex justify-content-center align-items-center">
+                  <h6>Mercredi</h6>
+                </div>
+              </td>
+              <td>
+                {seances.mercredi.s8 && (
+                  <SeanceBox
+                    onClick={(props) => {
+                      handleUpdate(props);
+                    }}
+                    seance={seances.mercredi.s8}
+                  />
+                )}
+              </td>
+              <td>
+                {seances.mercredi.s11 && (
+                  <SeanceBox
+                    onClick={(props) => {
+                      handleUpdate(props);
+                    }}
+                    seance={seances.mercredi.s11}
+                  />
+                )}
+              </td>
+              <td>
+                {seances.mercredi.s13 && (
+                  <SeanceBox
+                    onClick={(props) => {
+                      handleUpdate(props);
+                    }}
+                    seance={seances.mercredi.s13}
+                  />
+                )}
+              </td>
+              <td>
+                {seances.mercredi.s16 && (
+                  <SeanceBox
+                    onClick={(props) => {
+                      handleUpdate(props);
+                    }}
+                    seance={seances.mercredi.s16}
+                  />
+                )}
+              </td>
+            </tr>
+            <tr className={new Date().getDay() === 4 ? "WKSCalendarToday" : ""}>
+              <td>
+                <div className=" d-flex justify-content-center align-items-center">
+                  <h6>Jeudi</h6>
+                </div>
+              </td>
+              <td>
+                {seances.jeudi.s8 && (
+                  <SeanceBox
+                    onClick={(props) => {
+                      handleUpdate(props);
+                    }}
+                    seance={seances.jeudi.s8}
+                  />
+                )}
+              </td>
+              <td>
+                {seances.jeudi.s11 && (
+                  <SeanceBox
+                    onClick={(props) => {
+                      handleUpdate(props);
+                    }}
+                    seance={seances.jeudi.s11}
+                  />
+                )}
+              </td>
+              <td>
+                {seances.jeudi.s13 && (
+                  <SeanceBox
+                    onClick={(props) => {
+                      handleUpdate(props);
+                    }}
+                    seance={seances.jeudi.s13}
+                  />
+                )}
+              </td>
+              <td>
+                {seances.jeudi.s16 && (
+                  <SeanceBox
+                    onClick={(props) => {
+                      handleUpdate(props);
+                    }}
+                    seance={seances.jeudi.s16}
+                  />
+                )}
+              </td>
+            </tr>
+            <tr className={new Date().getDay() === 5 ? "WKSCalendarToday" : ""}>
+              <td>
+                <div className=" d-flex justify-content-center align-items-center">
+                  <h6>Vendredi</h6>
+                </div>
+              </td>
+              <td>
+                {seances.vendredi.s8 && (
+                  <SeanceBox
+                    onClick={(props) => {
+                      handleUpdate(props);
+                    }}
+                    seance={seances.vendredi.s8}
+                  />
+                )}
+              </td>
+              <td>
+                {seances.vendredi.s11 && (
+                  <SeanceBox
+                    onClick={(props) => {
+                      handleUpdate(props);
+                    }}
+                    seance={seances.vendredi.s11}
+                  />
+                )}
+              </td>
+              <td>
+                {seances.vendredi.s13 && (
+                  <SeanceBox
+                    onClick={(props) => {
+                      handleUpdate(props);
+                    }}
+                    seance={seances.vendredi.s13}
+                  />
+                )}
+              </td>
+              <td>
+                {seances.vendredi.s16 && (
+                  <SeanceBox
+                    onClick={(props) => {
+                      handleUpdate(props);
+                    }}
+                    seance={seances.vendredi.s16}
+                  />
+                )}
+              </td>
+            </tr>
+            <tr className={new Date().getDay() === 6 ? "WKSCalendarToday" : ""}>
+              <td>
+                <div className=" d-flex justify-content-center align-items-center">
+                  <h6>Samedi</h6>
+                </div>
+              </td>
+              <td>
+                {seances.samedi.s8 && (
+                  <SeanceBox
+                    onClick={(props) => {
+                      handleUpdate(props);
+                    }}
+                    seance={seances.samedi.s8}
+                  />
+                )}
+              </td>
+              <td>
+                {seances.samedi.s11 && (
+                  <SeanceBox
+                    onClick={(props) => {
+                      handleUpdate(props);
+                    }}
+                    seance={seances.samedi.s11}
+                  />
+                )}
+              </td>
+              <td>
+                {seances.samedi.s13 && (
+                  <SeanceBox
+                    onClick={(props) => {
+                      handleUpdate(props);
+                    }}
+                    seance={seances.samedi.s13}
+                  />
+                )}
+              </td>
+              <td>
+                {seances.samedi.s16 && (
+                  <SeanceBox
+                    onClick={(props) => {
+                      handleUpdate(props);
+                    }}
+                    seance={seances.samedi.s16}
+                  />
+                )}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </>
   );
 }
 

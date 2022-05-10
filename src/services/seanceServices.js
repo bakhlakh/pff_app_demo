@@ -7,6 +7,12 @@ export default class seanceServices {
   static async postSeances(data) {
     return authAxios.post("/api/Seances/", data);
   }
+  static async putSeance(id, data) {
+    return authAxios.put("/api/Seances/" + id, data);
+  }
+  static async deleteSeance(id) {
+    return authAxios.delete("/api/Seances/" + id);
+  }
   static async getAvailableStartTime(obj) {
     const date = new Date(obj.dateSeance);
     return authAxios.get(
@@ -16,7 +22,6 @@ export default class seanceServices {
     );
   }
   static async getWeekSeances(obj) {
-    console.log("obj", obj);
     const date = new Date(obj.selectedDate);
     return authAxios.get(
       `/api/Seances/getWeekSeances?date=${

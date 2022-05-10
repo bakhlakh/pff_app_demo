@@ -5,14 +5,13 @@ import PostStagiaireForm from "../forms/PostStagiaireForm";
 import ConfirmDelete from "../components/ConfirmDelete";
 import MessageBox from "../components/MessageBox";
 import PutStagiereForm from "../forms/PutStagiereForm";
-import authHeader from "../services/auth-header";
 import NewSide from "../components/NewSide";
 import { DataGrid } from "@mui/x-data-grid";
 
 function STManagement() {
   const getStagiaires = useStoreActions((actions) => actions.getStagiaires);
+  const deleteStagiaire = useStoreActions((actions) => actions.deleteStagiaire);
   const stagiaires = useStoreState((state) => state.stagiaires);
-  const api = useStoreState((state) => state.api);
   const [postNewFormVisible, setPostNewFormVisible] = useState(false);
   const [currentUpdated, setCurrentUpdated] = useState();
   const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
@@ -30,28 +29,21 @@ function STManagement() {
     setConfirmDeleteVisible(true);
     setCurrentUpdated(row);
   };
-  const handleDelete = () => {
-    api
-      .delete(`/api/Stagiaires/${currentUpdated.stagiaireId}`, {
-        headers: authHeader(),
-      })
-      .then((res) => {
-        if (res.status >= 200 && res.status <= 299) {
-          setDeleteMessage({
-            type: "OK",
-            message: "Stagiaire has been deleted",
-          });
-          setMessageVisible(true);
-        }
-      })
-      .then(() => getStagiaires())
-      .catch(() => {
-        setDeleteMessage({
-          type: "ERR",
-          message: "Stagiaire has not been deleted",
-        });
-        setMessageVisible(true);
+  const handleDelete = async () => {
+    const res = await deleteStagiaire(currentUpdated.stagiaireId);
+    if (res) {
+      setDeleteMessage({
+        type: "OK",
+        message: "Stagiaire has been deleted",
       });
+      setMessageVisible(true);
+    } else {
+      setDeleteMessage({
+        type: "ERR",
+        message: "Stagiaire has not been deleted",
+      });
+      setMessageVisible(true);
+    }
   };
   const setCurrentUpdatedToObject = (row) => {
     let stgObj = stagiaires.find((x) => x.stagiaireId === row.stagiaireId);
@@ -134,7 +126,6 @@ function STManagement() {
             message={deleteMessage.message}
             cancelOp={() => {
               setMessageVisible(false);
-              console.log("bruh", messageVisible);
             }}
           />
         </div>

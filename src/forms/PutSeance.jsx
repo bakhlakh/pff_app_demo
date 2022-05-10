@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import { Formik, Form, ErrorMessage } from "formik";
-import { FieldComp } from "../components/FieldComp";
 import * as Yup from "yup";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
@@ -17,7 +16,7 @@ import {
 } from "@mui/material";
 import "../styles/formsStyles/PostSeance.css";
 
-function PostSeance({ handleClick, cancelOp }) {
+function PutSeance({ handleClick, cancelOp, updatedSeance, handleUpdate }) {
   const [nbchars, setnbchars] = useState(300);
   const getRooms = useStoreActions((actions) => actions.getRooms);
   const rooms = useStoreState((state) => state.rooms);
@@ -33,9 +32,10 @@ function PostSeance({ handleClick, cancelOp }) {
   const formateurs = useStoreState((state) => state.formateurs);
   const getFilieres = useStoreActions((actions) => actions.getFilieres);
   const filieres = useStoreState((state) => state.filieres);
-  const postSeance = useStoreActions((actions) => actions.postSeance);
-  const [selectedFiliere, setSelectedFiliere] = useState("");
+  const putSeance = useStoreActions((actions) => actions.putSeance);
+  //const [selectedFiliere, setSelectedFiliere] = useState("");
   const availableStartTime = useStoreState((state) => state.availableStartTime);
+  const deleteSeance = useStoreActions((actions) => actions.deleteSeance);
   const getAvailableStartTime = useStoreActions(
     (actions) => actions.getAvailableStartTime
   );
@@ -50,7 +50,9 @@ function PostSeance({ handleClick, cancelOp }) {
     commentaires: "",
     groupId: "",
     anneScolaire: "",
+    filiereId: "",
   });
+
   useEffect(() => {
     if (filteredGroupes.length > 0) {
       setNewSeance({
@@ -58,24 +60,59 @@ function PostSeance({ handleClick, cancelOp }) {
         anneScolaire: filteredGroupes[0].anneScolaire,
       });
     }
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filteredGroupes]);
   useEffect(() => {
     getFilieres();
     getRooms();
     getFormateurs();
-    getFiliereModules("TDI");
-    getFiliereGroupes("TDI");
+    if (newSeance.filiereId !== "") {
+      getFiliereModules(newSeance.filiereId);
+      getFiliereGroupes(newSeance.filiereId);
+    } else {
+      getFiliereModules(updatedSeance.filiereId);
+      getFiliereGroupes(updatedSeance.filiereId);
+    }
+
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
+    if (
+      filieres.length > 0 &&
+      filteredGroupes.length > 0 &&
+      rooms.length > 0 &&
+      formateurs.length > 0 &&
+      newSeance.filiereId === ""
+    ) {
+      setNewSeance({
+        title: updatedSeance.title,
+        roomId: updatedSeance.room.roomId,
+        moduleId: updatedSeance.moduleId,
+        objectives: updatedSeance.objectives,
+        dateSeance: updatedSeance.dateSeance,
+        startTime: updatedSeance.startTime,
+        formateurId: updatedSeance.formateur.formateurId,
+        commentaires: updatedSeance.commentaires,
+        groupId: updatedSeance.groupId,
+        anneScolaire: updatedSeance.anneScolaire,
+        filiereId: updatedSeance.filiereId,
+      });
+    }
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filieres, filteredGroupes, rooms, formateurs]);
+
+  useEffect(() => {
     handleDateGroupeChange();
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newSeance]);
   const validate = Yup.object({
-    title: Yup.string().required("Le titre est obligatoire").min(3),
+    title: Yup.string().min(3),
     dateSeance: Yup.date().required("La date est obligatoire"),
   });
   const handleSubmit = async (values) => {
     const scObj = {
-      title: values.title,
+      seanceId: updatedSeance.seanceId,
+      title: newSeance.title,
       roomId: newSeance.roomId,
       moduleId: newSeance.moduleId,
       objectives: newSeance.objectives,
@@ -86,13 +123,12 @@ function PostSeance({ handleClick, cancelOp }) {
       groupId: newSeance.groupId,
       anneScolaire: newSeance.anneScolaire,
     };
-    let res = await postSeance(scObj);
-    console.log("res", res);
+    let res = await putSeance(scObj);
     if (res?.seanceId) {
-      console.log("Ok");
+      handleUpdate();
       cancelOp();
     } else {
-      console.log("error");
+      //catch error
     }
   };
   const handleDateGroupeChange = () => {
@@ -117,6 +153,21 @@ function PostSeance({ handleClick, cancelOp }) {
             <div className="formContent">
               <CssBaseline />
               <Grid container spacing={3}>
+                <Grid item xs={12} flexDirection="end">
+                  <Button
+                    variant="contained"
+                    color="error"
+                    fullWidth
+                    sx={{ borderRadius: "0px" }}
+                    onClick={() => {
+                      deleteSeance(updatedSeance.seanceId);
+                      handleUpdate();
+                      cancelOp();
+                    }}
+                  >
+                    SUPPRIMER
+                  </Button>
+                </Grid>
                 <Grid item xs={6}>
                   <FormControl fullWidth sx={{ mb: 1 }}>
                     <InputLabel id="filieres">Filiere</InputLabel>
@@ -124,17 +175,17 @@ function PostSeance({ handleClick, cancelOp }) {
                       labelId="filieres"
                       name="filiereId"
                       required
-                      value={filieres ? selectedFiliere : null}
+                      value={newSeance.filiereId}
                       label="Filieres"
                       onChange={(e) => {
-                        setSelectedFiliere(e.target.value);
-                        getFiliereModules(e.target.value);
-                        getFiliereGroupes(e.target.value);
                         setNewSeance({
                           ...newSeance,
+                          filiereId: e.target.value,
                           moduleId: "",
                           groupId: "",
                         });
+                        getFiliereModules(e.target.value);
+                        getFiliereGroupes(e.target.value);
                       }}
                     >
                       {filieres.map((item) => (
@@ -150,12 +201,20 @@ function PostSeance({ handleClick, cancelOp }) {
                   </FormControl>
                 </Grid>
                 <Grid item xs={6}>
-                  <FieldComp
+                  <TextField
                     type="text"
                     name="title"
-                    id="txt_Title"
+                    id="title"
                     label="Titre"
                     required
+                    fullWidth
+                    value={newSeance.title}
+                    onChange={(e) => {
+                      setNewSeance({
+                        ...newSeance,
+                        title: e.target.value,
+                      });
+                    }}
                   />
                 </Grid>
                 <Grid item xs={4}>
@@ -290,6 +349,9 @@ function PostSeance({ handleClick, cancelOp }) {
                           {item}
                         </MenuItem>
                       ))}
+                      <MenuItem value={newSeance.startTime}>
+                        {newSeance.startTime}
+                      </MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
@@ -301,6 +363,7 @@ function PostSeance({ handleClick, cancelOp }) {
                     multiline
                     maxRows={7}
                     fullWidth
+                    value={newSeance.objectives}
                     inputProps={{ maxLength: 300 }}
                     helperText={nbchars + " characters restants, 300 max"}
                     onChange={(e) => {
@@ -345,6 +408,7 @@ function PostSeance({ handleClick, cancelOp }) {
                     id="commentaires"
                     name="commentaires"
                     label="Commentaires"
+                    value={newSeance.commentaires}
                     inputProps={{ maxLength: 300 }}
                     fullWidth
                     multiline
@@ -362,18 +426,17 @@ function PostSeance({ handleClick, cancelOp }) {
                   <div className="modal-footer">
                     <Button
                       variant="contained"
-                      color="success"
                       type="submit"
                       sx={{
                         borderRadius: "0px",
                         marginRight: "20px",
+                        backgroundColor: "orange",
                       }}
                     >
                       Enregistrer
                     </Button>
                     <Button
                       variant="contained"
-                      color="secondary"
                       sx={{ borderRadius: "0px", backgroundColor: "gray" }}
                       onClick={() => {
                         cancelOp();
@@ -392,4 +455,4 @@ function PostSeance({ handleClick, cancelOp }) {
   );
 }
 
-export default PostSeance;
+export default PutSeance;

@@ -45,20 +45,24 @@ function GestionSeances() {
     getGroupes();
     handleSelectedValuesChange();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedDate, selectedGroupe]);
-  const handleSelectedValuesChange = () => {
+  }, [selectedDate, selectedGroupe, postFormVisible]);
+  const handleSelectedValuesChange = async () => {
     if (calType === "WKS") {
       getWeekSeances({ selectedDate, selectedGroupe });
     } else {
-      setSelectedSeances([]);
-      setSelectedSeances(
-        seances.filter((seance) => {
-          return (
-            seance.groupId === selectedGroupe &&
-            testDate(new Date(selectedDate), new Date(seance.dateSeance))
-          );
-        })
-      );
+      await getSeances();
+      console.log("seances", seances);
+      if (seances.length) {
+        setSelectedSeances([]);
+        setSelectedSeances(
+          seances.filter((seance) => {
+            return (
+              seance.groupId === selectedGroupe &&
+              testDate(new Date(selectedDate), new Date(seance.dateSeance))
+            );
+          })
+        );
+      }
     }
   };
   return (
@@ -141,7 +145,14 @@ function GestionSeances() {
           </Grid>
           <Grid item xs={12}>
             {calType === "WKS" ? (
-              <WKSCalendar data={weekSeances} />
+              <WKSCalendar
+                data={weekSeances}
+                handleSeanceUpdated={async () => {
+                  await getSeances();
+                  await getGroupes();
+                  handleSelectedValuesChange();
+                }}
+              />
             ) : (
               <SeancesCalendar data={selectedSeances}></SeancesCalendar>
             )}

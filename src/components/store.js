@@ -22,6 +22,7 @@ const store = createStore({
   availableStartTime: ["08:30", "11:00", "13:30", "16:00"],
   filteredModules: [],
   formateurs: [],
+  updatedSeance: {},
   currentUpdatedGroupId: "",
   user: JSON.parse(localStorage.getItem("user")),
   isPost: false,
@@ -44,10 +45,42 @@ const store = createStore({
       actions.setApiError(error);
     }
   }),
+  deleteModule: thunk(async (actions, moduleId) => {
+    try {
+      await modulesServices.deleteModule(moduleId);
+      actions.getModules();
+    } catch (error) {
+      actions.setApiError(error);
+    }
+  }),
+  putModule: thunk(async (actions, moduleId, data) => {
+    try {
+      await modulesServices.putModule(moduleId, data);
+      actions.getModules();
+    } catch (error) {
+      actions.setApiError(error);
+    }
+  }),
   getFilieres: thunk(async (actions) => {
     try {
       const res = await filiereServices.getFilieres();
       actions.setFilieres(res);
+    } catch (error) {
+      actions.setApiError(error);
+    }
+  }),
+  postFiliere: thunk(async (actions, data) => {
+    try {
+      await filiereServices.postFiliere(data);
+      actions.getFilieres();
+    } catch (error) {
+      actions.setApiError(error);
+    }
+  }),
+  putFiliere: thunk(async (actions, id, data) => {
+    try {
+      await filiereServices.putFiliere(id, data);
+      actions.getFilieres();
     } catch (error) {
       actions.setApiError(error);
     }
@@ -61,14 +94,7 @@ const store = createStore({
       actions.setApiError(error);
     }
   }),
-  getFiliereGroupes: thunk(async (actions, id) => {
-    try {
-      const res = await groupeServices.getFiliereGroupes(id);
-      actions.setFilteredGroupes(res);
-    } catch (error) {
-      actions.setApiError(error);
-    }
-  }),
+
   getFiliereModules: thunk(async (actions, filiereId) => {
     try {
       const res = await modulesServices.getFiliereModules(filiereId);
@@ -93,10 +119,63 @@ const store = createStore({
       actions.setApiError(error);
     }
   }),
+  postGroupe: thunk(async (actions, data) => {
+    try {
+      const res = await groupeServices.postGroupe(data);
+      actions.setGroupes(res);
+    } catch (error) {
+      actions.setApiError(error);
+    }
+  }),
+  deleteGroupe: thunk(async (actions, obj) => {
+    try {
+      const res = await groupeServices.deleteGroupe(obj);
+      actions.setGroupes(res);
+    } catch (error) {
+      actions.setApiError(error);
+    }
+  }),
+  getFiliereGroupes: thunk(async (actions, id) => {
+    try {
+      const res = await groupeServices.getFiliereGroupes(id);
+      actions.setFilteredGroupes(res);
+    } catch (error) {
+      actions.setApiError(error);
+    }
+  }),
   getStagiaires: thunk(async (actions) => {
     try {
       const res = await stagiaireServices.getStagiaires();
       actions.setStagiaires(res);
+    } catch (error) {
+      actions.setApiError(error);
+    }
+  }),
+  postStagiaire: thunk(async (actions, data) => {
+    try {
+      const res = await stagiaireServices.postStagiaire(data);
+      return res;
+    } catch (error) {
+      actions.setApiError(error);
+    }
+  }),
+  deleteStagiaire: thunk(async (actions, id) => {
+    try {
+      const res = await stagiaireServices.deleteStagiaire(id);
+      actions.setStagiaires(res);
+      return res;
+    } catch (error) {
+      actions.setApiError(error);
+    }
+  }),
+  putStagiaire: thunk(async (actions, stgObj) => {
+    try {
+      const res = await stagiaireServices.putStagiaire(
+        stgObj.stagiaireId,
+        stgObj
+      );
+      actions.setStagiaires(res);
+      return res;
     } catch (error) {
       actions.setApiError(error);
     }
@@ -112,6 +191,24 @@ const store = createStore({
   postSeance: thunk(async (actions, seance) => {
     try {
       const res = await seanceServices.postSeances(seance);
+      return res;
+    } catch (error) {
+      actions.setApiError(error);
+    }
+  }),
+  deleteSeance: thunk(async (actions, id) => {
+    try {
+      const res = await seanceServices.deleteSeance(id);
+      actions.setSeances(res);
+      return res;
+    } catch (error) {
+      actions.setApiError(error);
+    }
+  }),
+  putSeance: thunk(async (actions, seance) => {
+    try {
+      const res = await seanceServices.putSeance(seance.seanceId, seance);
+      actions.setSeances(res);
       return res;
     } catch (error) {
       actions.setApiError(error);
@@ -196,6 +293,9 @@ const store = createStore({
   }),
   setApiError: action((state, res) => {
     state.apiError = res;
+  }),
+  setUpdatedSeance: action((state, res) => {
+    state.updatedSeance = res;
   }),
 });
 export default store;

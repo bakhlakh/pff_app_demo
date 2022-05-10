@@ -14,11 +14,11 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import MessageBox from "../components/MessageBox";
-import authHeader from "../services/auth-header";
+
 function PutStagiereForm({ fieldValues, cancelOp, handleClick }) {
-  const api = useStoreState((store) => store.api);
   const getFilieres = useStoreActions((actions) => actions.getFilieres);
   const getGroupes = useStoreActions((actions) => actions.getGroupes);
+  const putStagiaire = useStoreActions((actions) => actions.putStagiaire);
   const filieres = useStoreState((state) => state.filieres);
   const groupes = useStoreState((state) => state.groupes);
   const [filteredGroups, setFilteredGroups] = useState([]);
@@ -63,16 +63,21 @@ function PutStagiereForm({ fieldValues, cancelOp, handleClick }) {
       setFilteredGroups(obj);
     } else setFilteredGroups([]);
   };
-  useEffect(() => {
+  const initDataStores = () => {
     getFilieres();
     getGroupes();
     filterGroupes();
+  };
+  useEffect(() => {
+    initDataStores();
+    //eslint-disable-next-line
   }, []);
   useEffect(() => {
     filterGroupes();
     if (newStagiaire.statue === "Suspended") setStatusColor("orange");
     if (newStagiaire.statue === "Banned") setStatusColor("red");
     if (newStagiaire.statue === "Active") setStatusColor("green");
+    //eslint-disable-next-line
   }, [newStagiaire]);
 
   const validate = Yup.object({
@@ -117,7 +122,7 @@ function PutStagiereForm({ fieldValues, cancelOp, handleClick }) {
     dateNaissance: Yup.date().nullable(),
     txt_Address: Yup.string(),
   });
-  const handleSubmit = (values) => {
+  const handleSubmit = async (values) => {
     let stgObj = {
       stagiaireId: fieldValues.stagiaireId,
       firstName: values.txt_Prenom,
@@ -132,19 +137,11 @@ function PutStagiereForm({ fieldValues, cancelOp, handleClick }) {
       nationalite: "Maroccain",
       statue: newStagiaire.statue,
     };
-    console.log("stgObj", stgObj);
-    api
-      .put(`/api/Stagiaires/${fieldValues.stagiaireId}`, stgObj, {
-        headers: authHeader(),
-      })
-      .then((res) => {
-        console.log("res", res);
-        handleClick();
-        cancelOp();
-      })
-      .catch((error) => {
-        setMessageVisible(true);
-      });
+    const res = await putStagiaire(stgObj);
+    if (res) {
+      handleClick();
+      cancelOp();
+    } else setMessageVisible(true);
   };
   return (
     <>
@@ -161,6 +158,7 @@ function PutStagiereForm({ fieldValues, cancelOp, handleClick }) {
         }}
         validationSchema={validate}
         onSubmit={async (values) => {
+          console.log("Submit");
           if (newStagiaire.groupId !== "" && newStagiaire.filiereId !== "") {
             handleSubmit(values);
           }

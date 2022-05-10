@@ -2,7 +2,12 @@ import React from "react";
 
 function SeanceBox(props) {
   return (
-    <div className="seance-box">
+    <div
+      className="seance-box"
+      onClick={(e) => {
+        props.onClick(props.seance);
+      }}
+    >
       <div className="seance-box-header">
         <div className="seance-box-header-module">{props.seance.moduleId}</div>
       </div>

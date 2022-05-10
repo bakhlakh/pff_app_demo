@@ -6,12 +6,16 @@ export default class authAxios {
     const { data } = await api.get(url, { headers: authHeader() });
     return data;
   }
-  static async post(url, data) {
-    const { dt } = await api.post(url, data, { headers: authHeader() });
-    return dt;
+  static async post(url, dt) {
+    const { data } = await api.post(url, dt, { headers: authHeader() });
+    return data;
   }
   static async delete(url) {
     const { data } = await api.delete(url, { headers: authHeader() });
+    return data;
+  }
+  static async put(url, dt) {
+    const { data } = await api.put(url, dt, { headers: authHeader() });
     return data;
   }
 }
