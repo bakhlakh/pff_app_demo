@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../styles/componentStyles/WKSCalendar.css";
 import SeanceBox from "./SeanceBox";
 import PutSeance from "../forms/PutSeance";
-function WKSCalendar({ data, handleSeanceUpdated }) {
+const WKSCalendar = React.forwardRef(({ data, handleSeanceUpdated }, ref) => {
   const [putSeanceVisible, setPostSeanceVisible] = useState(false);
   const [updatedSeance, setUpdatedSeance] = useState({});
   const [seances, setSeances] = useState({
@@ -165,10 +165,10 @@ function WKSCalendar({ data, handleSeanceUpdated }) {
           updatedSeance={updatedSeance}
         />
       )}
-      <div className="WKSCalendar">
-        <table className=" WKSCalendarTable" style={{ height: "500px" }}>
+      <div className="WKSCalendar" ref={ref}>
+        <table className=" WKSCalendarTable">
           <thead>
-            <tr>
+            <tr style={{ height: "70px" }}>
               <th style={{ paddingLeft: "20px", width: "250px" }}>
                 <div className="d-flex justify-content-between w-75">
                   <h6>Jours</h6>
@@ -490,6 +490,6 @@ function WKSCalendar({ data, handleSeanceUpdated }) {
       </div>
     </>
   );
-}
+});
 
 export default WKSCalendar;

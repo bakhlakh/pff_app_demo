@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import WKSCalendar from "../components/WKSCalendar";
+import { useReactToPrint } from "react-to-print";
 import {
   Grid,
   TextField,
@@ -29,6 +30,10 @@ const testDate = (selectedDate, date) => {
   } else return false;
 };
 function GestionSeances() {
+  const WKSRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => WKSRef.current,
+  });
   const getGroupes = useStoreActions((actions) => actions.getGroupes);
   const groupes = useStoreState((state) => state.groupes);
   const getSeances = useStoreActions((actions) => actions.getSeances);
@@ -110,7 +115,7 @@ function GestionSeances() {
               />
             </LocalizationProvider>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={2}>
             <FormControl fullWidth>
               <InputLabel id="groupIdLabel">Groupe</InputLabel>
               <Select
@@ -143,6 +148,11 @@ function GestionSeances() {
               {calType === "WKS" ? "Voir par jour" : "Voir par semaine"}
             </Button>
           </Grid>
+          <Grid item xs={2}>
+            <Button color="success" variant="outlined" onClick={handlePrint}>
+              Imprimer
+            </Button>
+          </Grid>
           <Grid item xs={12}>
             {calType === "WKS" ? (
               <WKSCalendar
@@ -152,6 +162,7 @@ function GestionSeances() {
                   await getGroupes();
                   handleSelectedValuesChange();
                 }}
+                ref={WKSRef}
               />
             ) : (
               <SeancesCalendar data={selectedSeances}></SeancesCalendar>
