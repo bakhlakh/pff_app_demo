@@ -15,6 +15,8 @@ td {
   padding: 2px;
   max-height: 50px !important;
   text-align: center;
+  border-right: #000000 1px solid;
+  border-bottom: #000000 1px solid;
 }
 .WKSCalendarTable td {
   background-color: #ffffff;
@@ -22,6 +24,8 @@ td {
   font-size: 12px;
   text-align: center;
   max-height: 100px !important;
+  border-right: #000000 1px solid;
+  border-bottom: #000000 1px solid;
 }
 .WKSCalendarTable tr {
   height: 80px;
@@ -33,6 +37,7 @@ td {
   font-size: 1rem;
   box-sizing: border-box;
   background-color: rgb(77, 139, 209);
+  height: 80px;
   padding: 5px;
 }
 .seance-box-header-module {
@@ -56,3 +61,10 @@ td {
     margin-top: 10px;
   }
 }*/
+.WKSCalendar__header * {
+  margin: 5px 10px 5px 10px;
+  font-weight: bold;
+}
+.WKSCalendar-header-body * {
+  font-size: 1rem;
+}

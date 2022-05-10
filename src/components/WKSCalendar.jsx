@@ -3,6 +3,7 @@ import "../styles/componentStyles/WKSCalendar.css";
 import SeanceBox from "./SeanceBox";
 import PutSeance from "../forms/PutSeance";
 const WKSCalendar = React.forwardRef(({ data, handleSeanceUpdated }, ref) => {
+  console.log("data", data);
   const [putSeanceVisible, setPostSeanceVisible] = useState(false);
   const [updatedSeance, setUpdatedSeance] = useState({});
   const [seances, setSeances] = useState({
@@ -166,6 +167,27 @@ const WKSCalendar = React.forwardRef(({ data, handleSeanceUpdated }, ref) => {
         />
       )}
       <div className="WKSCalendar" ref={ref}>
+        <div className="WKSCalendar__header">
+          <div className="d-flex justify-content-center">
+            <h4>EMPLOIS DU TEMPS PAR GROUPE</h4>
+          </div>
+          <div className="WKSCalendar-header-body d-flex justify-content-between ">
+            <div className="WKSCalendar-header-body-left">
+              <h5>Anne de formation : {data[0]?.anneScolaire}</h5>
+              <h5>Groupe : {data[0]?.groupId}</h5>
+              <h5>Mode de formation : Residentiel</h5>
+            </div>
+            <div className="WKSCalendar-header-body-right">
+              <h5>Niveau : {data[0]?.filiere.typeDiplome}</h5>
+              <h5>Mass Horraire /Semaine :</h5>
+              <h5>
+                {data[0]?.groupe.niveau === 1
+                  ? " " + data[0]?.groupe.niveau + " ère Année"
+                  : " " + data[0]?.groupe.niveau + " ème Année"}
+              </h5>
+            </div>
+          </div>
+        </div>
         <table className=" WKSCalendarTable">
           <thead>
             <tr style={{ height: "70px" }}>
