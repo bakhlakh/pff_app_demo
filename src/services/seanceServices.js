@@ -29,4 +29,12 @@ export default class seanceServices {
       }&groupId=${obj.selectedGroupe}`
     );
   }
+  static async GWSForAll(obj) {
+    const date = new Date(obj.selectedDate);
+    return authAxios.get(
+      `/api/Seances/GWSForAll?date=${
+        date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
+      }`
+    );
+  }
 }

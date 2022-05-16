@@ -5,17 +5,14 @@ import { useState } from "react";
 import * as Yup from "yup";
 import "../styles/formsStyles/POSTForm.css";
 import MessageBox from "../components/MessageBox";
-import axios from "axios";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
-import authHeader from "../services/auth-header";
-
+import { useStoreActions } from "easy-peasy";
 function FilierePutForm({ fieldValues, cancelOp, handleClick }) {
   const msgReducer = (msgState, action) => {
-    console.log("second");
     switch (action.type) {
       case "OK":
         return "OK";
@@ -25,14 +22,11 @@ function FilierePutForm({ fieldValues, cancelOp, handleClick }) {
     }
   };
   //Init States
-  const api = axios.create({ baseURL: "https://localhost:7161/" });
   const [nbchars, setnbchars] = useState(300);
   const [desc, setDesc] = useState(fieldValues.description);
   const [combo, setCombo] = useState(fieldValues.typeDiplome);
   const [msgState, msgDispatch] = useReducer(msgReducer, null);
-  if (msgState === "OK") {
-    handleClick();
-  }
+  const putFiliere = useStoreActions((actions) => actions.putFiliere);
   //Description Handler
   const descHandler = (e) => {
     setDesc(e.target.value);
@@ -68,9 +62,9 @@ function FilierePutForm({ fieldValues, cancelOp, handleClick }) {
       )
       .required("Obligatoire"),
   });
-  const putFiliere = ({ ...values }) => {
+  const handleUpdate = async ({ ...values }) => {
     const obj = {
-      filiereId: values.txt_idFilierePUT,
+      FiliereId: values.txt_idFilierePUT,
       nomFiliere: values.txt_nomFilierePUT,
       description: desc,
       typeDiplome: combo,
@@ -78,16 +72,12 @@ function FilierePutForm({ fieldValues, cancelOp, handleClick }) {
       groupes: [],
       stagiaires: [],
     };
-    api
-      .put(`/api/Filieres/${values.txt_idFilierePUT}`, obj, {
-        headers: authHeader(),
-      })
-      .then((e) => {
-        displayMsg(e.status);
-      })
-      .catch((e) => {
-        displayMsg(400);
-      });
+    const res = await putFiliere(obj);
+    if (res) {
+      displayMsg(200);
+      handleClick();
+      cancelOp();
+    } else displayMsg(400);
   };
   return (
     <>
@@ -100,7 +90,7 @@ function FilierePutForm({ fieldValues, cancelOp, handleClick }) {
         }}
         validationSchema={validate}
         onSubmit={(values) => {
-          putFiliere(values);
+          handleUpdate(values);
         }}
       >
         <Form>

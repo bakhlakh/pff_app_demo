@@ -1,7 +1,7 @@
 import React from "react";
 import * as FaIcons from "react-icons/fa";
 import * as IoIcons from "react-icons/io";
-import BadgeIcon from "@mui/icons-material/Badge";
+import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 export const SidebarDATA = [
   {
     title: "Gestion Filieres",
@@ -36,7 +36,7 @@ export const SidebarDATA = [
   {
     title: "Gestion des Salles",
     path: "/GestionSalles",
-    icon: <FaIcons.FaRestroom />,
+    icon: <MeetingRoomIcon />,
     cName: "nav-text",
   },
   {

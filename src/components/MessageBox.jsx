@@ -13,16 +13,8 @@ function MessageBox({ type, message, id, cancelOp }) {
         role="alert"
         id={id}
       >
-        <strong>Error!</strong> {message}
-        <button
-          type="button"
-          className="btn-close"
-          data-bs-dismiss="alert"
-          aria-label="Close"
-          onClick={() => {
-            cancelOp();
-          }}
-        ></button>
+        <strong>Error!</strong>
+        <p>{message}</p>
       </div>
     );
   } else if (type === "OK") {
@@ -30,15 +22,6 @@ function MessageBox({ type, message, id, cancelOp }) {
       <div className="alert alert-success" id={id}>
         <h4 className="alert-heading">OK!</h4>
         <p>{message}</p>
-        <button
-          type="button"
-          className="btn-close"
-          data-bs-dismiss="alert"
-          aria-label="Close"
-          onClick={() => {
-            cancelOp();
-          }}
-        ></button>
       </div>
     );
   } else {

@@ -3,7 +3,6 @@ import "../styles/componentStyles/WKSCalendar.css";
 import SeanceBox from "./SeanceBox";
 import PutSeance from "../forms/PutSeance";
 const WKSCalendar = React.forwardRef(({ data, handleSeanceUpdated }, ref) => {
-  console.log("data", data);
   const [putSeanceVisible, setPostSeanceVisible] = useState(false);
   const [updatedSeance, setUpdatedSeance] = useState({});
   const [seances, setSeances] = useState({
@@ -48,100 +47,100 @@ const WKSCalendar = React.forwardRef(({ data, handleSeanceUpdated }, ref) => {
       vendredi: { s8: null, s11: null, s13: null, s16: null },
       samedi: { s8: null, s11: null, s13: null, s16: null },
     });
-    if (data.length > 0) {
+    if (data?.emploi?.length > 0) {
       setSeances({
         lundi: {
-          s8: data.find(
+          s8: data.emploi.find(
             (seance) => seance.startTime === "08:30" && seance.day === "Monday"
           ),
-          s11: data.find(
+          s11: data.emploi.find(
             (seance) => seance.startTime === "11:00" && seance.day === "Monday"
           ),
-          s13: data.find(
+          s13: data.emploi.find(
             (seance) => seance.startTime === "13:30" && seance.day === "Monday"
           ),
-          s16: data.find(
+          s16: data.emploi.find(
             (seance) => seance.startTime === "16:00" && seance.day === "Monday"
           ),
         },
         mardi: {
-          s8: data.find(
+          s8: data.emploi.find(
             (seance) => seance.startTime === "08:30" && seance.day === "Tuesday"
           ),
-          s11: data.find(
+          s11: data.emploi.find(
             (seance) => seance.startTime === "11:00" && seance.day === "Tuesday"
           ),
-          s13: data.find(
+          s13: data.emploi.find(
             (seance) => seance.startTime === "13:30" && seance.day === "Tuesday"
           ),
-          s16: data.find(
+          s16: data.emploi.find(
             (seance) => seance.startTime === "16:00" && seance.day === "Tuesday"
           ),
         },
         mercredi: {
-          s8: data.find(
+          s8: data.emploi.find(
             (seance) =>
               seance.startTime === "08:30" && seance.day === "Wednesday"
           ),
-          s11: data.find(
+          s11: data.emploi.find(
             (seance) =>
               seance.startTime === "11:00" && seance.day === "Wednesday"
           ),
-          s13: data.find(
+          s13: data.emploi.find(
             (seance) =>
               seance.startTime === "13:30" && seance.day === "Wednesday"
           ),
-          s16: data.find(
+          s16: data.emploi.find(
             (seance) =>
               seance.startTime === "16:00" && seance.day === "Wednesday"
           ),
         },
         jeudi: {
-          s8: data.find(
+          s8: data.emploi.find(
             (seance) =>
               seance.startTime === "08:30" && seance.day === "Thursday"
           ),
-          s11: data.find(
+          s11: data.emploi.find(
             (seance) =>
               seance.startTime === "11:00" && seance.day === "Thursday"
           ),
-          s13: data.find(
+          s13: data.emploi.find(
             (seance) =>
               seance.startTime === "13:30" && seance.day === "Thursday"
           ),
-          s16: data.find(
+          s16: data.emploi.find(
             (seance) =>
               seance.startTime === "16:00" && seance.day === "Thursday"
           ),
         },
         vendredi: {
-          s8: data.find(
+          s8: data.emploi.find(
             (seance) => seance.startTime === "08:30" && seance.day === "Friday"
           ),
-          s11: data.find(
+          s11: data.emploi.find(
             (seance) => seance.startTime === "11:00" && seance.day === "Friday"
           ),
-          s13: data.find(
+          s13: data.emploi.find(
             (seance) => seance.startTime === "13:30" && seance.day === "Friday"
           ),
-          s16: data.find(
+          s16: data.emploi.find(
             (seance) => seance.startTime === "16:00" && seance.day === "Friday"
           ),
         },
         samedi: {
-          s8: data.find(
+          s8: data.emploi.find(
             (seance) =>
               seance.startTime === "08:30" && seance.day === "Saturday"
           ),
-          s11: data.find(
+          s11: data.emploi.find(
             (seance) =>
               seance.startTime === "11:00" && seance.day === "Saturday"
           ),
-          s13: data.find(
+          s13: data.emploi.find(
             (seance) =>
               seance.startTime === "13:30" && seance.day === "Saturday"
           ),
-          s16: data.find(
+          s16: data.emploi.find(
             (seance) =>
               seance.startTime === "16:00" && seance.day === "Saturday"
           ),
@@ -167,27 +166,31 @@ const WKSCalendar = React.forwardRef(({ data, handleSeanceUpdated }, ref) => {
         />
       )}
       <div className="WKSCalendar" ref={ref}>
-        <div className="WKSCalendar__header">
-          <div className="d-flex justify-content-center">
-            <h4>EMPLOIS DU TEMPS PAR GROUPE</h4>
-          </div>
-          <div className="WKSCalendar-header-body d-flex justify-content-between ">
-            <div className="WKSCalendar-header-body-left">
-              <h5>Anne de formation : {data[0]?.anneScolaire}</h5>
-              <h5>Groupe : {data[0]?.groupId}</h5>
-              <h5>Mode de formation : Residentiel</h5>
+        {data?.info && (
+          <div className="WKSCalendar__header">
+            <div className="d-flex justify-content-center">
+              <h4>EMPLOIS DU TEMPS PAR GROUPE</h4>
             </div>
-            <div className="WKSCalendar-header-body-right">
-              <h5>Niveau : {data[0]?.filiere.typeDiplome}</h5>
-              <h5>Mass Horraire /Semaine :</h5>
-              <h5>
-                {data[0]?.groupe.niveau === 1
-                  ? " " + data[0]?.groupe.niveau + " ère Année"
-                  : " " + data[0]?.groupe.niveau + " ème Année"}
-              </h5>
+            <div className="WKSCalendar-header-body d-flex justify-content-between ">
+              <div className="WKSCalendar-header-body-left">
+                <h5>
+                  Anne de formation : {data && data.info._Groupe.anneScolaire}
+                </h5>
+                <h5>Groupe : {data && data.info._Groupe.groupId}</h5>
+                <h5>Mode de formation : Residentiel</h5>
+              </div>
+              <div className="WKSCalendar-header-body-right">
+                <h5>Niveau : {data && data.info._Filiere.typeDiplome}</h5>
+                <h5>Mass Horraire /Semaine : {data.mh}</h5>
+                <h5>
+                  {data && data.info._Groupe.niveau === 1
+                    ? " " + data.info._Groupe.niveau + " ère Année"
+                    : " " + data.info._Groupe.niveau + " ème Année"}
+                </h5>
+              </div>
             </div>
           </div>
-        </div>
+        )}
         <table className=" WKSCalendarTable">
           <thead>
             <tr style={{ height: "70px" }}>

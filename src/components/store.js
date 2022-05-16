@@ -77,10 +77,11 @@ const store = createStore({
       actions.setApiError(error);
     }
   }),
-  putFiliere: thunk(async (actions, id, data) => {
+  putFiliere: thunk(async (actions, data) => {
     try {
-      await filiereServices.putFiliere(id, data);
+      const res = await filiereServices.putFiliere(data.FiliereId, data);
       actions.getFilieres();
+      return res;
     } catch (error) {
       actions.setApiError(error);
     }
@@ -99,6 +100,7 @@ const store = createStore({
     try {
       const res = await modulesServices.getFiliereModules(filiereId);
       actions.setFilteredModules(res);
+      return res;
     } catch (error) {
       actions.setApiError(error);
     }
@@ -250,6 +252,14 @@ const store = createStore({
     try {
       const res = await seanceServices.getWeekSeances(obj);
       actions.setWeekSeances(res);
+    } catch (error) {
+      actions.setApiError(error);
+    }
+  }),
+  GWSForAll: thunk(async (actions, obj) => {
+    try {
+      const res = await seanceServices.GWSForAll(obj);
+      return res;
     } catch (error) {
       actions.setApiError(error);
     }

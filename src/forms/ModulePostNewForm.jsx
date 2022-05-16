@@ -67,7 +67,6 @@ function ModulePostNewForm({ handleClick, cancelOp }) {
         displayMsg(e.status);
       })
       .catch((e) => {
-        console.log("catch.status", e);
         displayMsg(e.status);
       });
     handleClick();

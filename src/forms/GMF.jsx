@@ -8,20 +8,21 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import authHeader from "../services/auth-header";
-
+import { useStoreActions } from "easy-peasy";
 const api = axios.create({ baseURL: "https://localhost:7161/" });
 
 function GMF({ fieldValues, cancelOp, handleClick, f }) {
   const [modules, setModules] = useState(fieldValues.filiereModules);
-  const [notInModules, setNotInModules] = useState([{ moduleId: "M202" }]);
-  const [newModule, setNewModule] = useState(
-    notInModules[0].moduleId || "M202"
-  );
+  const [notInModules, setNotInModules] = useState([]);
+  const [newModule, setNewModule] = useState("");
   const [newMassHorraire, setNewMassHorraire] = useState(0);
   const [updateMassHorraire, setUpdateMassHorraire] = useState(false);
   const [currentUpdated, setCurrentUpdated] = useState([]);
   const [newMassHorraireField, setNewMassHorraireField] = useState(0);
   const [messageVisible, setMessageVisible] = useState(false);
+  const getFiliereModules = useStoreActions(
+    (actions) => actions.getFiliereModules
+  );
   const [messageInfo, setMessageInfo] = useState({
     type: "OK",
     Message: "Filiere has been updated",
@@ -35,7 +36,6 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
     //eslint-disable-next-line
   }, [f]);
   const handleAjoutModule = async () => {
-    console.log("first");
     const obj = {
       _ModuleId: newModule,
       _FiliereId: fieldValues.filiereId,
@@ -51,7 +51,6 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
         getModulesWC();
       })
       .catch((e) => {
-        console.log("e", e);
         displayMsg(400);
       });
   };
@@ -111,12 +110,9 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
         displayMsg(400);
       });
   };
-  const getModulesWC = () => {
-    api
-      .get("/api/Modules/GetXModulesFiliere/" + fieldValues.filiereId)
-      .then(({ data }) => {
-        setNotInModules(data);
-      });
+  const getModulesWC = async () => {
+    const res = await getFiliereModules(fieldValues.filiereId);
+    setNotInModules(res);
   };
 
   return (
@@ -196,13 +192,15 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
                   setNewModule(e.target.value);
                 }}
               >
-                {notInModules.map((item, index) => {
-                  return (
-                    <MenuItem key={index} value={item.moduleId}>
-                      {item.moduleId} - {item.intitule}
-                    </MenuItem>
-                  );
-                })}
+                {notInModules.length > 0
+                  ? notInModules.map((item, index) => {
+                      return (
+                        <MenuItem key={index} value={item.module.moduleId}>
+                          {item.module.moduleId} - {item.module.intitule}
+                        </MenuItem>
+                      );
+                    })
+                  : null}
               </Select>
             </FormControl>
             <div className="input-group mt-2">

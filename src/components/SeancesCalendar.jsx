@@ -19,7 +19,6 @@ function SeancesCalendar({ data }) {
       });
     }
   }, [data]);
-  console.log("seances", seances);
   return (
     <>
       <div className="calendar-container">

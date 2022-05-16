@@ -87,9 +87,7 @@ function PostSeance({ handleClick, cancelOp }) {
       anneScolaire: newSeance.anneScolaire,
     };
     let res = await postSeance(scObj);
-    console.log("res", res);
     if (res?.seanceId) {
-      console.log("Ok");
       cancelOp();
     } else {
       console.log("error");

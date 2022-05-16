@@ -14,7 +14,6 @@ import TextField from "@mui/material/TextField";
 import authHeader from "../services/auth-header";
 const FilierePostNewForm = ({ handleClick, cancelOp }) => {
   const msgReducer = (_, action) => {
-    console.log("action.type", action.type);
     switch (action.type) {
       case "OK":
         return "OK";
@@ -101,7 +100,6 @@ const FilierePostNewForm = ({ handleClick, cancelOp }) => {
         defaultValue={{ DescriptionFiliere: desc }}
         validationSchema={validate}
         onSubmit={(values) => {
-          console.log("values", values);
           PostFiliere(values);
         }}
       >

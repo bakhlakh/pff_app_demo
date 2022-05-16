@@ -16,9 +16,17 @@ function Main() {
   const verifyClient = useStoreActions((actions) => actions.verifyClient);
   const [userAuth, setUserAuth] = useState(false);
 
+  const getC = async () => {
+    const res = await verifyClient();
+    if (res.status >= 200 && res.status < 300) {
+      setUserAuth(true);
+    } else {
+      setUserAuth(false);
+    }
+  };
   useEffect(() => {
-    setUserAuth(async () => await verifyClient());
-  }, []);
+    getC();
+  });
   return (
     <>
       <Router>

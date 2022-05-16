@@ -158,7 +158,6 @@ function PutStagiereForm({ fieldValues, cancelOp, handleClick }) {
         }}
         validationSchema={validate}
         onSubmit={async (values) => {
-          console.log("Submit");
           if (newStagiaire.groupId !== "" && newStagiaire.filiereId !== "") {
             handleSubmit(values);
           }
@@ -344,7 +343,6 @@ function PutStagiereForm({ fieldValues, cancelOp, handleClick }) {
                       value={newStagiaire.groupId}
                       label="Groupe"
                       onChange={(e) => {
-                        console.log("e", e);
                         setNewStagiaire({
                           ...newStagiaire,
                           groupId: e.target.value,

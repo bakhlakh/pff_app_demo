@@ -40,7 +40,6 @@ function Datatable({ data }) {
                           id="deleteModuleBtn"
                           className="btn btn-danger m-2"
                           onClick={() => {
-                            console.log("row", row);
                             deleteModule(row[columns[0]]);
                             window.location.reload();
                           }}

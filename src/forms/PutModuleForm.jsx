@@ -10,7 +10,6 @@ import authHeader from "../services/auth-header";
 
 function PutModuleForm({ fieldValues, cancelOp, handleClick }) {
   const msgReducer = (msgState, action) => {
-    console.log("second");
     switch (action.type) {
       case "OK":
         return "OK";
@@ -66,7 +65,6 @@ function PutModuleForm({ fieldValues, cancelOp, handleClick }) {
         displayMsg(e.status);
       })
       .catch((e) => {
-        console.log("catch.status", e);
         displayMsg(e.status);
       });
     handleClick();

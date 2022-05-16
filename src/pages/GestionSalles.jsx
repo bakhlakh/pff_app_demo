@@ -62,9 +62,6 @@ function GestionSalles() {
                 color: "white",
                 marginRight: "10px",
               }}
-              onClick={() => {
-                console.log(params.row.roomId);
-              }}
               size="small"
             >
               Modifier

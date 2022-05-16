@@ -19,6 +19,7 @@ import SeancesCalendar from "../components/SeancesCalendar";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import PostSeance from "../forms/PostSeance";
 import NewSide from "../components/NewSide";
+import PrintEmploiForAll from "../components/PrintEmploiForAll";
 
 const testDate = (selectedDate, date) => {
   if (
@@ -42,6 +43,7 @@ function GestionSeances() {
   const [selectedGroupe, setSelectedGroupe] = useState("");
   const [selectedSeances, setSelectedSeances] = useState([]);
   const [postFormVisible, setPostFormVisible] = useState(false);
+  const [printFormVisible, setPrintFormVisible] = useState(false);
   const [calType, setCalType] = useState("WKS");
   const weekSeances = useStoreState((state) => state.weekSeances);
   const getWeekSeances = useStoreActions((actions) => actions.getWeekSeances);
@@ -56,7 +58,6 @@ function GestionSeances() {
       getWeekSeances({ selectedDate, selectedGroupe });
     } else {
       await getSeances();
-      console.log("seances", seances);
       if (seances.length) {
         setSelectedSeances([]);
         setSelectedSeances(
@@ -69,6 +70,9 @@ function GestionSeances() {
         );
       }
     }
+  };
+  const handlePrintAll = () => {
+    setPrintFormVisible(true);
   };
   return (
     <>
@@ -152,6 +156,9 @@ function GestionSeances() {
             <Button color="success" variant="outlined" onClick={handlePrint}>
               Imprimer
             </Button>
+            <Button color="success" variant="outlined" onClick={handlePrintAll}>
+              Imprimer pour tous les groupes
+            </Button>
           </Grid>
           <Grid item xs={12}>
             {calType === "WKS" ? (
@@ -170,6 +177,16 @@ function GestionSeances() {
           </Grid>
         </Grid>
       </Container>
+      {printFormVisible && (
+        <PrintEmploiForAll
+          handleDelete={() => {
+            setPrintFormVisible(false);
+          }}
+          cancelOp={() => {
+            setPrintFormVisible(false);
+          }}
+        />
+      )}
     </>
   );
 }

@@ -12,7 +12,9 @@ function SeanceBox(props) {
         <div className="seance-box-header-module">{props.seance.moduleId}</div>
       </div>
       <div className="seance-box-body">
-        <div className="seance-box-body-intitule">{props.seance.intitule}</div>
+        <div className="seance-box-body-intitule">
+          {props.seance.room.intitule}
+        </div>
         <div className="seance-box-body-formateur">
           {props.seance.formateur.firstName +
             " " +
