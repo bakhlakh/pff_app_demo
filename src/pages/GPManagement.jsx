@@ -6,7 +6,7 @@ import ConfirmDelete from "../components/ConfirmDelete";
 import MessageBox from "../components/MessageBox";
 import authHeader from "../services/auth-header";
 import NewSide from "../components/NewSide";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 
 function GPManagement() {
   const groupes = useStoreState((state) => state.groupes);
@@ -143,6 +143,7 @@ function GPManagement() {
                 columns={muiColumns}
                 rowsPerPageOptions={[5, 10, 20, 50, 100]}
                 getRowId={(row) => row.groupId}
+                components={{ Toolbar: GridToolbar }}
               />
             </div>
           </div>

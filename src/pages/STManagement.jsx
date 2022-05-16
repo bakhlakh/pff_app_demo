@@ -6,7 +6,7 @@ import ConfirmDelete from "../components/ConfirmDelete";
 import MessageBox from "../components/MessageBox";
 import PutStagiereForm from "../forms/PutStagiereForm";
 import NewSide from "../components/NewSide";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 
 function STManagement() {
   const getStagiaires = useStoreActions((actions) => actions.getStagiaires);
@@ -172,6 +172,7 @@ function STManagement() {
                 columns={muiColumns}
                 rowsPerPageOptions={[5, 10, 20, 50, 100]}
                 getRowId={(row) => row.stagiaireId}
+                components={{ Toolbar: GridToolbar }}
               />
             </div>
           </div>

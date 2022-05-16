@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import {
   Grid,
   TextField,
@@ -170,6 +170,7 @@ function GestionSalles() {
               rowsPerPageOptions={[5, 10, 15, 20]}
               getRowId={(row) => row.roomId}
               autoHeight={true}
+              components={{ Toolbar: GridToolbar }}
             />
           </Grid>
         </Grid>

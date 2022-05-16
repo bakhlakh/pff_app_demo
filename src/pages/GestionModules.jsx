@@ -7,7 +7,7 @@ import ConfirmDelete from "../components/ConfirmDelete";
 import PutModuleForm from "../forms/PutModuleForm";
 import authHeader from "../services/auth-header";
 import NewSide from "../components/NewSide";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 
 function GestionModules() {
   const modules = useStoreState((state) => state.modules);
@@ -153,6 +153,7 @@ function GestionModules() {
                 pageSize={10}
                 rowsPerPageOptions={[5, 10, 20, 50, 100]}
                 getRowId={(row) => row.moduleId}
+                components={{ Toolbar: GridToolbar }}
               />
             </div>
           </div>

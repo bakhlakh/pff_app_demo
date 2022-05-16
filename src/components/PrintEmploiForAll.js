@@ -4,6 +4,7 @@ import { Button } from "@mui/material";
 import { useStoreActions } from "easy-peasy";
 import { useReactToPrint } from "react-to-print";
 import AllEmplois from "./AllEmplois";
+
 const PrintEmploiForAll = ({ handleDelete, cancelOp, date }) => {
   const GWSForAll = useStoreActions((actions) => actions.GWSForAll);
   const [allSeances, setAllSeances] = React.useState([]);
