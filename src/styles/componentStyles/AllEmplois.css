@@ -1,0 +1,33 @@
+@media print {
+  html,
+  body {
+    height: initial !important;
+    overflow: initial !important;
+  }
+}
+.emploiDiv {
+  margin-top: 200px;
+}
+@media print {
+  div {
+    break-inside: avoid;
+  }
+  table {
+    break-inside: avoid;
+  }
+  td {
+    break-inside: avoid;
+  }
+  th {
+    break-inside: avoid;
+  }
+  tr {
+    break-inside: avoid;
+  }
+  thead {
+    break-inside: avoid;
+  }
+  tbody {
+    break-inside: avoid;
+  }
+}

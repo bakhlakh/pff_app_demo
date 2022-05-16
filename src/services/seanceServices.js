@@ -30,7 +30,7 @@ export default class seanceServices {
     );
   }
   static async GWSForAll(obj) {
-    const date = new Date(obj.selectedDate);
+    const date = new Date(obj);
     return authAxios.get(
       `/api/Seances/GWSForAll?date=${
         date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()

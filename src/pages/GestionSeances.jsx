@@ -185,6 +185,7 @@ function GestionSeances() {
           cancelOp={() => {
             setPrintFormVisible(false);
           }}
+          date={selectedDate}
         />
       )}
     </>
