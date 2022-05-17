@@ -1,19 +1,13 @@
 import axios from "axios";
+import useAuth from "../hooks/useAuth";
 const API_URL = "https://localhost:7161/";
 
 const login = (email, password) => {
-  return axios
-    .post(API_URL + "/Login", {
-      email,
-      password,
-    })
-    .then((response) => {
-      if (response.data.accessToken) {
-        localStorage.setItem("user", JSON.stringify(response.data));
-      }
-
-      return response.data;
-    });
+  const res = axios.post(API_URL + "/Login", {
+    email,
+    password,
+  });
+  return res;
 };
 
 const logout = () => {

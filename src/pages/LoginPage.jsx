@@ -5,14 +5,21 @@ import { FaUser, FaLock } from "react-icons/fa";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import { useStoreState } from "easy-peasy";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
+import AuthContext from "../context/AuthProvider";
+import useAuth from "../hooks/useAuth";
+
 function LoginPage() {
+  const { setAuth } = useAuth(AuthContext);
+  const navigator = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+
   const [userName, setUserName] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const api = useStoreState((state) => state.api);
-  const navigator = useNavigate();
   const [messageVisible, setMessageVisible] = useState(false);
   function loginHandler() {
     api
@@ -23,9 +30,10 @@ function LoginPage() {
       .then(
         (res) => {
           if (res.status >= 200 && res.status <= 299) {
-            localStorage.setItem("user", JSON.stringify(res.data));
-            navigator("/");
-            window.location.reload();
+            console.log("res", res);
+            setAuth(res.data);
+            localStorage.setItem("user", JSON.stringify(res.data.user));
+            navigator(from, { replace: true });
           }
         },
         (error) => {
