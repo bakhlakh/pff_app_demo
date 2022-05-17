@@ -97,7 +97,6 @@ function GPManagement() {
 
   return (
     <>
-      <NewSide title="Gestion des groupes" />
       {messageVisible && (
         <div className="messageContainer m-5">
           <MessageBox

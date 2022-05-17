@@ -96,7 +96,6 @@ function GestionFilieres() {
   }, [filteredFilieres, currentPage, pagesCount]);
   return (
     <>
-      <NewSide title="Gestion des filieres" />
       {messageVisible ? (
         <div className="messageContainer m-5">
           <MessageBox

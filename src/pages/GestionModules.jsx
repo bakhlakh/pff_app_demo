@@ -100,7 +100,6 @@ function GestionModules() {
   ];
   return (
     <>
-      <NewSide title="Gestion des modules" />
       {messageVisible && (
         <div className="messageContainer m-5 mt-0">
           <MessageBox

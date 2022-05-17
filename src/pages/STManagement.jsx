@@ -118,7 +118,6 @@ function STManagement() {
   ];
   return (
     <>
-      <NewSide title="Gestion des stagieres" />
       {messageVisible && (
         <div className="messageContainer m-5">
           <MessageBox

@@ -76,7 +76,6 @@ function GestionSeances() {
   };
   return (
     <>
-      <NewSide title="Gestion des seances" />
       <CssBaseline />
       {postFormVisible && (
         <PostSeance

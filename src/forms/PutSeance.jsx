@@ -52,7 +52,21 @@ function PutSeance({ handleClick, cancelOp, updatedSeance, handleUpdate }) {
     anneScolaire: "",
     filiereId: "",
   });
-
+  const dockValues = () => {
+    setNewSeance({
+      title: updatedSeance.title,
+      roomId: updatedSeance.room.roomId,
+      moduleId: updatedSeance.moduleId,
+      objectives: updatedSeance.objectives,
+      dateSeance: updatedSeance.dateSeance,
+      startTime: updatedSeance.startTime,
+      formateurId: updatedSeance.formateur.formateurId,
+      commentaires: updatedSeance.commentaires,
+      groupId: updatedSeance.groupId,
+      anneScolaire: updatedSeance.anneScolaire,
+      filiereId: updatedSeance.groupe.filiereId,
+    });
+  };
   useEffect(() => {
     if (filteredGroupes.length > 0) {
       setNewSeance({
@@ -70,8 +84,8 @@ function PutSeance({ handleClick, cancelOp, updatedSeance, handleUpdate }) {
       getFiliereModules(newSeance.filiereId);
       getFiliereGroupes(newSeance.filiereId);
     } else {
-      getFiliereModules(updatedSeance.filiereId);
-      getFiliereGroupes(updatedSeance.filiereId);
+      getFiliereModules(updatedSeance.groupe.filiereId);
+      getFiliereGroupes(updatedSeance.groupe.filiereId);
     }
 
     //eslint-disable-next-line react-hooks/exhaustive-deps
@@ -84,23 +98,10 @@ function PutSeance({ handleClick, cancelOp, updatedSeance, handleUpdate }) {
       formateurs.length > 0 &&
       newSeance.filiereId === ""
     ) {
-      setNewSeance({
-        title: updatedSeance.title,
-        roomId: updatedSeance.room.roomId,
-        moduleId: updatedSeance.moduleId,
-        objectives: updatedSeance.objectives,
-        dateSeance: updatedSeance.dateSeance,
-        startTime: updatedSeance.startTime,
-        formateurId: updatedSeance.formateur.formateurId,
-        commentaires: updatedSeance.commentaires,
-        groupId: updatedSeance.groupId,
-        anneScolaire: updatedSeance.anneScolaire,
-        filiereId: updatedSeance.filiereId,
-      });
+      dockValues();
     }
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filieres, filteredGroupes, rooms, formateurs]);
-
   useEffect(() => {
     handleDateGroupeChange();
     //eslint-disable-next-line react-hooks/exhaustive-deps
@@ -110,19 +111,23 @@ function PutSeance({ handleClick, cancelOp, updatedSeance, handleUpdate }) {
     dateSeance: Yup.date().required("La date est obligatoire"),
   });
   const handleSubmit = async (values) => {
+    let date = new Date(newSeance.dateSeance);
     const scObj = {
       seanceId: updatedSeance.seanceId,
       title: newSeance.title,
       roomId: newSeance.roomId,
       moduleId: newSeance.moduleId,
       objectives: newSeance.objectives,
-      dateSeance: newSeance.dateSeance,
+      dateSeance: `${date.getFullYear()}-${
+        date.getMonth() + 1
+      }-${date.getDate()}`,
       startTime: newSeance.startTime,
       formateurId: newSeance.formateurId,
       commentaires: newSeance.commentaires,
       groupId: newSeance.groupId,
       anneScolaire: newSeance.anneScolaire,
     };
+    console.log("scObj", scObj);
     let res = await putSeance(scObj);
     if (res?.seanceId) {
       handleUpdate();

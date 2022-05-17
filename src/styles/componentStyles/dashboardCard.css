@@ -1,0 +1,39 @@
+.dashboard-card {
+  width: 265px;
+  height: 137px;
+  background-color: #78d189;
+  border-radius: 12px;
+  backdrop-filter: blur(150px);
+  color: white;
+  cursor: pointer;
+}
+.dashboard-card-icon {
+  width: 48px;
+  height: 45.6px;
+  position: absolute;
+  top: 16px;
+  left: 22px;
+  font-size: 40px !important;
+}
+.dashboard-card-body {
+  position: absolute;
+  top: 77px;
+  left: 22px;
+}
+.dashboard-card-body-content span {
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 22px;
+}
+.dashboard-card-body-footer span {
+  position: absolute;
+  left: 22px;
+  top: 103px;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 22px;
+}

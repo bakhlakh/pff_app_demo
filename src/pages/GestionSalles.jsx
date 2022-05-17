@@ -89,7 +89,6 @@ function GestionSalles() {
 
   return (
     <>
-      <NewSide title="Gestion des salles" />
       <CssBaseline />
       <Container maxWidth="lg" sx={{ marginTop: "100px" }}>
         {confirmDeleteVisible && (

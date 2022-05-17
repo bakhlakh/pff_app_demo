@@ -1,0 +1,17 @@
+.DashboardCardContainer {
+  padding: 20px;
+  margin: 0pc;
+}
+.DashboardHeader-title h5 {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 0;
+  font-family: "Poppins", sans-serif;
+  color: blue;
+}
+.DashboardHeaderBody {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+}

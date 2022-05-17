@@ -8,6 +8,7 @@ import stagiaireServices from "../services/stagiaireServices";
 import seanceServices from "../services/seanceServices";
 import roomServices from "../services/roomServices";
 import formateurServices from "../services/formateurServices";
+import overviewServices from "../services/overviewServices";
 const api = axios.create({ baseURL: "https://localhost:7161/" });
 const store = createStore({
   //states
@@ -35,6 +36,10 @@ const store = createStore({
       .catch((err) => {
         return err.response.status;
       });
+    return res;
+  }),
+  getOverview: thunk(async (actions) => {
+    let res = await overviewServices.getOverview();
     return res;
   }),
   getModules: thunk(async (actions) => {

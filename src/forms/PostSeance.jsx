@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import "../styles/formsStyles/PostSeance.css";
 
-function PostSeance({ handleClick, cancelOp }) {
+function PostSeance({ cancelOp }) {
   const [nbchars, setnbchars] = useState(300);
   const getRooms = useStoreActions((actions) => actions.getRooms);
   const rooms = useStoreState((state) => state.rooms);
@@ -58,6 +58,7 @@ function PostSeance({ handleClick, cancelOp }) {
         anneScolaire: filteredGroupes[0].anneScolaire,
       });
     }
+    //eslint-disable-next-line
   }, [filteredGroupes]);
   useEffect(() => {
     getFilieres();
@@ -65,9 +66,11 @@ function PostSeance({ handleClick, cancelOp }) {
     getFormateurs();
     getFiliereModules("TDI");
     getFiliereGroupes("TDI");
+    //eslint-disable-next-line
   }, []);
   useEffect(() => {
     handleDateGroupeChange();
+    //eslint-disable-next-line
   }, [newSeance]);
   const validate = Yup.object({
     title: Yup.string().required("Le titre est obligatoire").min(3),

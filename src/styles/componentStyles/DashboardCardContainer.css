@@ -1,0 +1,13 @@
+.DashboardCardContainer {
+  display: flex;
+  margin: 20px 0 0 20px;
+}
+.DashboardCardContainer .dashboard-card {
+  margin-left: 20px;
+}
+.DashboardHeaderBody {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 20px 0 20px;
+}
