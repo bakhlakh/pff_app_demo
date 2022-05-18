@@ -11,6 +11,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import { useStoreActions } from "easy-peasy";
+import { Button } from "@mui/material";
 function FilierePutForm({ fieldValues, cancelOp, handleClick }) {
   const msgReducer = (msgState, action) => {
     switch (action.type) {
@@ -159,22 +160,25 @@ function FilierePutForm({ fieldValues, cancelOp, handleClick }) {
                 <label htmlFor="DescriptionFiliere" id="lblchar">
                   {nbchars + " characters restants"}
                 </label>
-                <div className="modalBtns">
-                  <button
-                    id="modalCancelBtn"
-                    className="btn btn-secondary"
-                    type="reset"
+                <div className="modal-footer">
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    sx={{
+                      borderRadius: "0px",
+                      marginRight: "20px",
+                      backgroundColor: "Orange",
+                    }}
+                  >
+                    Enregistrer
+                  </Button>
+                  <Button
+                    variant="contained"
+                    sx={{ borderRadius: "0px", backgroundColor: "gray" }}
                     onClick={cancelOp}
                   >
-                    Cancel
-                  </button>
-                  <button
-                    id="modalPutBtn"
-                    className="btn btnsubmit"
-                    type="submit"
-                  >
-                    UPDATE
-                  </button>
+                    Annuler
+                  </Button>
                 </div>
               </div>
             </div>

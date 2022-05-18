@@ -6,7 +6,7 @@
   }
 }
 .emploiDiv {
-  margin-top: 200px;
+  height: 100vh;
 }
 @media print {
   div {

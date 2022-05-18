@@ -70,6 +70,7 @@ const store = createStore({
     try {
       const res = await filiereServices.getFilieres();
       actions.setFilieres(res);
+      return res;
     } catch (error) {
       actions.setApiError(error);
     }
@@ -100,11 +101,34 @@ const store = createStore({
       actions.setApiError(error);
     }
   }),
-
   getFiliereModules: thunk(async (actions, filiereId) => {
     try {
       const res = await modulesServices.getFiliereModules(filiereId);
       actions.setFilteredModules(res);
+      return res;
+    } catch (error) {
+      actions.setApiError(error);
+    }
+  }),
+  getNonIncludedModules: thunk(async (actions, filiereId) => {
+    try {
+      const res = await modulesServices.GetNonIncludedModules(filiereId);
+      return res;
+    } catch (error) {
+      actions.setApiError(error);
+    }
+  }),
+  ajouterFiliereModule: thunk(async (actions, data) => {
+    try {
+      const res = await filiereServices.ajouterFiliereModule(data);
+      return res;
+    } catch (error) {
+      actions.setApiError(error);
+    }
+  }),
+  putFiliereModules: thunk(async (actions, data) => {
+    try {
+      const res = await filiereServices.putFiliereModules(data);
       return res;
     } catch (error) {
       actions.setApiError(error);

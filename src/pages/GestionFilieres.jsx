@@ -8,7 +8,6 @@ import GMF from "../forms/GMF";
 import ConfirmDelete from "../components/ConfirmDelete";
 import MessageBox from "../components/MessageBox";
 import authHeader from "../services/auth-header";
-import NewSide from "../components/NewSide";
 import TextField from "@mui/material/TextField";
 import { useStoreActions } from "easy-peasy";
 import FiliereCard from "../components/FiliereCard";
@@ -27,6 +26,7 @@ function GestionFilieres() {
   const [filteredFilieres, setFilteredFilieres] = useState([]);
   const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
   const [messageVisible, setMessageVisible] = useState(false);
+  const getFilieresStore = useStoreActions((actions) => actions.getFilieres);
   const deleteFiliere = useStoreActions((actions) => actions.deleteFiliere);
   const [deleteMessage, setDeleteMessage] = useState({
     type: "OK",
@@ -35,15 +35,15 @@ function GestionFilieres() {
   const [pagesCount, setPagesCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentFilieres, setCurrentFilieres] = useState([]);
-  const [filieresPerPage, setFilieresPerPage] = useState(5);
+  const filieresPerPage = 6;
   const hand = (state) => {
     setCurrentUpdated(state);
   };
   //GET FILIERES
   const getFilieres = async () => {
-    const data = await api.get("/api/Filieres", { headers: authHeader() });
-    setFileres(data.data);
-    setFilteredFilieres(data.data);
+    const data = await getFilieresStore();
+    setFileres(data);
+    setFilteredFilieres(data);
   };
   //GET FILIERES RECHERCHE
   const filterFilieres = async (str) => {
@@ -85,7 +85,7 @@ function GestionFilieres() {
   }, []);
   useEffect(() => {
     if (filieres.length > 0)
-      setPagesCount(Math.ceil(filteredFilieres.length / 5));
+      setPagesCount(Math.ceil(filteredFilieres.length / 6));
   }, [filieres, filteredFilieres]);
   useEffect(() => {
     const indexOfLastFiliere = currentPage * filieresPerPage;
@@ -215,131 +215,6 @@ function GestionFilieres() {
       ) : (
         <div></div>
       )}
-      {/*
-      <div className="container">
-        <div className="searchbr">
-          <div className="recherche d-flex justify-content-between">
-            <TextField
-              label="Filiere"
-              onChange={(str) => {
-                filterFilieres(str.target.value);
-              }}
-            />
-            <button
-              className="btn btn-success"
-              type="button"
-              id="btnAjouter"
-              onClick={() => {
-                setNewFormVisible(true);
-              }}
-            >
-              <FaPlus /> Ajouter Filiere
-            </button>
-          </div>
-        </div>
-        <div className="POSTFORM">
-          {newFormVisible ? (
-            <FilierePostNewForm
-              handleClick={getFilieres}
-              cancelOp={() => {
-                setNewFormVisible(false);
-              }}
-            ></FilierePostNewForm>
-          ) : (
-            <div></div>
-          )}
-          {updateFormVisible ? (
-            <FilierePutForm
-              fieldValues={currentUpdated}
-              handleClick={() => {
-                getFilieres();
-              }}
-              cancelOp={() => {
-                setUpdateFormVisible(false);
-              }}
-            />
-          ) : (
-            <div></div>
-          )}
-          {modulesFormVisible ? (
-            <GMF
-              fieldValues={currentUpdated}
-              handleClick={() => {
-                getFilieres();
-              }}
-              cancelOp={() => {
-                setModulesFormVisible(false);
-              }}
-              handler={hand}
-              f={filieres}
-            />
-          ) : (
-            <div></div>
-          )}
-        </div>
-        <ul className="list-group">
-          {filteredFilieres.map((item) => (
-            <li
-              key={item.filiereId}
-              className="list-group-item d-flex FiliereInfos"
-            >
-              <div className="elementDetails">
-                <div className="d-flex w-100 ">
-                  <h5 className="mb-1">
-                    {item.nomFiliere + "  -  " + item.filiereId}
-                  </h5>
-                </div>
-                <p className="m-2">{item.description}</p>
-                <small>{dipType(item.typeDiplome)}</small>
-              </div>
-              <div className=" d-flex btnControls">
-                <button
-                  className="btn btn-warning btn-sm"
-                  onClick={() => {
-                    setCurrentUpdated(item);
-                    setUpdateFormVisible(true);
-                  }}
-                >
-                  Update
-                </button>
-                <button
-                  className="btn btn-danger "
-                  onClick={() => {
-                    setConfirmDeleteVisible(true);
-                    setCurrentUpdated(item);
-                    //deleteFiliere(item.filiereId);
-                  }}
-                >
-                  Delete
-                </button>
-                <button
-                  className="btn btn-success"
-                  onClick={() => {
-                    setCurrentUpdated(item);
-                    setModulesFormVisible(true);
-                  }}
-                >
-                  Modules
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
-        {confirmDeleteVisible ? (
-          <ConfirmDelete
-            handleDelete={() => {
-              handleDelete();
-              setConfirmDeleteVisible(false);
-            }}
-            cancelOp={() => {
-              setConfirmDeleteVisible(false);
-            }}
-          />
-        ) : (
-          <div></div>
-        )}
-      </div>
-      */}
     </>
   );
 }

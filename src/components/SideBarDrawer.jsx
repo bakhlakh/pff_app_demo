@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { SidebarDATA } from "./SidebarDATA";
-
+import "../styles/componentStyles/sidebar.css";
 function SideBarDrawer(props) {
   return (
     <>
@@ -24,6 +24,11 @@ function SideBarDrawer(props) {
               <ListItem
                 button
                 key={index}
+                className={
+                  item.path === window.location.pathname
+                    ? "sidebar-list-item-button-selected"
+                    : "sidebar-list-item-button"
+                }
                 onClick={() => {
                   window.location.assign(item.path);
                 }}
@@ -32,10 +37,18 @@ function SideBarDrawer(props) {
                   height: "80px",
                 }}
               >
-                <IconButton>{item.icon}</IconButton>
-                <Typography variant="h6" component="div">
-                  {item.title}
-                </Typography>
+                <ListItemButton
+                  className={
+                    item.path === window.location.pathname
+                      ? "sidebar-list-item-button-selected"
+                      : "sidebar-list-item-button"
+                  }
+                >
+                  <IconButton>{item.icon}</IconButton>
+                  <Typography variant="h6" component="h6">
+                    {item.title}
+                  </Typography>
+                </ListItemButton>
               </ListItem>
             );
           })}

@@ -13,4 +13,13 @@ export default class filiereServices {
   static async putFiliere(id, data) {
     return authAxios.put("/api/Filieres/" + id, data);
   }
+  static async ajouterFiliereModule(obj) {
+    return authAxios.post("/api/FiliereModules", obj);
+  }
+  static async putFiliereModules(obj) {
+    return authAxios.put(
+      "/api/FiliereModules/" + obj._FiliereId + "/" + obj._ModuleId,
+      obj
+    );
+  }
 }

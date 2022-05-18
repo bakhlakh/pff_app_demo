@@ -7,19 +7,28 @@ import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
-import authHeader from "../services/auth-header";
-import { useStoreActions } from "easy-peasy";
+import { useStoreActions, useStoreState } from "easy-peasy";
+import { Button } from "@mui/material";
 const api = axios.create({ baseURL: "https://localhost:7161/" });
 
 function GMF({ fieldValues, cancelOp, handleClick, f }) {
-  const [modules, setModules] = useState(fieldValues.filiereModules);
+  const filiereModules = useStoreState((state) => state.filteredModules);
   const [notInModules, setNotInModules] = useState([]);
-  const [newModule, setNewModule] = useState("");
+  const [newModule, setNewModule] = useState("default");
   const [newMassHorraire, setNewMassHorraire] = useState(0);
   const [updateMassHorraire, setUpdateMassHorraire] = useState(false);
   const [currentUpdated, setCurrentUpdated] = useState([]);
   const [newMassHorraireField, setNewMassHorraireField] = useState(0);
   const [messageVisible, setMessageVisible] = useState(false);
+  const putFiliereModules = useStoreActions(
+    (actions) => actions.putFiliereModules
+  );
+  const ajouterFiliereModule = useStoreActions(
+    (actions) => actions.ajouterFiliereModule
+  );
+  const getNonIncludedModules = useStoreActions(
+    (actions) => actions.getNonIncludedModules
+  );
   const getFiliereModules = useStoreActions(
     (actions) => actions.getFiliereModules
   );
@@ -27,32 +36,28 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
     type: "OK",
     Message: "Filiere has been updated",
   });
+
   useEffect(() => {
-    const doubleUpdated = f.find((e) => {
-      return e.filiereId === fieldValues.filiereId;
-    });
-    setModules(doubleUpdated.filiereModules);
+    console.log("notIn", notInModules);
+    console.log("notIn", filiereModules);
+  });
+  useEffect(() => {
     getModulesWC();
-    //eslint-disable-next-line
-  }, [f]);
+    getFiliereModules(fieldValues.filiereId);
+  }, []);
+  useEffect(() => {
+    getFiliereModules(fieldValues.filiereId);
+  }, [notInModules]);
   const handleAjoutModule = async () => {
     const obj = {
       _ModuleId: newModule,
       _FiliereId: fieldValues.filiereId,
       _MassHorraire: newMassHorraire,
     };
-    await api
-      .post("/api/v1/FiliereModules/", obj, { headers: authHeader() })
-      .then((e) => {
-        displayMsg(e.status);
-        handleClick();
-      })
-      .then(() => {
-        getModulesWC();
-      })
-      .catch((e) => {
-        displayMsg(400);
-      });
+    await ajouterFiliereModule(obj);
+    getModulesWC();
+    setNewModule("default");
+    getFiliereModules(fieldValues.filiereId);
   };
   const displayMsg = (status) => {
     if (status <= 299 && status >= 200)
@@ -66,33 +71,21 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
         Message: "Filiere has not been updated",
       });
     setMessageVisible(true);
+    setNewModule("default");
   };
-  const putModuleFiliere = () => {
+  const putModuleFiliere = async () => {
     if (Number(newMassHorraireField) >= 0) {
       const obj = {
-        _ModuleId: currentUpdated.moduleId,
+        _ModuleId: currentUpdated.module.moduleId,
         _FiliereId: fieldValues.filiereId,
         _MassHorraire: newMassHorraireField,
       };
-      api
-        .put(
-          "/api/v1/FiliereModules/" +
-            fieldValues.filiereId +
-            "/" +
-            currentUpdated.moduleId,
-          obj
-        )
-        .then((e) => {
-          displayMsg(e.status);
-          handleClick();
-        })
-        .then(() => {
-          setModules(fieldValues.filiereModules);
-          getModulesWC();
-        })
-        .catch((e) => {
-          displayMsg(400);
-        });
+      const res = await putFiliereModules(obj);
+      if (res) {
+        displayMsg(201);
+        handleClick();
+        getModulesWC();
+      } else displayMsg(400);
     }
   };
   const deleteModuleFiliere = async (item) => {
@@ -103,7 +96,6 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
         handleClick();
       })
       .then(() => {
-        setModules(fieldValues.filiereModules);
         getModulesWC();
       })
       .catch((e) => {
@@ -111,7 +103,7 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
       });
   };
   const getModulesWC = async () => {
-    const res = await getFiliereModules(fieldValues.filiereId);
+    const res = await getNonIncludedModules(fieldValues.filiereId);
     setNotInModules(res);
   };
 
@@ -130,27 +122,29 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
           )}
           <div className="modulesContainer">
             <ul className="list-group">
-              {modules.length === 0 ? (
-                <h2 style={{ color: "white" }}>
-                  There is no modules in this filiere
+              {filiereModules?.length === 0 ? (
+                <h2 style={{ color: "Blue" }}>
+                  Pas de modules pour cette filiere
                 </h2>
               ) : (
                 <div>
-                  {modules.map((item) => {
+                  {filiereModules?.map((item) => {
                     return (
                       <li
-                        key={item.moduleId}
+                        key={item.module.moduleId}
                         className="list-group-item list-group-item-action d-flex ModuleInfos"
                       >
                         <div className="elementDetails">
                           <div className="d-flex w-100 ">
                             <h5 className="mb-1">
-                              {item.moduleId + "  -  " + item.module.intitule}
+                              {item.module.moduleId +
+                                "  -  " +
+                                item.module.intitule}
                             </h5>
                           </div>
                           <p className="m-2">{item.module.description}</p>
                           <small>
-                            Mass Horraire : {item.massHorraire} Heures
+                            Mass Horraire : {item.module.massHorraire} Heures
                           </small>
                         </div>
                         <div className=" d-flex btnControls">
@@ -185,18 +179,19 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
               <Select
                 labelId="ModulesListlabel"
                 id="ModulesList"
-                name="ModulesList"
                 value={newModule}
-                label=" Niveau Diplome"
+                name="ModulesList"
+                label="ModuleListlabel"
                 onChange={(e) => {
                   setNewModule(e.target.value);
                 }}
               >
+                <MenuItem value="default">--Choisissez un module--</MenuItem>
                 {notInModules.length > 0
                   ? notInModules.map((item, index) => {
                       return (
-                        <MenuItem key={index} value={item.module.moduleId}>
-                          {item.module.moduleId} - {item.module.intitule}
+                        <MenuItem key={index} value={item.moduleId}>
+                          {item.moduleId} - {item.intitule}
                         </MenuItem>
                       );
                     })
@@ -268,16 +263,15 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
           ) : (
             <div></div>
           )}
-          <section className="button-group modalBtns mt-3">
-            <button
-              className="btn btn-secondary"
-              onClick={() => {
-                cancelOp();
-              }}
+          <div className="modal-footer">
+            <Button
+              variant="contained"
+              sx={{ borderRadius: "0px", backgroundColor: "gray" }}
+              onClick={cancelOp}
             >
-              Cancel
-            </button>
-          </section>
+              Annuler
+            </Button>
+          </div>
         </div>
       </div>
     </div>

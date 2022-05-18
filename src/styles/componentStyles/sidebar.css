@@ -1,0 +1,32 @@
+.sidebar-list-item:hover * {
+  color: rgb(113, 10, 248);
+  background-color: transparent;
+}
+.sidebar-list-item-button {
+  background-color: transparent;
+  padding: 0 !important;
+  margin: 0 !important;
+  cursor: pointer;
+}
+.sidebar-list-item-button:hover {
+  background-color: rgba(0, 0, 0, 0) !important;
+}
+.sidebar-list-item-button-selected button {
+  color: #fff !important;
+  background-color: rgb(113, 10, 248);
+}
+.sidebar-list-item-button-selected div {
+  color: #fff !important;
+  background-color: rgb(113, 10, 248);
+}
+
+.sidebar-list-item-button-selected h6 {
+  color: #fff !important;
+  background-color: "transparent" !important;
+}
+.sidebar-list-item-button-selected {
+  background-color: rgb(113, 10, 248) !important;
+}
+.sidebar-drawer {
+  border-radius: 20px;
+}

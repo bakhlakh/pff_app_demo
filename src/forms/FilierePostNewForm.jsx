@@ -12,6 +12,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import authHeader from "../services/auth-header";
+import { Button } from "@mui/material";
 const FilierePostNewForm = ({ handleClick, cancelOp }) => {
   const msgReducer = (_, action) => {
     switch (action.type) {
@@ -110,7 +111,7 @@ const FilierePostNewForm = ({ handleClick, cancelOp }) => {
                 {msgState !== null ? (
                   <MessageBox
                     type={msgState}
-                    message="Filiere has been added"
+                    message="Filiere Ajouter avec succes"
                   />
                 ) : (
                   ""
@@ -162,23 +163,26 @@ const FilierePostNewForm = ({ handleClick, cancelOp }) => {
                 <label htmlFor="DescriptionFiliere" id="lblchar">
                   {nbchars + " characters restants"}
                 </label>
-                <div className="modalBtns">
-                  <button
-                    id="modalCancelBtn"
-                    className="btn btn-secondary"
-                    type="reset"
-                    onClick={cancelOp}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    id="modalAjouterBtn"
-                    className="btn"
+                <div className="modal-footer">
+                  <Button
+                    variant="contained"
                     type="submit"
+                    sx={{
+                      borderRadius: "0px",
+                      marginRight: "20px",
+                      backgroundColor: "Green",
+                    }}
                     onClick={handleClick.handleClick}
                   >
-                    Ajouter
-                  </button>
+                    Enregistrer
+                  </Button>
+                  <Button
+                    variant="contained"
+                    sx={{ borderRadius: "0px", backgroundColor: "gray" }}
+                    onClick={cancelOp}
+                  >
+                    Annuler
+                  </Button>
                 </div>
               </div>
             </div>

@@ -16,4 +16,9 @@ export default class modulesServices {
   static async getFiliereModules(filiereId) {
     return await authAxios.get(`/api/Modules/GetModulesInFiliere/${filiereId}`);
   }
+  static async GetNonIncludedModules(filiereId) {
+    return await authAxios.get(
+      `/api/Filieres/GetNonIncludedModules/${filiereId}`
+    );
+  }
 }
