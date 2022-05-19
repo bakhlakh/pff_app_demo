@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import { useStoreState, useStoreActions } from "easy-peasy";
 import ConfirmDelete from "../components/ConfirmDelete";
-import NewSide from "../components/NewSide";
 
 function GestionSalles() {
   const getRooms = useStoreActions((actions) => actions.getRooms);

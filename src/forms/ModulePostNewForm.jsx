@@ -9,6 +9,7 @@ import TextField from "@mui/material/TextField";
 import { useStoreState } from "easy-peasy";
 import "../styles/formsStyles/moduleForm.css";
 import authHeader from "../services/auth-header";
+import { Button } from "@mui/material";
 
 const msgReducer = (_, action) => {
   switch (action.type) {
@@ -121,18 +122,25 @@ function ModulePostNewForm({ handleClick, cancelOp }) {
                 <label htmlFor="txt_descriptionModule" id="lblchar">
                   {nbchars + " characters restants"}
                 </label>
-                <div className="modalBtns">
-                  <button
-                    id="modalCancelBtn"
-                    className="btn btn-secondary"
-                    type="reset"
+                <div className="modal-footer">
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    sx={{
+                      borderRadius: "0px",
+                      marginRight: "20px",
+                      backgroundColor: "Green",
+                    }}
+                  >
+                    Enregistrer
+                  </Button>
+                  <Button
+                    variant="contained"
+                    sx={{ borderRadius: "0px", backgroundColor: "gray" }}
                     onClick={cancelOp}
                   >
-                    Cancel
-                  </button>
-                  <button id="modalAjouterBtn" className="btn" type="submit">
-                    Ajouter
-                  </button>
+                    Annuler
+                  </Button>
                 </div>
               </div>
             </div>

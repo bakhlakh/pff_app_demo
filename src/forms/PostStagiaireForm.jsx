@@ -14,6 +14,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import MessageBox from "../components/MessageBox";
+import { Button } from "@mui/material";
 
 function PostStagiaireForm({ handleClick, cancelOp }) {
   const getFilieres = useStoreActions((actions) => actions.getFilieres);
@@ -119,7 +120,7 @@ function PostStagiaireForm({ handleClick, cancelOp }) {
       lastName: values.txt_Nom,
       phone: values.txt_Phone,
       anneScolaire: newStagiaire.anneScolaire,
-      groupId: newStagiaire.groupId,
+      groupId: newStagiaire.groupId || null,
       email: values.txt_Email,
       cin: values.txt_CIN,
       birthDate: newStagiaire.birthDate,
@@ -148,9 +149,7 @@ function PostStagiaireForm({ handleClick, cancelOp }) {
         }}
         validationSchema={validate}
         onSubmit={async (values) => {
-          if (newStagiaire.groupId !== "" && newStagiaire.filiereId !== "") {
-            handleSubmit(values);
-          }
+          handleSubmit(values);
         }}
       >
         <Form>
@@ -303,22 +302,25 @@ function PostStagiaireForm({ handleClick, cancelOp }) {
                     </Select>
                   </FormControl>
                 )}
-                <div className="modalBtns mt-2">
-                  <button
-                    id="modalCancelBtn"
-                    className="btn btn-secondary"
+                <div className="modal-footer">
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    sx={{
+                      borderRadius: "0px",
+                      marginRight: "20px",
+                      backgroundColor: "Green",
+                    }}
+                  >
+                    Enregistrer
+                  </Button>
+                  <Button
+                    variant="contained"
+                    sx={{ borderRadius: "0px", backgroundColor: "gray" }}
                     onClick={cancelOp}
                   >
-                    Cancel
-                  </button>
-                  <button
-                    id="modalAjouterBtn"
-                    className="btn"
-                    type="submit"
-                    onClick={() => {}}
-                  >
-                    Ajouter
-                  </button>
+                    Annuler
+                  </Button>
                 </div>
               </div>
             </div>

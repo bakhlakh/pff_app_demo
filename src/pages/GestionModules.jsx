@@ -6,8 +6,8 @@ import ModulePostNewForm from "../forms/ModulePostNewForm";
 import ConfirmDelete from "../components/ConfirmDelete";
 import PutModuleForm from "../forms/PutModuleForm";
 import authHeader from "../services/auth-header";
-import NewSide from "../components/NewSide";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { Button } from "@mui/material";
 
 function GestionModules() {
   const modules = useStoreState((state) => state.modules);
@@ -76,23 +76,30 @@ function GestionModules() {
       width: 300,
       renderCell: (cell) => {
         return (
-          <div className="btn-group">
-            <button
-              className="btn btn-warning"
-              onClick={() => {
-                handleUpdate(cell);
+          <div className="modal-footer">
+            <Button
+              variant="contained"
+              type="submit"
+              sx={{
+                borderRadius: "0px",
+                marginRight: "20px",
+                backgroundColor: "orange",
               }}
+              color="warning"
+              onClick={() => handleUpdate(cell)}
             >
-              Update
-            </button>
-            <button
-              className="btn btn-danger"
+              Modifier
+            </Button>
+            <Button
+              variant="contained"
+              sx={{ borderRadius: "0px" }}
+              color="error"
               onClick={() => {
                 handleDelete(cell);
               }}
             >
-              Delete
-            </button>
+              Supprimer
+            </Button>
           </div>
         );
       },

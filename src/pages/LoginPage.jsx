@@ -5,7 +5,7 @@ import { FaUser, FaLock } from "react-icons/fa";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import { useStoreState } from "easy-peasy";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import AuthContext from "../context/AuthProvider";

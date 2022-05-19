@@ -5,8 +5,8 @@ import PostStagiaireForm from "../forms/PostStagiaireForm";
 import ConfirmDelete from "../components/ConfirmDelete";
 import MessageBox from "../components/MessageBox";
 import PutStagiereForm from "../forms/PutStagiereForm";
-import NewSide from "../components/NewSide";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { Button } from "@mui/material";
 
 function STManagement() {
   const getStagiaires = useStoreActions((actions) => actions.getStagiaires);
@@ -93,24 +93,33 @@ function STManagement() {
       width: 300,
       renderCell: (cell) => {
         return (
-          <div className="btn-group">
-            <button
-              className="btn btn-warning"
+          <div className="modal-footer">
+            <Button
+              variant="contained"
+              type="submit"
+              sx={{
+                borderRadius: "0px",
+                marginRight: "20px",
+                backgroundColor: "orange",
+              }}
+              color="warning"
               onClick={() => {
                 setCurrentUpdatedToObject(cell.row);
                 setUpdateStagiaireFormVisible(true);
               }}
             >
-              Update
-            </button>
-            <button
-              className="btn btn-danger"
+              Modifier
+            </Button>
+            <Button
+              variant="contained"
+              sx={{ borderRadius: "0px" }}
+              color="error"
               onClick={() => {
                 handleDeleteClick(cell.row);
               }}
             >
-              Delete
-            </button>
+              Supprimer
+            </Button>
           </div>
         );
       },

@@ -147,6 +147,7 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
                             Mass Horraire : {item.module.massHorraire} Heures
                           </small>
                         </div>
+
                         <div className=" d-flex btnControls">
                           <button
                             className="btn btn-danger"

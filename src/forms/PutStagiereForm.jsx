@@ -14,8 +14,10 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
 import MessageBox from "../components/MessageBox";
+import { Button } from "@mui/material";
 
 function PutStagiereForm({ fieldValues, cancelOp, handleClick }) {
+  console.log(fieldValues);
   const getFilieres = useStoreActions((actions) => actions.getFilieres);
   const getGroupes = useStoreActions((actions) => actions.getGroupes);
   const putStagiaire = useStoreActions((actions) => actions.putStagiaire);
@@ -32,15 +34,15 @@ function PutStagiereForm({ fieldValues, cancelOp, handleClick }) {
   const phoneRegExp =
     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
   const [newStagiaire, setNewStagiaire] = useState({
-    firstName: "",
-    lastName: "",
-    phone: "",
+    firstName: fieldValues.firstName,
+    lastName: fieldValues.lastName,
+    phone: fieldValues.phone,
     filiereId:
-      groupes.length > 0
+      fieldValues.groupId && groupes.length > 0
         ? groupes.find((x) => x.groupId === fieldValues.groupId).filiereId
-        : "",
+        : null,
     anneScolaire: fieldValues.anneScolaire,
-    groupId: fieldValues.groupId,
+    groupId: fieldValues.groupId && null,
     email: "",
     cin: "",
     birthDate: fieldValues.birthDate,
@@ -323,6 +325,7 @@ function PutStagiereForm({ fieldValues, cancelOp, handleClick }) {
                       });
                     }}
                   >
+                    <MenuItem value={null}>Choisir une filiere ...</MenuItem>
                     {filieres.map((item, index) => (
                       <MenuItem
                         key={item.filiereId + "Filiere"}
@@ -352,6 +355,7 @@ function PutStagiereForm({ fieldValues, cancelOp, handleClick }) {
                         });
                       }}
                     >
+                      <MenuItem value={null}>Choisir un groupe ...</MenuItem>
                       {filteredGroups.map((item, index) => (
                         <MenuItem
                           key={item.groupId + "groupe"}
@@ -363,18 +367,26 @@ function PutStagiereForm({ fieldValues, cancelOp, handleClick }) {
                     </Select>
                   </FormControl>
                 )}
-                <div className="modalBtns mt-2">
-                  <input
-                    type="button"
-                    className="m-1 btn btn-secondary"
-                    onClick={cancelOp}
-                    value="cancel"
-                  />
-                  <input
+                <div className="modal-footer">
+                  <Button
+                    variant="contained"
                     type="submit"
-                    className="m-1 btn btn-success"
-                    value="Update"
-                  />
+                    color="warning"
+                    sx={{
+                      borderRadius: "0px",
+                      marginRight: "20px",
+                      backgroundColor: "orange",
+                    }}
+                  >
+                    Enregistrer
+                  </Button>
+                  <Button
+                    variant="contained"
+                    sx={{ borderRadius: "0px", backgroundColor: "gray" }}
+                    onClick={cancelOp}
+                  >
+                    Annuler
+                  </Button>
                 </div>
               </div>
             </div>

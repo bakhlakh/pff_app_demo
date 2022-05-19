@@ -18,7 +18,6 @@ import {
 import SeancesCalendar from "../components/SeancesCalendar";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import PostSeance from "../forms/PostSeance";
-import NewSide from "../components/NewSide";
 import PrintEmploiForAll from "../components/PrintEmploiForAll";
 
 const testDate = (selectedDate, date) => {

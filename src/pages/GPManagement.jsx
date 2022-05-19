@@ -5,11 +5,12 @@ import PostGroupForm from "../forms/PostGroupForm";
 import ConfirmDelete from "../components/ConfirmDelete";
 import MessageBox from "../components/MessageBox";
 import authHeader from "../services/auth-header";
-import NewSide from "../components/NewSide";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { Button } from "@mui/material";
 
 function GPManagement() {
   const groupes = useStoreState((state) => state.groupes);
+  console.log("groupes", groupes);
   const api = useStoreState((state) => state.api);
   const getGroupes = useStoreActions((actions) => actions.getGroupes);
   const [postNewFormVisible, setPostNewFormVisible] = useState(false);
@@ -72,23 +73,30 @@ function GPManagement() {
       width: 300,
       renderCell: (cell) => {
         return (
-          <div className="btn-group">
-            <button
-              className="btn btn-warning"
-              onClick={() => {
-                console.log(cell);
+          <div className="modal-footer">
+            <Button
+              variant="contained"
+              type="submit"
+              sx={{
+                borderRadius: "0px",
+                marginRight: "20px",
+                backgroundColor: "orange",
               }}
+              color="warning"
+              onClick={() => {}}
             >
-              Update
-            </button>
-            <button
-              className="btn btn-danger"
+              Modifier
+            </Button>
+            <Button
+              variant="contained"
+              sx={{ borderRadius: "0px" }}
+              color="error"
               onClick={() => {
                 handleDelete(cell);
               }}
             >
-              Delete
-            </button>
+              Supprimer
+            </Button>
           </div>
         );
       },

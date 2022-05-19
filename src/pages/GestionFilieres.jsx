@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import "../styles/pagesStyles/GestionFilieres.css";
-import axios from "axios";
 import FilierePostNewForm from "../forms/FilierePostNewForm";
 import FilierePutForm from "../forms/FilierePutForm";
 import GMF from "../forms/GMF";
 import ConfirmDelete from "../components/ConfirmDelete";
 import MessageBox from "../components/MessageBox";
-import authHeader from "../services/auth-header";
 import TextField from "@mui/material/TextField";
 import { useStoreActions } from "easy-peasy";
 import FiliereCard from "../components/FiliereCard";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-//AXIOS SETUP
-const api = axios.create({ baseURL: "https://localhost:7161/" });
 ////----------------------------------------------------------------////
 function GestionFilieres() {
   //INIT STATES
