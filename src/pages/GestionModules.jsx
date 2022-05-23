@@ -142,17 +142,21 @@ function GestionModules() {
                 }}
               />
             )}
-            <button
-              className="btn btn-success m-4"
-              type="button"
+            <Button
+              color="success"
+              variant="contained"
               id="btnAjouter"
+              sx={{
+                borderRadius: 0,
+                marginBottom: "20px",
+              }}
               onClick={() => {
                 setAjouteModuleFormVisible(true);
               }}
             >
               Ajouter Module
-            </button>
-            <div style={{ height: 500, width: "100%" }}>
+            </Button>
+            <div style={{ height: 900, width: "100%", marginBottom: "100px" }}>
               <DataGrid
                 rows={modules}
                 columns={muiColumns}

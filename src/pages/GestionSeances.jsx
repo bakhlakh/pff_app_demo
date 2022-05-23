@@ -158,7 +158,7 @@ function GestionSeances() {
               Imprimer pour tous les groupes
             </Button>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} sx={{ marginBottom: "100px" }}>
             {calType === "WKS" ? (
               <WKSCalendar
                 data={weekSeances}

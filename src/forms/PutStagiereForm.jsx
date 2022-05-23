@@ -76,8 +76,8 @@ function PutStagiereForm({ fieldValues, cancelOp, handleClick }) {
   }, []);
   useEffect(() => {
     filterGroupes();
-    if (newStagiaire.statue === "Suspended") setStatusColor("orange");
-    if (newStagiaire.statue === "Banned") setStatusColor("red");
+    if (newStagiaire.statue === "Suspendu") setStatusColor("orange");
+    if (newStagiaire.statue === "Exclue") setStatusColor("red");
     if (newStagiaire.statue === "Active") setStatusColor("green");
     //eslint-disable-next-line
   }, [newStagiaire]);
@@ -187,8 +187,8 @@ function PutStagiereForm({ fieldValues, cancelOp, handleClick }) {
                         }}
                       >
                         <MenuItem value="Active">Active</MenuItem>
-                        <MenuItem value="Suspended">Suspendu</MenuItem>
-                        <MenuItem value="Banned">exclue</MenuItem>
+                        <MenuItem value="Suspendu">Suspendu</MenuItem>
+                        <MenuItem value="Exclue">exclue</MenuItem>
                       </Select>
                     </FormControl>
                     <button
@@ -199,7 +199,7 @@ function PutStagiereForm({ fieldValues, cancelOp, handleClick }) {
                         setChangeStatue(false);
                       }}
                     >
-                      Save statue
+                      Sauvegareder
                     </button>
                   </div>
                 ) : (
@@ -215,7 +215,7 @@ function PutStagiereForm({ fieldValues, cancelOp, handleClick }) {
                         setChangeStatue(true);
                       }}
                     >
-                      Change status
+                      Changer statue
                     </button>
                   </div>
                 )}

@@ -135,14 +135,16 @@ function GPManagement() {
               />
             )}
             <div className="d-flex justify-content-end">
-              <button
-                className="btn btn-success"
+              <Button
+                color="success"
+                variant="contained"
+                sx={{ borderRadius: "0px", marginBottom: "10px" }}
                 onClick={() => {
                   setPostNewFormVisible(true);
                 }}
               >
                 Ajouter un groupe
-              </button>
+              </Button>
             </div>
             <div style={{ height: 800, width: "100%" }}>
               <DataGrid

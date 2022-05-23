@@ -5,14 +5,13 @@ import { useState } from "react";
 import * as Yup from "yup";
 import "../styles/formsStyles/POSTForm.css";
 import MessageBox from "../components/MessageBox";
-import axios from "axios";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
-import authHeader from "../services/auth-header";
 import { Button } from "@mui/material";
+import { useStoreActions } from "easy-peasy";
 const FilierePostNewForm = ({ handleClick, cancelOp }) => {
   const msgReducer = (_, action) => {
     switch (action.type) {
@@ -24,7 +23,7 @@ const FilierePostNewForm = ({ handleClick, cancelOp }) => {
     }
   };
   //Init States
-  const api = axios.create({ baseURL: "https://localhost:7161/" });
+  const postFiliere = useStoreActions((actions) => actions.postFiliere);
   const [nbchars, setnbchars] = useState(300);
   const [desc, setDesc] = useState("");
   const [msgState, msgDispatch] = useReducer(msgReducer, null);
@@ -70,7 +69,7 @@ const FilierePostNewForm = ({ handleClick, cancelOp }) => {
     DescriptionFiliere: Yup.string(),
   });
   //POST FILIERE
-  const PostFiliere = ({ ...values }) => {
+  const PostFiliere = async ({ ...values }) => {
     const obj = {
       filiereId: values.txt_idFiliere,
       nomFiliere: values.txt_nomFiliere,
@@ -80,14 +79,12 @@ const FilierePostNewForm = ({ handleClick, cancelOp }) => {
       groupes: [],
       stagiaires: [],
     };
-    api
-      .post("/api/Filieres/", obj, { headers: authHeader() })
-      .then((e) => {
-        displayMsg(e.status);
-      })
-      .catch((e) => {
-        displayMsg(400);
-      });
+    const res = await postFiliere(obj);
+    if (res) {
+      displayMsg(201);
+      handleClick();
+      cancelOp();
+    } else displayMsg(402);
   };
   return (
     <>

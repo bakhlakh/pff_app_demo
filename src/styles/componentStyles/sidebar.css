@@ -1,5 +1,5 @@
 .sidebar-list-item:hover * {
-  color: rgb(113, 10, 248);
+  color: rgb(113, 10, 248) !important;
   background-color: transparent;
 }
 .sidebar-list-item-button {
@@ -12,16 +12,15 @@
   background-color: rgba(0, 0, 0, 0) !important;
 }
 .sidebar-list-item-button-selected button {
-  color: #fff !important;
+  color: #fff;
   background-color: rgb(113, 10, 248);
 }
 .sidebar-list-item-button-selected div {
-  color: #fff !important;
   background-color: rgb(113, 10, 248);
 }
 
 .sidebar-list-item-button-selected h6 {
-  color: #fff !important;
+  color: #fff;
   background-color: "transparent" !important;
 }
 .sidebar-list-item-button-selected {

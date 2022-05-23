@@ -18,7 +18,7 @@ function STManagement() {
   const [messageVisible, setMessageVisible] = useState(false);
   const [deleteMessage, setDeleteMessage] = useState({
     type: "OK",
-    Message: "Stagiaire has been deleted",
+    Message: "Stagiaires has been deleted",
   });
   const [updateStagiaireFormVisible, setUpdateStagiaireFormVisible] =
     useState(false);
@@ -34,13 +34,13 @@ function STManagement() {
     if (res) {
       setDeleteMessage({
         type: "OK",
-        message: "Stagiaire has been deleted",
+        message: "Le stagiaire a été supprimé",
       });
       setMessageVisible(true);
     } else {
       setDeleteMessage({
         type: "ERR",
-        message: "Stagiaire has not been deleted",
+        message: "Operation Echec",
       });
       setMessageVisible(true);
     }
@@ -147,6 +147,10 @@ function STManagement() {
                   setUpdateStagiaireFormVisible(false);
                 }}
                 handleClick={() => {
+                  setDeleteMessage({
+                    type: "OK",
+                    message: "Les informations du stagiaire ont été modifiées",
+                  });
                   setMessageVisible(true);
                   getStagiaires();
                 }}
@@ -165,14 +169,16 @@ function STManagement() {
               />
             )}
             <div className="d-flex justify-content-end">
-              <button
-                className="btn btn-success mb-2"
+              <Button
+                color="success"
+                variant="contained"
+                sx={{ borderRadius: "0px", marginBottom: "10px" }}
                 onClick={() => {
                   setPostNewFormVisible(true);
                 }}
               >
                 Ajouter un stagiaire
-              </button>
+              </Button>
             </div>
             <div style={{ height: 500, width: "100%" }}>
               <DataGrid
@@ -192,7 +198,6 @@ function STManagement() {
               handleDelete();
             }}
             cancelOp={() => {
-              handleDelete();
               setConfirmDeleteVisible(false);
             }}
           />

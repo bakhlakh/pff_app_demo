@@ -77,8 +77,9 @@ const store = createStore({
   }),
   postFiliere: thunk(async (actions, data) => {
     try {
-      await filiereServices.postFiliere(data);
+      const res = await filiereServices.postFiliere(data);
       actions.getFilieres();
+      return res;
     } catch (error) {
       actions.setApiError(error);
     }
