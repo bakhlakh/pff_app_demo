@@ -12,28 +12,25 @@ import GestionSalles from "./pages/GestionSalles.jsx";
 import Layout from "./layouts/Layout";
 import RequireAuth from "./components/RequireAuth";
 import PersistLogin from "./components/PersistLogin";
-import NewSide from "./components/NewSide";
 
 function Main() {
   return (
     <>
-      <NewSide>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route element={<PersistLogin />}>
-              <Route element={<RequireAuth allowedRoles={1} />}>
-                <Route exact path="/" element={<Home />} />
-                <Route path="/Gestion-Filieres" element={<GestionFilieres />} />
-                <Route path="/Gestion-Modules" element={<GestionModules />} />
-                <Route path="/Gestion-Stagiaires" element={<STManagement />} />
-                <Route path="/Gestion-Groupes" element={<GPManagement />} />
-                <Route path="/Gestion-Seances" element={<GestionSeances />} />
-                <Route path="/Gestion-Salles" element={<GestionSalles />} />
-              </Route>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route element={<PersistLogin />}>
+            <Route element={<RequireAuth allowedRoles={1} />}>
+              <Route exact path="/" element={<Home />} />
+              <Route path="/Gestion-Filieres" element={<GestionFilieres />} />
+              <Route path="/Gestion-Modules" element={<GestionModules />} />
+              <Route path="/Gestion-Stagiaires" element={<STManagement />} />
+              <Route path="/Gestion-Groupes" element={<GPManagement />} />
+              <Route path="/Gestion-Seances" element={<GestionSeances />} />
+              <Route path="/Gestion-Salles" element={<GestionSalles />} />
             </Route>
           </Route>
-        </Routes>
-      </NewSide>
+        </Route>
+      </Routes>
       <Routes>
         <Route path="/Login" element={<LoginPage />} />
       </Routes>

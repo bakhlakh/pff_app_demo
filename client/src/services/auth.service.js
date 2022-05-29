@@ -1,5 +1,4 @@
 import axios from "axios";
-import useAuth from "../hooks/useAuth";
 const API_URL = "https://localhost:7161/";
 
 const login = (email, password) => {
