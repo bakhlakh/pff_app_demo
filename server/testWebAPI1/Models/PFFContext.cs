@@ -31,7 +31,7 @@ namespace testWebAPI1.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=DESKTOP-02CVVSK\\MSSQLSERVER1;Database=PFF;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=localhost, 1433;Database=PFF;User Id=sa;Password=PFFGENERICPASSWORD123!");
             }
         }
 
