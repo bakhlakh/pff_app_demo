@@ -4,7 +4,7 @@ namespace testWebAPI1.Services
 {
     public static class moduleServices
     {
-        private static PFFContext context;
+        private static PFFContext context = new PFFContext();
 
         public static async Task<DBResponseModel> GetModules()
         {

@@ -3,7 +3,7 @@
     public static class stagiareServices
 
     {
-        private static PFFContext context;
+        private static PFFContext context= new PFFContext();
         public static async Task<DBResponseModel> GetStagiaires()
         {
             context = new PFFContext();
