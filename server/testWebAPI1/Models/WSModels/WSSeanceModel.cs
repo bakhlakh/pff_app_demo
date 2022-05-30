@@ -2,7 +2,7 @@
 {
     public class WSSeanceModel:Seance
     {
-        public string  Day { get; set; }
+        public string?  Day { get; set; }
         
     }
 }
