@@ -1,31 +1,14 @@
-.sidebar-list-item:hover * {
-  color: rgb(113, 10, 248) !important;
-  background-color: transparent;
-}
 .sidebar-list-item-button {
+  width: 231px;
+  height: 48px;
+  margin-right: 5px !important;
+  margin-left: 5px !important;
+  border-radius: 8px !important;
   background-color: transparent;
-  padding: 0 !important;
-  margin: 0 !important;
-  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 4.5%;
 }
 .sidebar-list-item-button:hover {
-  background-color: rgba(0, 0, 0, 0) !important;
-}
-.sidebar-list-item-button-selected button {
-  color: #fff;
-  background-color: rgb(113, 10, 248);
-}
-.sidebar-list-item-button-selected div {
-  background-color: rgb(113, 10, 248);
-}
-
-.sidebar-list-item-button-selected h6 {
-  color: #fff;
-  background-color: "transparent" !important;
-}
-.sidebar-list-item-button-selected {
-  background-color: rgb(113, 10, 248) !important;
-}
-.sidebar-drawer {
-  border-radius: 20px;
+  background-color: #f2f5ff !important;
 }
