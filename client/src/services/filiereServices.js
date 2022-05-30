@@ -22,4 +22,9 @@ export default class filiereServices {
       obj
     );
   }
+  static async deleteFiliereModule(obj) {
+    return authAxios.delete(
+      "/api/FiliereModules/" + obj.filiereId + "/" + obj.moduleId
+    );
+  }
 }

@@ -20,6 +20,9 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
   const [currentUpdated, setCurrentUpdated] = useState([]);
   const [newMassHorraireField, setNewMassHorraireField] = useState(0);
   const [messageVisible, setMessageVisible] = useState(false);
+  const deleteFiliereModule = useStoreActions(
+    (actions) => actions.deleteFiliereModule
+  );
   const putFiliereModules = useStoreActions(
     (actions) => actions.putFiliereModules
   );
@@ -35,11 +38,6 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
   const [messageInfo, setMessageInfo] = useState({
     type: "OK",
     Message: "Filiere has been updated",
-  });
-
-  useEffect(() => {
-    console.log("notIn", notInModules);
-    console.log("notIn", filiereModules);
   });
   useEffect(() => {
     getModulesWC();
@@ -63,12 +61,12 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
     if (status <= 299 && status >= 200)
       setMessageInfo({
         type: "OK",
-        Message: "Filiere has been updated",
+        Message: "Mise A Jour Effectuée",
       });
     else
       setMessageInfo({
         type: "ERR",
-        Message: "Filiere has not been updated",
+        Message: "Mise A Jour Echouée",
       });
     setMessageVisible(true);
     setNewModule("default");
@@ -89,18 +87,19 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
     }
   };
   const deleteModuleFiliere = async (item) => {
-    await api
-      .delete("/api/v1/FiliereModules/" + item.filiereId + "/" + item.moduleId)
-      .then((e) => {
-        displayMsg(e.status);
-        handleClick();
-      })
-      .then(() => {
-        getModulesWC();
-      })
-      .catch((e) => {
-        displayMsg(400);
-      });
+    console.log({
+      filiereId: fieldValues.filiereId,
+      moduleId: item.module.moduleId,
+    });
+    const res = await deleteFiliereModule({
+      filiereId: fieldValues.filiereId,
+      moduleId: item.module.moduleId,
+    });
+    if (res) {
+      displayMsg(201);
+      handleClick();
+      getModulesWC();
+    } else displayMsg(400);
   };
   const getModulesWC = async () => {
     const res = await getNonIncludedModules(fieldValues.filiereId);
@@ -144,7 +143,7 @@ function GMF({ fieldValues, cancelOp, handleClick, f }) {
                           </div>
                           <p className="m-2">{item.module.description}</p>
                           <small>
-                            Mass Horraire : {item.module.massHorraire} Heures
+                            Mass Horraire : {item.massHorraire} Heures
                           </small>
                         </div>
 

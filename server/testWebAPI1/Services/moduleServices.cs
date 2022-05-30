@@ -43,7 +43,7 @@ namespace testWebAPI1.Services
 
             var query = await context.FiliereModules.Where(fm => fm.FiliereId == id)
                  .Include(fm => fm.Module)
-                 .Select(fm => new { fm.Module }).ToListAsync();
+                 .Select(fm => new { fm.Module,fm.MassHorraire }).ToListAsync();
             return new DBResponseModel(true, "modules found", query, 200);
         }
 

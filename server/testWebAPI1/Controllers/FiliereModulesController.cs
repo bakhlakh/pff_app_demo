@@ -54,12 +54,9 @@ namespace testWebAPI1.Controllers
                 return BadRequest(filiereModule);
             }
 
-            FiliereModule nf = new FiliereModule();
-            nf.ModuleId = filiereModule._ModuleId;
-            nf.FiliereId = filiereModule._FiliereId;
+            FiliereModule nf = await _context.FiliereModules
+            .Where(fd=>fd.FiliereId==FiliereId && fd.ModuleId==ModuleId).FirstOrDefaultAsync();
             nf.MassHorraire = filiereModule._MassHorraire;
-            _context.Entry(nf).State = EntityState.Modified;
-
             try
             {
                 await _context.SaveChangesAsync();
@@ -76,7 +73,7 @@ namespace testWebAPI1.Controllers
                 }
             }
 
-            return NoContent();
+            return  Ok(filiereModule);
         }
 
         // POST: api/FiliereModules
@@ -120,8 +117,8 @@ namespace testWebAPI1.Controllers
 
             _context.FiliereModules.Remove(filiereModule);
             await _context.SaveChangesAsync();
-
-            return NoContent();
+            var newModules = await _context.FiliereModules.Where(fm=>fm.FiliereId==FiliereId).Include(fm=>fm.Module).Select(fm=>new {fm.Module}).ToListAsync();
+            return Ok(newModules);
         }
 
         private bool FiliereModuleExists(string FiliereId, string ModuleId)

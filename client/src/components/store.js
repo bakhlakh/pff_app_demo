@@ -102,6 +102,15 @@ const store = createStore({
       actions.setApiError(error);
     }
   }),
+  deleteFiliereModule: thunk(async (actions, obj) => {
+    try {
+      const res = await filiereServices.deleteFiliereModule(obj);
+      actions.getFilieres();
+      return res;
+    } catch (error) {
+      actions.setApiError(error);
+    }
+  }),
   getFiliereModules: thunk(async (actions, filiereId) => {
     try {
       const res = await modulesServices.getFiliereModules(filiereId);
