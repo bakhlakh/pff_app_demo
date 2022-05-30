@@ -41,6 +41,7 @@ builder.Services.AddAuthentication(x =>
         ValidateAudience = false
     };
 });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
