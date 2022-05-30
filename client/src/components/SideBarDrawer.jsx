@@ -1,6 +1,5 @@
 import React from "react";
 import { Drawer, List, IconButton, Typography } from "@mui/material";
-import Logo from "../Assets/ofppt.svg";
 import { SidebarDATA } from "./SidebarDATA";
 import "../styles/componentStyles/sidebar.css";
 import { withStyles } from "@mui/styles";
@@ -50,7 +49,6 @@ function SideBarDrawer(props) {
       >
         <props.DrawerHeader sx={{ justifyContent: "center" }}>
           <div className="logo">
-            <img src={Logo} alt="logo" width={100} height={50} />
             <Typography
               variant="h4"
               element="h4"
