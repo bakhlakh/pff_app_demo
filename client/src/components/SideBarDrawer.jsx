@@ -74,6 +74,7 @@ function SideBarDrawer(props) {
                 selected={selected === index}
                 onClick={() => {
                   setSelected(index);
+                  window.location = item.path;
                 }}
               >
                 <IconButton>{item.icon}</IconButton>
