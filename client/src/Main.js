@@ -19,7 +19,12 @@ function Main() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route element={<PersistLogin />}>
-            <Route element={<RequireAuth allowedRoles={1} />}>
+            <Route element={<RequireAuth allowedRoles={[1, 2]} />}>
+              <Route exact path="/" element={<Home />} />
+              <Route path="/Gestion-Filieres" element={<GestionFilieres />} />
+              <Route path="/Gestion-Modules" element={<GestionModules />} />
+            </Route>
+            <Route element={<RequireAuth allowedRoles={[1]} />}>
               <Route exact path="/" element={<Home />} />
               <Route path="/Gestion-Filieres" element={<GestionFilieres />} />
               <Route path="/Gestion-Modules" element={<GestionModules />} />
