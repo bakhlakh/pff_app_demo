@@ -192,6 +192,14 @@ const store = createStore({
       actions.setApiError(error);
     }
   }),
+  getStagiairesByGroup: thunk(async (actions, id) => {
+    try {
+      const res = await stagiaireServices.getStagiairesByGroup(id);
+      return res;
+    } catch (err) {
+      actions.setApiError(err);
+    }
+  }),
   postStagiaire: thunk(async (actions, data) => {
     try {
       const res = await stagiaireServices.postStagiaire(data);

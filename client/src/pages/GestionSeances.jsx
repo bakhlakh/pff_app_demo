@@ -19,6 +19,8 @@ import SeancesCalendar from "../components/SeancesCalendar";
 import { useStoreActions, useStoreState } from "easy-peasy";
 import PostSeance from "../forms/PostSeance";
 import PrintEmploiForAll from "../components/PrintEmploiForAll";
+import useAuth from "../hooks/useAuth";
+import PrintIcon from "@mui/icons-material/Print";
 
 const testDate = (selectedDate, date) => {
   if (
@@ -30,6 +32,7 @@ const testDate = (selectedDate, date) => {
   } else return false;
 };
 function GestionSeances() {
+  const { auth } = useAuth();
   const WKSRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => WKSRef.current,
@@ -85,19 +88,7 @@ function GestionSeances() {
       )}
       <Container maxWidth="lg" sx={{ marginTop: "100px" }}>
         <Grid container spacing={2}>
-          <Grid item xs={2}>
-            <Button
-              color="warning"
-              type="button"
-              variant="outlined"
-              onClick={() => {
-                setPostFormVisible(!postFormVisible);
-              }}
-            >
-              Ajouter Seance
-            </Button>
-          </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={6}>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DesktopDatePicker
                 label="Date seance"
@@ -117,7 +108,7 @@ function GestionSeances() {
               />
             </LocalizationProvider>
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={6}>
             <FormControl fullWidth>
               <InputLabel id="groupIdLabel">Groupe</InputLabel>
               <Select
@@ -139,25 +130,53 @@ function GestionSeances() {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={2}>
+          {/*<Grid item xs={3}>
             <Button
               color="primary"
-              variant="outlined"
+              variant="contained"
               onClick={() => {
                 setCalType(calType === "WKS" ? "JOUR" : "WKS");
               }}
             >
               {calType === "WKS" ? "Voir par jour" : "Voir par semaine"}
             </Button>
+          </Grid>*/}
+          <Grid item xs={6}>
+            {auth?.userLevel === 1 && (
+              <Button
+                color="success"
+                type="button"
+                variant="contained"
+                sx={{ borderRadius: 0 }}
+                onClick={() => {
+                  setPostFormVisible(!postFormVisible);
+                }}
+              >
+                Ajouter Seance
+              </Button>
+            )}
           </Grid>
-          <Grid item xs={2}>
-            <Button color="success" variant="outlined" onClick={handlePrint}>
-              Imprimer
-            </Button>
-            <Button color="success" variant="outlined" onClick={handlePrintAll}>
-              Imprimer pour tous les groupes
+          <Grid item xs={3}>
+            <Button
+              color="info"
+              variant="contained"
+              sx={{ borderRadius: 0 }}
+              onClick={handlePrint}
+            >
+              <PrintIcon sx={{ marginRight: 2 }} /> Imprimer
             </Button>
           </Grid>
+          <Grid item xs={3}>
+            <Button
+              color="info"
+              variant="contained"
+              sx={{ borderRadius: 0 }}
+              onClick={handlePrintAll}
+            >
+              <PrintIcon sx={{ marginRight: 2 }} /> Imprimer tous
+            </Button>
+          </Grid>
+
           <Grid item xs={12} sx={{ marginBottom: "100px" }}>
             {calType === "WKS" ? (
               <WKSCalendar

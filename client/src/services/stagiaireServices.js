@@ -13,4 +13,9 @@ export default class stagiaireServices {
   static async putStagiaire(id, obj) {
     return await authAxios.put(`/api/Stagiaires/${id}`, obj);
   }
+  static async getStagiairesByGroup(id) {
+    return await authAxios.get(
+      "/api/Stagiaires/GetStagiairesByGroup?groupId=" + id
+    );
+  }
 }

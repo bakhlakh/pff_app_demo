@@ -33,16 +33,16 @@ namespace testWebAPI1.Controllers
             {
                 return Conflict(res.Message);
             }
-                return Ok(res.data);
+            return Ok(res.data);
         }
 
         // GET: api/Stagiaires/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Stagiaire>> GetStagiaire(string CIN)
         {
-            var res= await stagiareServices.GetStagiaire(CIN);
-            
-            if (!res.Success || res.data==null)
+            var res = await stagiareServices.GetStagiaire(CIN);
+
+            if (!res.Success || res.data == null)
             {
                 return NotFound(res.Message);
             }
@@ -61,7 +61,7 @@ namespace testWebAPI1.Controllers
                 return BadRequest();
             }
 
-            var res = await stagiareServices.PutStagiaire(id,stagiaire);
+            var res = await stagiareServices.PutStagiaire(id, stagiaire);
             if (!res.Success)
             {
                 return Conflict(res.Message);
@@ -93,6 +93,12 @@ namespace testWebAPI1.Controllers
                 return Conflict(res.Message);
             }
             return Ok(res.data);
+        }
+        [HttpGet("GetStagiairesByGroup")]
+        public async Task<ActionResult<IEnumerable<Stagiaire>>> GetStagiairesByGroup(string groupId) 
+        {
+            var stagiaires = await _context.Stagiaires.Where(s => s.GroupId == groupId).ToListAsync();
+            return Ok(stagiaires);
         }
         private bool StagiaireExists(int id)
         {

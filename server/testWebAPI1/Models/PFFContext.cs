@@ -16,6 +16,7 @@ namespace testWebAPI1.Models
         {
         }
 
+        public virtual DbSet<Absence> Absences { get; set; } = null!;
         public virtual DbSet<Filiere> Filieres { get; set; } = null!;
         public virtual DbSet<FiliereModule> FiliereModules { get; set; } = null!;
         public virtual DbSet<Formateur> Formateurs { get; set; } = null!;
@@ -31,12 +32,45 @@ namespace testWebAPI1.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=localhost, 1433;Database=PFF;User Id=sa;Password=PFFGENERICPASSWORD123!");
+                optionsBuilder.UseSqlServer(ConfigurationExtensions.GetConnectionString(null, "DefaultConnection"));
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Absence>(entity =>
+            {
+                entity.HasIndex(e => new { e.SeanceId, e.StagiaireId }, "UQ__Absences__92C160FE3B364CEB")
+                    .IsUnique();
+
+                entity.Property(e => e.AbsenceId).HasColumnName("AbsenceID");
+
+                entity.Property(e => e.AdditionalInfo)
+                    .HasMaxLength(300)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Justified)
+                    .HasMaxLength(3)
+                    .IsUnicode(false)
+                    .HasDefaultValueSql("('NO')");
+
+                entity.Property(e => e.SeanceId).HasColumnName("SeanceID");
+
+                entity.Property(e => e.StagiaireId).HasColumnName("StagiaireID");
+
+                entity.HasOne(d => d.Seance)
+                    .WithMany(p => p.Absences)
+                    .HasForeignKey(d => d.SeanceId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Absences__Seance__7D439ABD");
+
+                entity.HasOne(d => d.Stagiaire)
+                    .WithMany(p => p.Absences)
+                    .HasForeignKey(d => d.StagiaireId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Absences__Stagia__7E37BEF6");
+            });
+
             modelBuilder.Entity<Filiere>(entity =>
             {
                 entity.Property(e => e.FiliereId)
@@ -107,23 +141,23 @@ namespace testWebAPI1.Models
                     .WithMany(p => p.FiliereModules)
                     .HasForeignKey(d => d.FiliereId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__FiliereMo__Filie__06CD04F7");
+                    .HasConstraintName("FK__FiliereMo__Filie__5629CD9C");
 
                 entity.HasOne(d => d.Module)
                     .WithMany(p => p.FiliereModules)
                     .HasForeignKey(d => d.ModuleId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__FiliereMo__Modul__05D8E0BE");
+                    .HasConstraintName("FK__FiliereMo__Modul__571DF1D5");
             });
 
             modelBuilder.Entity<Formateur>(entity =>
             {
                 entity.ToTable("Formateur");
 
-                entity.HasIndex(e => e.Email, "UQ__Formateu__A9D105349C65EA03")
+                entity.HasIndex(e => e.Email, "UQ__Formateu__A9D105342997CD6C")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Cin, "UQ__Formateu__C1F8DC5657EF1A56")
+                entity.HasIndex(e => e.Cin, "UQ__Formateu__C1F8DC5644343A7A")
                     .IsUnique();
 
                 entity.Property(e => e.FormateurId)
@@ -208,7 +242,7 @@ namespace testWebAPI1.Models
                 entity.HasOne(d => d.Filiere)
                     .WithMany(p => p.Groupes)
                     .HasForeignKey(d => d.FiliereId)
-                    .HasConstraintName("FK__Groupes__Filiere__1DB06A4F");
+                    .HasConstraintName("FK__Groupes__Filiere__5812160E");
             });
 
             modelBuilder.Entity<Module>(entity =>
@@ -272,7 +306,7 @@ namespace testWebAPI1.Models
 
             modelBuilder.Entity<Seance>(entity =>
             {
-                entity.HasIndex(e => new { e.DateSeance, e.FormateurId, e.StartTime }, "UQ__Seances__2050E7A4E012C6A1")
+                entity.HasIndex(e => new { e.DateSeance, e.FormateurId, e.StartTime }, "UQ__Seances__2050E7A4F76F7EDE")
                     .IsUnique();
 
                 entity.Property(e => e.SeanceId).HasColumnName("SeanceID");
@@ -332,17 +366,17 @@ namespace testWebAPI1.Models
                 entity.HasOne(d => d.Formateur)
                     .WithMany(p => p.Seances)
                     .HasForeignKey(d => d.FormateurId)
-                    .HasConstraintName("FK__Seances__Formate__7DCDAAA2");
+                    .HasConstraintName("FK__Seances__Formate__59063A47");
 
                 entity.HasOne(d => d.Module)
                     .WithMany(p => p.Seances)
                     .HasForeignKey(d => d.ModuleId)
-                    .HasConstraintName("FK__Seances__ModuleI__7CD98669");
+                    .HasConstraintName("FK__Seances__ModuleI__59FA5E80");
 
                 entity.HasOne(d => d.Room)
                     .WithMany(p => p.Seances)
                     .HasForeignKey(d => d.RoomId)
-                    .HasConstraintName("FK__Seances__RoomID__7BE56230");
+                    .HasConstraintName("FK__Seances__RoomID__5AEE82B9");
 
                 entity.HasOne(d => d.Groupe)
                     .WithMany(p => p.Seances)
@@ -352,7 +386,7 @@ namespace testWebAPI1.Models
 
             modelBuilder.Entity<Stagiaire>(entity =>
             {
-                entity.HasIndex(e => e.Cin, "UQ__Stagiair__C1F8DC5643C53469")
+                entity.HasIndex(e => e.Cin, "UQ__Stagiair__C1F8DC5667C86918")
                     .IsUnique();
 
                 entity.Property(e => e.StagiaireId).HasColumnName("StagiaireID");
@@ -430,7 +464,7 @@ namespace testWebAPI1.Models
             modelBuilder.Entity<Teaching>(entity =>
             {
                 entity.HasKey(e => new { e.FormateurId, e.GroupId, e.AnneScolaire, e.ModuleId })
-                    .HasName("PK__Teaching__6AE1690042B0AA0E");
+                    .HasName("PK__Teaching__6AE169002E5D1A4A");
 
                 entity.ToTable("Teaching");
 
@@ -454,29 +488,29 @@ namespace testWebAPI1.Models
                     .WithMany(p => p.Teachings)
                     .HasForeignKey(d => d.FormateurId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Teaching__Format__15DA3E5D");
+                    .HasConstraintName("FK__Teaching__Format__5EBF139D");
 
                 entity.HasOne(d => d.Module)
                     .WithMany(p => p.Teachings)
                     .HasForeignKey(d => d.ModuleId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Teaching__Module__16CE6296");
+                    .HasConstraintName("FK__Teaching__Module__5FB337D6");
 
                 entity.HasOne(d => d.Groupe)
                     .WithMany(p => p.Teachings)
                     .HasForeignKey(d => new { d.AnneScolaire, d.GroupId })
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Teaching__17C286CF");
+                    .HasConstraintName("FK__Teaching__5DCAEF64");
             });
 
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasKey(e => e.UserName)
-                    .HasName("PK__USERS__C9F284575E907DFB");
+                    .HasName("PK__USERS__C9F284575FEF1DB2");
 
                 entity.ToTable("USERS");
 
-                entity.HasIndex(e => e.EmailAddress, "UQ__USERS__49A14740C5B9955B")
+                entity.HasIndex(e => e.EmailAddress, "UQ__USERS__49A14740551F2A5E")
                     .IsUnique();
 
                 entity.Property(e => e.UserName)

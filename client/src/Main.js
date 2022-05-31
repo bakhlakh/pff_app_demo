@@ -6,7 +6,6 @@ import GestionModules from "./pages/GestionModules.jsx";
 import STManagement from "./pages/STManagement.jsx";
 import GPManagement from "./pages/GPManagement.jsx";
 import Home from "./pages/Home.jsx";
-import LoginPage from "./pages/LoginPage.jsx";
 import GestionSeances from "./pages/GestionSeances.jsx";
 import GestionSalles from "./pages/GestionSalles.jsx";
 import Layout from "./layouts/Layout";
@@ -22,8 +21,7 @@ function Main() {
           <Route element={<PersistLogin />}>
             <Route element={<RequireAuth allowedRoles={[1, 2]} />}>
               <Route exact path="/" element={<Home />} />
-              <Route path="/Gestion-Filieres" element={<GestionFilieres />} />
-              <Route path="/Gestion-Modules" element={<GestionModules />} />
+              <Route path="/Gestion-Seances" element={<GestionSeances />} />
             </Route>
             <Route element={<RequireAuth allowedRoles={[1]} />}>
               <Route exact path="/" element={<Home />} />

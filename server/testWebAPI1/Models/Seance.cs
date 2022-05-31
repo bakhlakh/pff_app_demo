@@ -5,6 +5,11 @@ namespace testWebAPI1.Models
 {
     public partial class Seance
     {
+        public Seance()
+        {
+            Absences = new HashSet<Absence>();
+        }
+
         public int SeanceId { get; set; }
         public string Title { get; set; } = null!;
         public int? RoomId { get; set; }
@@ -24,5 +29,6 @@ namespace testWebAPI1.Models
         public virtual Groupe? Groupe { get; set; }
         public virtual Module? Module { get; set; }
         public virtual Room? Room { get; set; }
+        public virtual ICollection<Absence> Absences { get; set; }
     }
 }

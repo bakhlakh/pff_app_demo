@@ -5,6 +5,11 @@ namespace testWebAPI1.Models
 {
     public partial class Stagiaire
     {
+        public Stagiaire()
+        {
+            Absences = new HashSet<Absence>();
+        }
+
         public int StagiaireId { get; set; }
         public string FirstName { get; set; } = null!;
         public string LastName { get; set; } = null!;
@@ -23,5 +28,6 @@ namespace testWebAPI1.Models
         public DateTime DeletedAt { get; set; }
 
         public virtual Groupe? Groupe { get; set; }
+        public virtual ICollection<Absence> Absences { get; set; }
     }
 }
