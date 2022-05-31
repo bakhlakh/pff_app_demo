@@ -188,7 +188,7 @@ function Dashboard(props) {
                   <ExitToAppIcon />
                 </IconButton>
                 <Typography variant="caption" component="h4">
-                  Logout
+                  Déconnexion
                 </Typography>
               </ListItemButton>
             </div>
