@@ -12,6 +12,7 @@ import GestionSalles from "./pages/GestionSalles.jsx";
 import Layout from "./layouts/Layout";
 import RequireAuth from "./components/RequireAuth";
 import PersistLogin from "./components/PersistLogin";
+import NotFoundPage from "./pages/NotFoundPage.jsx";
 
 function Main() {
   return (
@@ -35,6 +36,7 @@ function Main() {
             </Route>
           </Route>
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Routes>
         <Route path="/Login" element={<LoginPage />} />
