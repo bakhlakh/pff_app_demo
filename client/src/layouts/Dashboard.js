@@ -4,9 +4,6 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
 import authService from "../services/auth.service";
 import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
@@ -18,12 +15,10 @@ import { SidebarDATA } from "../components/SidebarDATA";
 import "../styles/componentStyles/sidebar.css";
 import { withStyles } from "@mui/styles";
 import MuiListItemButton from "@mui/material/ListItemButton";
-
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 function Dashboard(props) {
   const drawerWidth = 240;
   const [sideOpen, setSideOpen] = React.useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selected, setSelected] = React.useState();
   const ListItemButton = withStyles({
     root: {
       "&$selected": {
@@ -47,12 +42,8 @@ function Dashboard(props) {
     },
     selected: {},
   })(MuiListItemButton);
-
   const navigate = useNavigate();
 
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
   const getPageName = () => {
     return window.location.pathname.split("-")[1];
   };
@@ -126,45 +117,6 @@ function Dashboard(props) {
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               {getPageName()}
             </Typography>
-            <Box sx={{ flexGrow: 0 }}>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                color="inherit"
-                onClick={handleMenu}
-              >
-                <AccountCircle />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorEl)}
-                onClose={() => {
-                  setAnchorEl(null);
-                }}
-              >
-                <MenuItem
-                  onClick={() => {
-                    authService.logout();
-                    navigate("/");
-                    window.location.reload();
-                  }}
-                >
-                  Log out
-                </MenuItem>
-              </Menu>
-            </Box>
           </Toolbar>
         </AppBar>
         <Drawer
@@ -207,7 +159,6 @@ function Dashboard(props) {
                   className="sidebar-list-item-button"
                   selected={item.path === window.location.pathname}
                   onClick={() => {
-                    setSelected(index);
                     window.location = item.path;
                   }}
                 >
@@ -222,6 +173,25 @@ function Dashboard(props) {
                 </ListItemButton>
               );
             })}
+            <div>
+              <ListItemButton
+                className="sidebar-list-item-button"
+                sx={{ marginTop: 40 }}
+                selected={false}
+                onClick={() => {
+                  authService.logout();
+                  navigate("/");
+                  window.location.reload();
+                }}
+              >
+                <IconButton>
+                  <ExitToAppIcon />
+                </IconButton>
+                <Typography variant="caption" component="h4">
+                  Logout
+                </Typography>
+              </ListItemButton>
+            </div>
           </List>
         </Drawer>
         <Main open={sideOpen}>
