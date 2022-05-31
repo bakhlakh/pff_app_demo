@@ -38,9 +38,6 @@ function Main() {
         </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
-      <Routes>
-        <Route path="/Login" element={<LoginPage />} />
-      </Routes>
     </>
   );
 }
