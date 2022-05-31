@@ -75,7 +75,9 @@ function SideBarDrawer(props) {
                   window.location = item.path;
                 }}
               >
-                <IconButton>{item.icon}</IconButton>
+                <IconButton>
+                  {item.icon(selected === index ? "#4569FF" : "")}
+                </IconButton>
                 <Typography variant="caption" component="h4">
                   {item.title}
                 </Typography>
