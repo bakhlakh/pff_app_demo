@@ -5,15 +5,3 @@
   padding: 0;
   font-family: "Poppins", "Open Sans" !important;
 }
-/* .gestionFilieres,
-.home,
-.gestionModules {
-  display: flex;
-  height: 90vh;
-  align-items: center;
-  justify-content: center;
-  font-size: 3rem;
-} */
-.nav-menu {
-  z-index: 1;
-}

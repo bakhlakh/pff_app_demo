@@ -76,7 +76,7 @@ function SideBarDrawer(props) {
                 }}
               >
                 <IconButton>{item.icon}</IconButton>
-                <Typography variant="h6" component="h6">
+                <Typography variant="caption" component="h4">
                   {item.title}
                 </Typography>
               </ListItemButton>
