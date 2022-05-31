@@ -23,7 +23,7 @@ function Dashboard(props) {
   const drawerWidth = 240;
   const [sideOpen, setSideOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selected, setSelected] = React.useState(0);
+  const [selected, setSelected] = React.useState();
   const ListItemButton = withStyles({
     root: {
       "&$selected": {
@@ -205,14 +205,16 @@ function Dashboard(props) {
                 <ListItemButton
                   key={index}
                   className="sidebar-list-item-button"
-                  selected={selected === index}
+                  selected={item.path === window.location.pathname}
                   onClick={() => {
                     setSelected(index);
                     window.location = item.path;
                   }}
                 >
                   <IconButton>
-                    {item.icon(selected === index ? "#4569FF" : "")}
+                    {item.icon(
+                      item.path === window.location.pathname ? "#4569FF" : ""
+                    )}
                   </IconButton>
                   <Typography variant="caption" component="h4">
                     {item.title}
