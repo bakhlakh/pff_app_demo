@@ -32,7 +32,7 @@ namespace testWebAPI1.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(ConfigurationExtensions.GetConnectionString(null, "DefaultConnection"));
+                optionsBuilder.UseSqlServer("Server=localhost, 1433;Database=PFF;User Id=sa;Password=PFFGENERICPASSWORD123!");
             }
         }
 
