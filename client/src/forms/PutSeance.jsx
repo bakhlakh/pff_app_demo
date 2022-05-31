@@ -15,6 +15,7 @@ import {
   CssBaseline,
 } from "@mui/material";
 import "../styles/formsStyles/PostSeance.css";
+import RegisterAbsence from "./RegisterAbsence";
 
 function PutSeance({ handleClick, cancelOp, updatedSeance, handleUpdate }) {
   const [nbchars, setnbchars] = useState(300);
@@ -33,9 +34,9 @@ function PutSeance({ handleClick, cancelOp, updatedSeance, handleUpdate }) {
   const getFilieres = useStoreActions((actions) => actions.getFilieres);
   const filieres = useStoreState((state) => state.filieres);
   const putSeance = useStoreActions((actions) => actions.putSeance);
-  //const [selectedFiliere, setSelectedFiliere] = useState("");
   const availableStartTime = useStoreState((state) => state.availableStartTime);
   const deleteSeance = useStoreActions((actions) => actions.deleteSeance);
+
   const getAvailableStartTime = useStoreActions(
     (actions) => actions.getAvailableStartTime
   );
@@ -110,7 +111,7 @@ function PutSeance({ handleClick, cancelOp, updatedSeance, handleUpdate }) {
     title: Yup.string().min(3),
     dateSeance: Yup.date().required("La date est obligatoire"),
   });
-  const handleSubmit = async (values) => {
+  const handleSubmit = async () => {
     let date = new Date(newSeance.dateSeance);
     const scObj = {
       seanceId: updatedSeance.seanceId,
@@ -127,7 +128,6 @@ function PutSeance({ handleClick, cancelOp, updatedSeance, handleUpdate }) {
       groupId: newSeance.groupId,
       anneScolaire: newSeance.anneScolaire,
     };
-    console.log("scObj", scObj);
     let res = await putSeance(scObj);
     if (res?.seanceId) {
       handleUpdate();
@@ -144,6 +144,8 @@ function PutSeance({ handleClick, cancelOp, updatedSeance, handleUpdate }) {
       });
     }
   };
+  const [listeVisible, setListeVisible] = useState(false);
+
   return (
     <>
       <Formik
@@ -192,6 +194,7 @@ function PutSeance({ handleClick, cancelOp, updatedSeance, handleUpdate }) {
                         getFiliereModules(e.target.value);
                         getFiliereGroupes(e.target.value);
                       }}
+                      disabled={new Date() > new Date(newSeance.dateSeance)}
                     >
                       {filieres.map((item) => (
                         <MenuItem
@@ -234,6 +237,7 @@ function PutSeance({ handleClick, cancelOp, updatedSeance, handleUpdate }) {
                       onChange={(e) => {
                         setNewSeance({ ...newSeance, roomId: e.target.value });
                       }}
+                      disabled={new Date() > new Date(newSeance.dateSeance)}
                     >
                       {rooms.map((item) => (
                         <MenuItem
@@ -263,6 +267,7 @@ function PutSeance({ handleClick, cancelOp, updatedSeance, handleUpdate }) {
                           moduleId: e.target.value,
                         });
                       }}
+                      disabled={new Date() > new Date(newSeance.dateSeance)}
                     >
                       {filteredModules.map((item) => (
                         <MenuItem
@@ -292,6 +297,7 @@ function PutSeance({ handleClick, cancelOp, updatedSeance, handleUpdate }) {
                           groupId: e.target.value,
                         });
                       }}
+                      disabled={new Date() > new Date(newSeance.dateSeance)}
                     >
                       {filteredGroupes.map((item) => (
                         <MenuItem
@@ -323,6 +329,7 @@ function PutSeance({ handleClick, cancelOp, updatedSeance, handleUpdate }) {
                           {...params}
                         />
                       )}
+                      disabled={new Date() > new Date(newSeance.dateSeance)}
                     />
                     <ErrorMessage
                       name="dateSeance"
@@ -348,6 +355,7 @@ function PutSeance({ handleClick, cancelOp, updatedSeance, handleUpdate }) {
                           startTime: e.target.value,
                         });
                       }}
+                      disabled={new Date() > new Date(newSeance.dateSeance)}
                     >
                       {availableStartTime.map((item) => (
                         <MenuItem key={item + "heure"} value={item}>
@@ -371,6 +379,7 @@ function PutSeance({ handleClick, cancelOp, updatedSeance, handleUpdate }) {
                     value={newSeance.objectives}
                     inputProps={{ maxLength: 300 }}
                     helperText={nbchars + " characters restants, 300 max"}
+                    disabled={new Date() > new Date(newSeance.dateSeance)}
                     onChange={(e) => {
                       setNewSeance({
                         ...newSeance,
@@ -396,6 +405,7 @@ function PutSeance({ handleClick, cancelOp, updatedSeance, handleUpdate }) {
                           formateurId: e.target.value,
                         });
                       }}
+                      disabled={new Date() > new Date(newSeance.dateSeance)}
                     >
                       {formateurs.map((item) => (
                         <MenuItem
@@ -427,7 +437,22 @@ function PutSeance({ handleClick, cancelOp, updatedSeance, handleUpdate }) {
                     }}
                   />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={4}>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      borderRadius: "0px",
+                      marginRight: "20px",
+                      backgroundColor: "blue",
+                    }}
+                    onClick={() => {
+                      setListeVisible(true);
+                    }}
+                  >
+                    Liste des absences
+                  </Button>
+                </Grid>
+                <Grid item xs={8}>
                   <div className="modal-footer">
                     <Button
                       variant="contained"
@@ -450,6 +475,17 @@ function PutSeance({ handleClick, cancelOp, updatedSeance, handleUpdate }) {
                       Annuler
                     </Button>
                   </div>
+                </Grid>
+                <Grid item xs={12}>
+                  {listeVisible && (
+                    <RegisterAbsence
+                      groupId={newSeance.groupId}
+                      seanceId={newSeance.groupId}
+                      cancelOp={() => {
+                        setListeVisible(false);
+                      }}
+                    />
+                  )}
                 </Grid>
               </Grid>
             </div>

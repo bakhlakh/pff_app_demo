@@ -9,6 +9,7 @@ import seanceServices from "../services/seanceServices";
 import roomServices from "../services/roomServices";
 import formateurServices from "../services/formateurServices";
 import overviewServices from "../services/overviewServices";
+import absenceServices from "../services/absenceServices";
 const api = axios.create({ baseURL: "https://localhost:7161/" });
 const store = createStore({
   //states
@@ -306,6 +307,14 @@ const store = createStore({
   GWSForAll: thunk(async (actions, obj) => {
     try {
       const res = await seanceServices.GWSForAll(obj);
+      return res;
+    } catch (error) {
+      actions.setApiError(error);
+    }
+  }),
+  postAbsences: thunk(async (actions, obj) => {
+    try {
+      const res = await absenceServices.postAbsences(obj);
       return res;
     } catch (error) {
       actions.setApiError(error);
