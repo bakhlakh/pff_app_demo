@@ -4,17 +4,17 @@ namespace testWebAPI1.Services
 {
     public static class moduleServices
     {
-        private static PFFContext context = new PFFContext();
+        private static PFFContext? context;
 
-        public static async Task<DBResponseModel> GetModules()
+        public static async Task<DBResponseModel> GetModules(PFFContext _context)
         {
-            context = new PFFContext();
+            context = _context;
             var items = await context.Modules.Select(md => new { md.ModuleId, md.Intitule, md.Description }).ToListAsync();
             return new DBResponseModel{ data = items, Message = "", Success = true, statusCode = 200 };
         }
-        public static async Task<DBResponseModel> GetModule(string id)
+        public static async Task<DBResponseModel> GetModule(string id, PFFContext _context)
         {
-            context = new PFFContext();
+            context = _context;
 
             var @module = await context.Modules.FindAsync(id);
             if (module==null)
@@ -23,9 +23,9 @@ namespace testWebAPI1.Services
             }
             return new DBResponseModel(true, "module found", module, 200);
         }
-        public static async Task<DBResponseModel> GetXModulesFiliere(string id)
+        public static async Task<DBResponseModel> GetXModulesFiliere(string id, PFFContext _context)
         {
-            context = new PFFContext();
+            context = _context;
 
             var query =  from md in context.Modules
                         join fm in context.FiliereModules on md.ModuleId equals fm.ModuleId
@@ -37,9 +37,9 @@ namespace testWebAPI1.Services
 
             return new DBResponseModel(true, "modules found", module, 200);
         }
-        public static async Task<DBResponseModel> GetModulesInFiliere(string id)
+        public static async Task<DBResponseModel> GetModulesInFiliere(string id, PFFContext _context)
         {
-            context = new PFFContext();
+            context = _context;
 
             var query = await context.FiliereModules.Where(fm => fm.FiliereId == id)
                  .Include(fm => fm.Module)
@@ -47,9 +47,9 @@ namespace testWebAPI1.Services
             return new DBResponseModel(true, "modules found", query, 200);
         }
 
-        public static async Task<DBResponseModel> PostModule(Module @module)
+        public static async Task<DBResponseModel> PostModule(Module @module, PFFContext _context)
         {
-            context = new PFFContext();
+            context = _context;
             
             context.Modules.Add(module);
             try
@@ -58,7 +58,7 @@ namespace testWebAPI1.Services
             }
             catch (DbUpdateException)
             {
-                if (ModuleExists(module.ModuleId).Result)
+                if (ModuleExists(module.ModuleId,context).Result)
                 {
                     return new DBResponseModel(false, "Module already exists.");
                 }
@@ -70,9 +70,9 @@ namespace testWebAPI1.Services
 
             return new DBResponseModel(true, "Module saved successfully.",module,200);
         }
-        public static async Task<DBResponseModel> PutModule(string id,Module @module)
+        public static async Task<DBResponseModel> PutModule(string id,Module @module, PFFContext _context)
         {
-            context = new PFFContext();
+            context = _context;
 
             if (id != @module.ModuleId)
             {
@@ -86,7 +86,7 @@ namespace testWebAPI1.Services
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ModuleExists(id).Result)
+                if (!ModuleExists(id,context).Result)
                 {
                     return new DBResponseModel(false, "Module does not exist.");
                 }
@@ -98,9 +98,9 @@ namespace testWebAPI1.Services
 
             return new DBResponseModel(true, "Module updated successfully.", module, 200);
         }
-        public static async Task<DBResponseModel> DeleteModule(string id)
+        public static async Task<DBResponseModel> DeleteModule(string id, PFFContext _context)
         {
-            context = new PFFContext();
+            context = _context;
 
             var @module = await context.Modules.FindAsync(id);
             if (@module == null)
@@ -113,9 +113,9 @@ namespace testWebAPI1.Services
             var query =await context.Modules.ToListAsync();
             return new DBResponseModel(true, "Module deleted successfully.", query, 200);
         }
-        public static async Task<DBResponseModel> ForceDeleteModule(string moduleId)
+        public static async Task<DBResponseModel> ForceDeleteModule(string moduleId, PFFContext _context)
         {
-            context = new PFFContext();
+            context = _context;
 
             var @module = await context.Modules.FindAsync(moduleId);
             if (@module == null)
@@ -150,9 +150,9 @@ namespace testWebAPI1.Services
             var queryModules = await context.Modules.ToListAsync();
             return new DBResponseModel(true, "Module deleted successfully.",queryModules,200);
         }
-        private  static  async Task<bool> ModuleExists(string id)
+        private  static  async Task<bool> ModuleExists(string id, PFFContext _context)
         {
-            context = new PFFContext();
+            context = _context;
 
             return await context.Modules.AnyAsync(e => e.ModuleId == id);
         }

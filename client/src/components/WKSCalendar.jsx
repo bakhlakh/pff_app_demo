@@ -171,6 +171,16 @@ const WKSCalendar = React.forwardRef(({ data, handleSeanceUpdated }, ref) => {
             <div className="d-flex justify-content-center">
               <h4>EMPLOIS DU TEMPS PAR GROUPE</h4>
             </div>
+            <div className="d-flex justify-content-center">
+              <p>
+                Semaine :{" "}
+                {data?.dateEmploie.day +
+                  "-" +
+                  data?.dateEmploie.month +
+                  "-" +
+                  data?.dateEmploie.year}
+              </p>
+            </div>
             <div className="WKSCalendar-header-body d-flex justify-content-between ">
               <div className="WKSCalendar-header-body-left">
                 <h5>

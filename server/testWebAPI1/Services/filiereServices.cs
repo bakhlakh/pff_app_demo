@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace testWebAPI1.BALL
+namespace testWebAPI1.Services
 {
     public class filiereServices
     {
@@ -8,21 +8,21 @@ namespace testWebAPI1.BALL
         {
         }
 
-        public static async Task<ActionResult<IEnumerable<Filiere>>> GetFilieres()
+        public static async Task<ActionResult<IEnumerable<Filiere>>> GetFilieres(PFFContext _context)
         {
-            PFFContext context = new PFFContext();
+            PFFContext context = _context;
             return await context.Filieres.Include(fl => fl.FiliereModules).ThenInclude(fl => fl.Module).ToListAsync();
         }
-        public static async Task<ActionResult<Filiere?>> GetFiliere(string id)
+        public static async Task<ActionResult<Filiere?>> GetFiliere(string id, PFFContext _context)
         {
-                  PFFContext context = new PFFContext();
+                  PFFContext context = _context;
 
         var filiere = await context.Filieres.FindAsync(id);
             return filiere;
         }
-        public static async Task<ActionResult<Filiere?>> GetModulesFiliere(string id)
+        public static async Task<ActionResult<Filiere?>> GetModulesFiliere(string id, PFFContext _context)
         {
-                  PFFContext context = new PFFContext();
+                  PFFContext context = _context;
 
                 var filiere = await context.Filieres
                 .Include(fl => fl.FiliereModules)
@@ -32,9 +32,9 @@ namespace testWebAPI1.BALL
 
             return filiere.FirstOrDefault();
         }
-        public static async Task<DBResponseModel> PutFiliere(string id, Filiere filiere)
+        public static async Task<DBResponseModel> PutFiliere(string id, Filiere filiere, PFFContext _context)
         {
-                  PFFContext context = new PFFContext();
+                  PFFContext context = _context;
 
 if (id != filiere.FiliereId)
             {
@@ -49,7 +49,7 @@ if (id != filiere.FiliereId)
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!FiliereExists(id))
+                if (!FiliereExists(id, _context))
                 {
                     return new DBResponseModel(false, "Conflict");
                 }
@@ -61,18 +61,18 @@ if (id != filiere.FiliereId)
             var filieres = await context.Filieres.ToListAsync();
             return new DBResponseModel(true, "Sucess",filieres,200);
         }
-        public static async Task<ActionResult<object>?> PostFiliere(Filiere filiere)
+        public static async Task<ActionResult<object>?> PostFiliere(Filiere filiere, PFFContext _context)
         {
-                  PFFContext context = new PFFContext();
+                  PFFContext context = _context;
 
-context.Filieres.Add(filiere);
+            context.Filieres.Add(filiere);
             try
             {
                 await context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (FiliereExists(filiere.FiliereId))
+                if (FiliereExists(filiere.FiliereId,_context))
                 {
                     return null;
                 }
@@ -84,9 +84,9 @@ context.Filieres.Add(filiere);
 
             return filiere;
         }
-        public static async Task<ActionResult<Filiere?>> DeleteFiliere(string id)
+        public static async Task<ActionResult<Filiere?>> DeleteFiliere(string id, PFFContext _context)
         {
-                  PFFContext context = new PFFContext();
+                  PFFContext context = _context;
 
 var filiere = await context.Filieres.FindAsync(id);
             if (filiere != null)
@@ -96,9 +96,9 @@ var filiere = await context.Filieres.FindAsync(id);
             }
             return filiere;
         }
-        public static async Task<ActionResult<Filiere?>> ForceDeleteFiliere(string id)
+        public static async Task<ActionResult<Filiere?>> ForceDeleteFiliere(string id, PFFContext _context)
         {
-            PFFContext context = new PFFContext();
+            PFFContext context = _context;
 
             var filiere = await context.Filieres.FindAsync(id);
             if (filiere != null)
@@ -126,15 +126,15 @@ var filiere = await context.Filieres.FindAsync(id);
             }
             return filiere;
         }
-        public static async Task<DBResponseModel> GetNonIncludedModules(string filiereId) 
+        public static async Task<DBResponseModel> GetNonIncludedModules(string filiereId, PFFContext _context) 
         {
-            PFFContext context = new PFFContext();
+            PFFContext context = _context;
             var modules = await context.Modules.Where(m => !context.FiliereModules.Any(fm => fm.FiliereId == filiereId && fm.ModuleId == m.ModuleId)).ToListAsync();
             return new DBResponseModel(true, "Sucess", modules, 200);
         }
-        public static bool FiliereExists(string id)
+        public static bool FiliereExists(string id, PFFContext _context)
         {
-                  PFFContext context = new PFFContext();
+                  PFFContext context = _context;
 
 return context.Filieres.Any(e => e.FiliereId == id);
         }

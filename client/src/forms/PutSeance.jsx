@@ -480,7 +480,7 @@ function PutSeance({ handleClick, cancelOp, updatedSeance, handleUpdate }) {
                   {listeVisible && (
                     <RegisterAbsence
                       groupId={newSeance.groupId}
-                      seanceId={newSeance.groupId}
+                      seanceId={updatedSeance.seanceId}
                       cancelOp={() => {
                         setListeVisible(false);
                       }}

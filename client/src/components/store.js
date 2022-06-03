@@ -314,7 +314,15 @@ const store = createStore({
   }),
   postAbsences: thunk(async (actions, obj) => {
     try {
-      const res = await absenceServices.postAbsences(obj);
+      const res = await absenceServices.postAbsence(obj);
+      return res;
+    } catch (error) {
+      actions.setApiError(error);
+    }
+  }),
+  getAbsences: thunk(async (actions, obj) => {
+    try {
+      const res = await absenceServices.getAbsences(obj);
       return res;
     } catch (error) {
       actions.setApiError(error);

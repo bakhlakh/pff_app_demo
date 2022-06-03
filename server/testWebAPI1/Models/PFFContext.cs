@@ -32,7 +32,7 @@ namespace testWebAPI1.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=localhost, 1433;Database=PFF;User Id=sa;Password=PFFGENERICPASSWORD123!");
+               // optionsBuilder.UseSqlServer("Server=localhost, 1433;Database=PFF;User Id=sa;Password=PFFGENERICPASSWORD123!");
             }
         }
 
@@ -357,6 +357,11 @@ namespace testWebAPI1.Models
                     .HasMaxLength(200)
                     .IsUnicode(false)
                     .HasColumnName("TITLE");
+
+                entity.Property(e => e.TypeSeance)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasDefaultValueSql("('Presentiel')");
 
                 entity.Property(e => e.UpdatedAt)
                     .HasColumnType("date")

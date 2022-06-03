@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using testWebAPI1.Models;
 using testWebAPI1.Services;
 namespace testWebAPI1.Controllers
@@ -16,12 +17,17 @@ namespace testWebAPI1.Controllers
     [ApiController]
     public class ModulesController : ControllerBase
     {
+        private readonly PFFContext _context;
 
+        public ModulesController(PFFContext context)
+        {
+            _context = context;
+        }
         // GET: api/Modules
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Module>>> GetModules()
         {
-            DBResponseModel res = await moduleServices.GetModules();
+            DBResponseModel res = await moduleServices.GetModules(_context);
             if (res.Success)
             {
                 return Ok(res.data);
@@ -36,7 +42,7 @@ namespace testWebAPI1.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Module>> GetModule(string id)
         {
-            var res = await moduleServices.GetModule(id);
+            var res = await moduleServices.GetModule(id, _context);
 
             if (!res.Success)
             {
@@ -48,7 +54,7 @@ namespace testWebAPI1.Controllers
         [HttpGet("GetXModulesFiliere/{id}")]
         public async Task<ActionResult<IEnumerable<Module>>> GetXModulesFiliere(string id)
         {
-            var res = await moduleServices.GetXModulesFiliere(id);
+            var res = await moduleServices.GetXModulesFiliere(id, _context);
             if (!res.Success)
             {
                 return NotFound();
@@ -59,7 +65,7 @@ namespace testWebAPI1.Controllers
         [HttpGet("GetModulesInFiliere/{id}")]
         public async Task<ActionResult<IEnumerable<object>>> GetModulesInFiliere(string id)
         {
-            var res = await moduleServices.GetModulesInFiliere(id);
+            var res = await moduleServices.GetModulesInFiliere(id, _context);
             if (!res.Success)
             {
                 return BadRequest(res.Message);
@@ -71,7 +77,7 @@ namespace testWebAPI1.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutModule(string id, Module @module)
         {
-            var res = await moduleServices.PutModule(id, @module);
+            var res = await moduleServices.PutModule(id, @module, _context);
             if (!res.Success)
             {
                 return BadRequest(res.Message);
@@ -84,7 +90,7 @@ namespace testWebAPI1.Controllers
         [HttpPost]
         public async Task<ActionResult<Module>> PostModule(Module @module)
         {
-            var res = await moduleServices.PostModule(@module);
+            var res = await moduleServices.PostModule(@module, _context);
             if (!res.Success)
             {
                 return Conflict(res.Message);
@@ -96,7 +102,7 @@ namespace testWebAPI1.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteModule(string id)
         {
-            var res = await moduleServices.DeleteModule(id);
+            var res = await moduleServices.DeleteModule(id, _context);
             if (!res.Success)
             {
                 return NotFound(res.Message);
@@ -107,7 +113,7 @@ namespace testWebAPI1.Controllers
         [HttpDelete("FD/{id}")]
         public async Task<IActionResult> ForceDeleteModule(string id)
         {
-            var res = await moduleServices.ForceDeleteModule(id);
+            var res = await moduleServices.ForceDeleteModule(id, _context);
             if (!res.Success)
             {
                 if (res.statusCode == 500) return Conflict(res.Message);

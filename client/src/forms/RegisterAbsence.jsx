@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { useStoreActions } from "easy-peasy";
 import "../styles/formsStyles/absence.css";
-import { useDetectClickOutside } from "react-detect-click-outside";
 import { Button } from "@mui/material";
 
 function RegisterAbsence(props) {
-  const gridRef = React.useRef();
   const [selectedRow, setSelectedRow] = useState([]);
+  const [stagiaires, setStagiaires] = useState([]);
   const postAbsences = useStoreActions((actions) => actions.postAbsences);
+  const getAbsences = useStoreActions((actions) => actions.getAbsences);
   const columns = [
     {
       field: "cin",
@@ -30,10 +30,12 @@ function RegisterAbsence(props) {
   const getStagiairesByGroup = useStoreActions(
     (actions) => actions.getStagiairesByGroup
   );
-  const [stagiaires, setStagiaires] = useState([]);
+
   const getData = async () => {
-    const res = await getStagiairesByGroup(props.groupId);
-    setStagiaires(res);
+    const resStagiaires = await getStagiairesByGroup(props.groupId);
+    const resAbsences = await getAbsences(props.seanceId);
+    setStagiaires(resStagiaires);
+    setSelectedRow(resAbsences);
   };
   useEffect(() => {
     getData();
@@ -49,10 +51,10 @@ function RegisterAbsence(props) {
     <div id="myModal" className="modal">
       <div className="absenceFormContainer">
         <DataGrid
-          ref={gridRef}
           columns={columns}
           rows={stagiaires}
           getRowId={(row) => row.stagiaireId}
+          selectionModel={selectedRow}
           rowHeightMode="fixed"
           checkboxSelection={true}
           onSelectionModelChange={(newSelection) => {

@@ -143,7 +143,7 @@ namespace testWebAPI1.Controllers
                       }
                   ).ToListAsync();
             string mh = emploiQuery.Count % 2 == 1 ? $"{Math.Floor(emploiQuery.Count * 2.5)}H30MIN" : $"{Math.Floor(emploiQuery.Count * 2.5)}H00MIN";
-            WSModel res = new WSModel(new Models.WSModels.WSInfoModel(InfoQuery.gr, InfoQuery.Filiere),mh,emploiQuery);
+            WSModel res = new WSModel(new WSInfoModel(InfoQuery.gr, InfoQuery.Filiere),mh,emploiQuery, DateOnly.FromDateTime(start));
             return Ok(res);
         }
         [HttpGet("getFreeSeances")]
@@ -201,7 +201,7 @@ namespace testWebAPI1.Controllers
                      }
                  ).ToListAsync();
                 string mh = emploiQuery.Count % 2 == 1 ? $"{Math.Floor(emploiQuery.Count * 2.5)}H30MIN" : $"{Math.Floor(emploiQuery.Count * 2.5)}H00MIN";
-                WSModel SeanceModel = new WSModel(new WSInfoModel(InfoQuery.gr, InfoQuery.Filiere), mh, emploiQuery);
+                WSModel SeanceModel = new WSModel(new WSInfoModel(InfoQuery.gr, InfoQuery.Filiere), mh, emploiQuery, DateOnly.FromDateTime(start));
                 res.Add(SeanceModel);
             }
             return Ok(res);

@@ -1,13 +1,14 @@
 import authAxios from "./authAxios";
 
 export default class absenceServices {
-  static async postAbsences(obj) {
-    return authAxios.post("/api/Absences/", obj);
+  static async getAbsences(id) {
+    return authAxios.get("/api/Absences?seanceId=" + id);
   }
-  static async getAbsences() {
-    return authAxios.get("/api/Absences/");
-  }
-  static async postAbsence(id) {
-    return authAxios.post("/api/Absences/" + id);
+  static async postAbsence(obj) {
+    console.log(obj);
+    return authAxios.post(
+      "/api/Absences?seanceId=" + obj.seanceId,
+      obj.stagiaires
+    );
   }
 }

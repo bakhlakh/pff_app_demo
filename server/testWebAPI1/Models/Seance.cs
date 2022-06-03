@@ -24,6 +24,7 @@ namespace testWebAPI1.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public DateTime DeletedAt { get; set; }
+        public string TypeSeance { get; set; } = null!;
 
         public virtual Formateur? Formateur { get; set; }
         public virtual Groupe? Groupe { get; set; }

@@ -3,17 +3,17 @@
     public static class stagiareServices
 
     {
-        private static PFFContext context= new PFFContext();
-        public static async Task<DBResponseModel> GetStagiaires()
+        private static PFFContext? context;
+        public static async Task<DBResponseModel> GetStagiaires(PFFContext _context)
         {
-            context = new PFFContext();
+            context = _context;
 
             var items = await context.Stagiaires.ToListAsync();
             return new DBResponseModel { data = items, Message = "", Success = true, statusCode = 200 };
         }
-        public static async Task<DBResponseModel> GetStagiaire(string CNE)
+        public static async Task<DBResponseModel> GetStagiaire(string CNE, PFFContext _context)
         {
-            context = new PFFContext();
+            context = _context;
 
             var stagiaire = await context.Stagiaires.Where(st => st.Cin == CNE).FirstOrDefaultAsync();
             if (stagiaire == null)
@@ -22,9 +22,9 @@
             }
             return new DBResponseModel(true, "stagiaire found", stagiaire, 200);
         }
-        public static async Task<DBResponseModel> PutStagiaire(int id,Stagiaire stagiaire)
+        public static async Task<DBResponseModel> PutStagiaire(int id,Stagiaire stagiaire, PFFContext _context)
         {
-            context = new PFFContext();
+            context = _context;
             try
             {
                 stagiaire.UpdatedAt = DateTime.Now;
@@ -34,7 +34,7 @@
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!StagiaireExists(stagiaire.StagiaireId).Result)
+                if (!StagiaireExists(stagiaire.StagiaireId,context).Result)
                 {
                     return new DBResponseModel(false, "stagiaire does not exist.");
                 }
@@ -46,9 +46,9 @@
             var stagiaires = await context.Stagiaires.ToListAsync();
             return new DBResponseModel(true, "stagiaire updated successfully.", stagiaires, 200);
         }
-        public static async Task<DBResponseModel> PostStagiaire(Stagiaire stagiaire)
+        public static async Task<DBResponseModel> PostStagiaire(Stagiaire stagiaire, PFFContext _context)
         {
-            context = new PFFContext();
+            context = _context;
 
             context.Stagiaires.Add(stagiaire);
             try
@@ -57,7 +57,7 @@
             }
             catch (DbUpdateException)
             {
-                if (StagiaireExists(stagiaire.StagiaireId).Result)
+                if (StagiaireExists(stagiaire.StagiaireId,context).Result)
                 {
                     return new DBResponseModel(false, "stagiaire already exists.");
                 }
@@ -69,9 +69,9 @@
             var stagiaires = await context.Stagiaires.ToListAsync();
             return new DBResponseModel(true, "Module saved successfully.", stagiaires, 200);
         }
-        public static async Task<DBResponseModel> DeleteStagiaire(int id)
+        public static async Task<DBResponseModel> DeleteStagiaire(int id, PFFContext _context)
         {
-            context = new PFFContext();
+            context = _context;
 
             var stagiaire = await context.Stagiaires.FindAsync(id);
             if (stagiaire == null)
@@ -90,9 +90,9 @@
                 return new DBResponseModel(false, "An error occurred in the database.");
             }
         }
-        public static async Task<bool> StagiaireExists(int id)
+        public static async Task<bool> StagiaireExists(int id, PFFContext _context)
         {
-            context = new PFFContext();
+            context = _context;
 
             return await context.Stagiaires.AnyAsync(e => e.StagiaireId == id);
         }

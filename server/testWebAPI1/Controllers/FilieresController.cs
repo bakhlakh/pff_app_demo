@@ -10,7 +10,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using testWebAPI1.Models;
 using testWebAPI1.Services;
-using testWebAPI1.BALL;
 
 namespace testWebAPI1.Controllers
 {
@@ -33,14 +32,14 @@ namespace testWebAPI1.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Filiere>>> GetFilieres()
         {
-            return await filiereServices.GetFilieres();
+            return await filiereServices.GetFilieres(_context);
         }
         
         // GET: api/Filieres/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Filiere>> GetFiliere(string id)
         {
-            var filiere = await filiereServices.GetFiliere(id);
+            var filiere = await filiereServices.GetFiliere(id, _context);
 
             if (filiere == null)
             {
@@ -52,7 +51,7 @@ namespace testWebAPI1.Controllers
         [HttpGet("GetModulesFiliere/{id}")]
         public async Task<ActionResult<Filiere>> GetModulesFiliere(string id)
         {
-            var filiere = await filiereServices.GetModulesFiliere(id);
+            var filiere = await filiereServices.GetModulesFiliere(id, _context);
 
             if (filiere == null)
             {
@@ -64,7 +63,7 @@ namespace testWebAPI1.Controllers
         [HttpGet("GetNonIncludedModules/{id}")]
         public async Task<ActionResult<IEnumerable<Module>>> GetNonIncludedModules(string id)
         {
-            var res = await filiereServices.GetNonIncludedModules(id);
+            var res = await filiereServices.GetNonIncludedModules(id, _context);
             
 
             return Ok(res.data);
@@ -79,7 +78,7 @@ namespace testWebAPI1.Controllers
                 return BadRequest();
             }
 
-            var res = await filiereServices.PutFiliere(id, filiere);
+            var res = await filiereServices.PutFiliere(id, filiere, _context);
             
             if (!res.Success)
             {
@@ -94,7 +93,7 @@ namespace testWebAPI1.Controllers
         [HttpPost]
         public async Task<ActionResult<Filiere>> PostFiliere(Filiere filiere)
         {
-            var response = await filiereServices.PostFiliere(filiere);
+            var response = await filiereServices.PostFiliere(filiere, _context);
             if (response==null)
             {
                 return Conflict();
@@ -107,16 +106,16 @@ namespace testWebAPI1.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFiliere(string id)
         {
-            var filiere = await filiereServices.DeleteFiliere(id);
+            var filiere = await filiereServices.DeleteFiliere(id, _context);
             if (filiere == null) return NotFound();
             return NoContent();
         }
         [HttpDelete("ForceDeleteFiliere/{id}")]
         public async Task<ActionResult<IEnumerable<Filiere>>> ForceDeleteFiliere(string id)
         {
-            var filiere = await filiereServices.ForceDeleteFiliere(id);
+            var filiere = await filiereServices.ForceDeleteFiliere(id, _context);
             if (filiere == null) return NotFound();
-            return await filiereServices.GetFilieres();
+            return await filiereServices.GetFilieres(_context);
         }
     }
 }

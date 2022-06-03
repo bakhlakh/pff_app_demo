@@ -28,7 +28,7 @@ namespace testWebAPI1.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Stagiaire>>> GetStagiaires()
         {
-            var res = await stagiareServices.GetStagiaires();
+            var res = await stagiareServices.GetStagiaires(_context);
             if (!res.Success)
             {
                 return Conflict(res.Message);
@@ -40,7 +40,7 @@ namespace testWebAPI1.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Stagiaire>> GetStagiaire(string CIN)
         {
-            var res = await stagiareServices.GetStagiaire(CIN);
+            var res = await stagiareServices.GetStagiaire(CIN, _context);
 
             if (!res.Success || res.data == null)
             {
@@ -61,7 +61,7 @@ namespace testWebAPI1.Controllers
                 return BadRequest();
             }
 
-            var res = await stagiareServices.PutStagiaire(id, stagiaire);
+            var res = await stagiareServices.PutStagiaire(id, stagiaire, _context);
             if (!res.Success)
             {
                 return Conflict(res.Message);
@@ -75,7 +75,7 @@ namespace testWebAPI1.Controllers
         [HttpPost]
         public async Task<ActionResult<Stagiaire>> PostStagiaire(Stagiaire stagiaire)
         {
-            var res = await stagiareServices.PostStagiaire(stagiaire);
+            var res = await stagiareServices.PostStagiaire(stagiaire, _context);
             if (!res.Success)
             {
                 return Conflict(res.Message);
@@ -87,7 +87,7 @@ namespace testWebAPI1.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStagiaire(int id)
         {
-            var res = await stagiareServices.DeleteStagiaire(id);
+            var res = await stagiareServices.DeleteStagiaire(id, _context);
             if (!res.Success)
             {
                 return Conflict(res.Message);
