@@ -52,6 +52,7 @@ function PutSeance({ handleClick, cancelOp, updatedSeance, handleUpdate }) {
     groupId: "",
     anneScolaire: "",
     filiereId: "",
+    TypeSeance: "",
   });
   const dockValues = () => {
     setNewSeance({
@@ -66,6 +67,7 @@ function PutSeance({ handleClick, cancelOp, updatedSeance, handleUpdate }) {
       groupId: updatedSeance.groupId,
       anneScolaire: updatedSeance.anneScolaire,
       filiereId: updatedSeance.groupe.filiereId,
+      TypeSeance: updatedSeance.TypeSeance,
     });
   };
   useEffect(() => {
@@ -127,6 +129,7 @@ function PutSeance({ handleClick, cancelOp, updatedSeance, handleUpdate }) {
       commentaires: newSeance.commentaires,
       groupId: newSeance.groupId,
       anneScolaire: newSeance.anneScolaire,
+      TypeSeance: newSeance.TypeSeance,
     };
     let res = await putSeance(scObj);
     if (res?.seanceId) {
@@ -338,7 +341,29 @@ function PutSeance({ handleClick, cancelOp, updatedSeance, handleUpdate }) {
                     />
                   </LocalizationProvider>
                 </Grid>
-                <Grid item xs={4}></Grid>
+                <Grid item xs={4}>
+                  <FormControl fullWidth sx={{ mb: 1 }}>
+                    <InputLabel id="TF">Type Seance</InputLabel>
+                    <Select
+                      labelId="TF"
+                      id="TypeSeance"
+                      name="TypeSeance"
+                      label="Type Seance"
+                      required
+                      value={newSeance.TypeSeance}
+                      onChange={(e) => {
+                        setNewSeance({
+                          ...newSeance,
+                          TypeSeance: e.target.value,
+                        });
+                      }}
+                    >
+                      <MenuItem value="Presentiel">Presentiel</MenuItem>
+
+                      <MenuItem value="Distance">A Distance</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
                 <Grid item xs={4}>
                   <FormControl fullWidth sx={{ mb: 1 }}>
                     <InputLabel id="Heure">Heure</InputLabel>

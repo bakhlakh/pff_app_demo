@@ -50,7 +50,7 @@ function PostSeance({ cancelOp }) {
     commentaires: "",
     groupId: "",
     anneScolaire: "",
-    typeFormation: "Presentiel",
+    TypeSeance: "Presentiel",
   });
   useEffect(() => {
     if (filteredGroupes.length > 0) {
@@ -89,7 +89,7 @@ function PostSeance({ cancelOp }) {
       commentaires: newSeance.commentaires,
       groupId: newSeance.groupId,
       anneScolaire: newSeance.anneScolaire,
-      typeFormation: newSeance.typeFormation,
+      TypeSeance: newSeance.TypeSeance,
     };
     let res = await postSeance(scObj);
     if (res?.seanceId) {
@@ -272,18 +272,18 @@ function PostSeance({ cancelOp }) {
                 </Grid>
                 <Grid item xs={4}>
                   <FormControl fullWidth sx={{ mb: 1 }}>
-                    <InputLabel id="TF">Type Formation</InputLabel>
+                    <InputLabel id="TF">Type Seance</InputLabel>
                     <Select
                       labelId="TF"
-                      id="TypeFormation"
-                      name="TypeFormation"
-                      label="Type Formation"
+                      id="TypeSeance"
+                      name="TypeSeance"
+                      label="Type Seance"
                       required
-                      value={newSeance.typeFormation}
+                      value={newSeance.TypeSeance}
                       onChange={(e) => {
                         setNewSeance({
                           ...newSeance,
-                          typeFormation: e.target.value,
+                          TypeSeance: e.target.value,
                         });
                       }}
                     >
