@@ -50,6 +50,7 @@ function PostSeance({ cancelOp }) {
     commentaires: "",
     groupId: "",
     anneScolaire: "",
+    typeFormation: "Presentiel",
   });
   useEffect(() => {
     if (filteredGroupes.length > 0) {
@@ -88,6 +89,7 @@ function PostSeance({ cancelOp }) {
       commentaires: newSeance.commentaires,
       groupId: newSeance.groupId,
       anneScolaire: newSeance.anneScolaire,
+      typeFormation: newSeance.typeFormation,
     };
     let res = await postSeance(scObj);
     if (res?.seanceId) {
@@ -268,7 +270,29 @@ function PostSeance({ cancelOp }) {
                     />
                   </LocalizationProvider>
                 </Grid>
-                <Grid item xs={4}></Grid>
+                <Grid item xs={4}>
+                  <FormControl fullWidth sx={{ mb: 1 }}>
+                    <InputLabel id="TF">Type Formation</InputLabel>
+                    <Select
+                      labelId="TF"
+                      id="TypeFormation"
+                      name="TypeFormation"
+                      label="Type Formation"
+                      required
+                      value={newSeance.typeFormation}
+                      onChange={(e) => {
+                        setNewSeance({
+                          ...newSeance,
+                          typeFormation: e.target.value,
+                        });
+                      }}
+                    >
+                      <MenuItem value="Presentiel">Presentiel</MenuItem>
+
+                      <MenuItem value="Distance">A Distance</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
                 <Grid item xs={4}>
                   <FormControl fullWidth sx={{ mb: 1 }}>
                     <InputLabel id="Heure">Heure</InputLabel>
