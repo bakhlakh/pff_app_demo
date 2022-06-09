@@ -5,7 +5,6 @@ import NoPermission from "../pages/NoPermission";
 const RequireAuth = ({ allowedRoles }) => {
   const { auth } = useAuth();
   const location = useLocation();
-  console.log(auth?.userLevel);
   if (!auth) {
     return <Navigate to="/Login" state={{ from: location }} replace />;
   } else if (allowedRoles.includes(auth?.userLevel)) {
