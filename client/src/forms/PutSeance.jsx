@@ -37,6 +37,7 @@ function PutSeance({ handleClick, cancelOp, updatedSeance, handleUpdate }) {
   const availableStartTime = useStoreState((state) => state.availableStartTime);
   const deleteSeance = useStoreActions((actions) => actions.deleteSeance);
 
+  console.log(updatedSeance);
   const getAvailableStartTime = useStoreActions(
     (actions) => actions.getAvailableStartTime
   );
@@ -52,7 +53,7 @@ function PutSeance({ handleClick, cancelOp, updatedSeance, handleUpdate }) {
     groupId: "",
     anneScolaire: "",
     filiereId: "",
-    TypeSeance: "",
+    typeSeance: "",
   });
   const dockValues = () => {
     setNewSeance({
@@ -67,7 +68,7 @@ function PutSeance({ handleClick, cancelOp, updatedSeance, handleUpdate }) {
       groupId: updatedSeance.groupId,
       anneScolaire: updatedSeance.anneScolaire,
       filiereId: updatedSeance.groupe.filiereId,
-      TypeSeance: updatedSeance.TypeSeance,
+      typeSeance: updatedSeance.typeSeance,
     });
   };
   useEffect(() => {
@@ -129,7 +130,7 @@ function PutSeance({ handleClick, cancelOp, updatedSeance, handleUpdate }) {
       commentaires: newSeance.commentaires,
       groupId: newSeance.groupId,
       anneScolaire: newSeance.anneScolaire,
-      TypeSeance: newSeance.TypeSeance,
+      typeSeance: newSeance.typeSeance,
     };
     let res = await putSeance(scObj);
     if (res?.seanceId) {
@@ -346,17 +347,18 @@ function PutSeance({ handleClick, cancelOp, updatedSeance, handleUpdate }) {
                     <InputLabel id="TF">Type Seance</InputLabel>
                     <Select
                       labelId="TF"
-                      id="TypeSeance"
-                      name="TypeSeance"
+                      id="typeSeance"
+                      name="typeSeance"
                       label="Type Seance"
                       required
-                      value={newSeance.TypeSeance}
+                      value={newSeance.typeSeance}
                       onChange={(e) => {
                         setNewSeance({
                           ...newSeance,
-                          TypeSeance: e.target.value,
+                          typeSeance: e.target.value,
                         });
                       }}
+                      disabled={new Date() > new Date(newSeance.dateSeance)}
                     >
                       <MenuItem value="Presentiel">Presentiel</MenuItem>
 

@@ -139,7 +139,8 @@ namespace testWebAPI1.Controllers
                           DeletedAt = s.DeletedAt,
                           UpdatedAt = s.UpdatedAt,
                           ModuleId = s.ModuleId,
-                          Objectives = s.Objectives
+                          Objectives = s.Objectives,
+                          TypeSeance=s.TypeSeance,
                       }
                   ).ToListAsync();
             string mh = emploiQuery.Count % 2 == 1 ? $"{Math.Floor(emploiQuery.Count * 2.5)}H30MIN" : $"{Math.Floor(emploiQuery.Count * 2.5)}H00MIN";
@@ -197,7 +198,8 @@ namespace testWebAPI1.Controllers
                          DeletedAt = s.DeletedAt,
                          UpdatedAt = s.UpdatedAt,
                          ModuleId = s.ModuleId,
-                         Objectives = s.Objectives
+                         Objectives = s.Objectives,
+                                                   TypeSeance=s.TypeSeance
                      }
                  ).ToListAsync();
                 string mh = emploiQuery.Count % 2 == 1 ? $"{Math.Floor(emploiQuery.Count * 2.5)}H30MIN" : $"{Math.Floor(emploiQuery.Count * 2.5)}H00MIN";
