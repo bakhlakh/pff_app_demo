@@ -15,3 +15,84 @@
   align-items: center;
   padding: 15px;
 }
+.DashboardTournamentsOverviewPanel {
+  max-height: 340px;
+  border-radius: 12px;
+  background-color: #fff;
+  padding-bottom: 20px;
+}
+.DashboardTournamentsOverviewPanel-header {
+  color: #4569ff;
+  padding-left: 30px;
+  display: flex;
+  justify-content: space-between;
+  height: 40px;
+}
+
+.DashboardTournamentsOverviewPanel-header-item .dropdown-options {
+  list-style: none;
+  background: white;
+  box-shadow: 0 2px 4px rgba(black, 0.24);
+
+  transform: scale(0.8) translate3d(-20px, 0px, 0);
+  transform-origin: 0 100%;
+  z-index: 1;
+}
+.DashboardTournamentsOverviewPanel-header-item .selected {
+  background-color: #f5f5f5;
+  border: 0.5px solid #e0e0e0;
+  border-radius: 5px;
+  color: #000000 !important;
+}
+
+.DashboardTournamentsOverviewPanel-header-item li {
+  margin: 0;
+  display: inline-block;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 19px;
+  color: #808181;
+  margin-right: 15px;
+  cursor: pointer;
+  padding: 5px;
+}
+.DashboardTournamentsOverviewPanel-body {
+  margin: 20px;
+  width: 100%;
+}
+.DashboardTournamentsOverviewPanel-legend {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+  margin-top: 10px;
+}
+.DashboardTournamentsOverviewPanel-legend h4 {
+  margin: 0;
+}
+.DashboardTournamentsOverviewPanel-legend * {
+  font-size: 14px;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+}
+.DashboardTournamentsOverviewPanel-legend-container {
+  width: 300px;
+}
+
+.LegendListStyle {
+  list-style: none;
+  font: 16px Poppins bold;
+  white-space: nowrap;
+}
+.LegendListStyle li span {
+  display: inline-block;
+  margin-right: 10px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.DashboardNewUsersPanel-header-Item {
+  padding-top: 20px;
+  margin: 5px;
+}
