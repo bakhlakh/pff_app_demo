@@ -4,7 +4,7 @@ function SeanceBox(props) {
   return (
     <div
       className="seance-box"
-      onClick={(e) => {
+      onClick={() => {
         props.onClick(props.seance);
       }}
     >
@@ -14,6 +14,9 @@ function SeanceBox(props) {
       <div className="seance-box-body">
         <div className="seance-box-body-intitule">
           {props.seance.room.intitule}
+        </div>
+        <div className="seance-box-body-intitule">
+          {props.seance.typeFormation}
         </div>
         <div className="seance-box-body-formateur">
           {props.seance.formateur.firstName +
