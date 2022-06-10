@@ -81,7 +81,7 @@ function Home() {
           pointHoverRadius: 10,
         },
       ],
-      type: "1m",
+      type: "1s",
     },
     {
       labels: [

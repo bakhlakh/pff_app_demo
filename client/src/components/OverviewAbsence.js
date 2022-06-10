@@ -70,12 +70,12 @@ const OverviewAbsence = React.memo((props) => {
             </li>
 
             <li
-              className={"option" + (selectedView === "1m" ? " selected" : "")}
+              className={"option" + (selectedView === "1s" ? " selected" : "")}
               onClick={() => {
-                setSelectedView("1m");
+                setSelectedView("1s");
               }}
             >
-              1m
+              1s
             </li>
             <li
               className={"option" + (selectedView === "1y" ? " selected" : "")}
